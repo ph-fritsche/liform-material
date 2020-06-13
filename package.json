@@ -1,0 +1,41 @@
+{
+  "name": "liform-material",
+  "version": "0.0.0",
+  "description": "Material theme for liform-react-final",
+  "main": "dist/index.js",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "lint": "eslint src",
+    "test": "jest"
+  },
+  "keywords": [
+    "form",
+    "react",
+    "material",
+    "react-final-form"
+  ],
+  "repository": "https://github.com/ph-fritsche/liform-material",
+  "author": "Philipp Fritsche",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "eslint": "^7.1.0",
+    "jest": "^26.0.1",
+    "liform-theme-dev": "https://github.com/ph-fritsche/liform-theme-dev",
+    "react-test-renderer": "^16.13.1"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.10.2",
+    "@material-ui/icons": "^4.9.1",
+    "react-dropzone": "^11.0.1"
+  },
+  "peerDependencies": {
+    "liform-react-final": "^0.0.1-3"
+  }
+}
