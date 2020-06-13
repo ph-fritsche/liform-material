@@ -10,7 +10,7 @@ export const updateRef = (ref, node) => {
 
 export const forkRef = (...ref) => {
     return (node) => {
-        for(var r of ref) {
+        for(const r of ref) {
             updateRef(r, node)
         }
     }

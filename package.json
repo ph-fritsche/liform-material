@@ -31,8 +31,11 @@
     "react-test-renderer": "^16.13.1"
   },
   "dependencies": {
+    "@date-io/date-fns": "1.x",
     "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/pickers": "^4.0.0-alpha.8",
+    "date-fns": "^2.14.0",
     "react-dropzone": "^11.0.1"
   },
   "peerDependencies": {

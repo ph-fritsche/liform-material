@@ -3,6 +3,7 @@ import React from 'react'
 import { ArrayWidget } from './array'
 import { ButtonWidget } from './button'
 import { renderChoice } from './choice'
+import { renderDate } from './date'
 import { renderFile } from './file'
 import { renderHidden } from './hidden'
 import { renderInput } from './input'
@@ -31,6 +32,12 @@ export default {
         choice: {
             render: renderChoice,
         },
+        date: {
+            render: renderDate,
+        },
+        datetime: {
+            render: renderDate,
+        },
         file: {
             render: renderFile,
         },
@@ -40,6 +47,9 @@ export default {
         textarea: {
             render: renderInput,
             multiline: true,
+        },
+        time: {
+            render: renderDate,
         },
     },
 }

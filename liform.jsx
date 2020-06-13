@@ -8,6 +8,14 @@ import MaterialTheme from './src'
 Liform.defaultTheme = MaterialTheme
 
 ReactDOM.render(
-  <Liform {...props} name='form'/>,
+  <Liform {...props} name='form'>
+    <footer>{(renderProps) =>
+      <pre>
+        <code>
+          {JSON.stringify(renderProps.values, null, 2)}
+        </code>
+      </pre>
+    }</footer>
+  </Liform>,
   document.getElementById('liform')
 )

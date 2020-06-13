@@ -10,10 +10,6 @@ export const renderFile = ({liform, name, schema, meta, input, ...props}) => {
         liform.form.change(name, value)
     }, [liform, name])
 
-    const dropRef = useRef(1)
-    const inputBaseRef = useRef(2)
-    const inputRef = useRef(3)
-
     return (
         <Drop
             {...input}
@@ -23,9 +19,6 @@ export const renderFile = ({liform, name, schema, meta, input, ...props}) => {
             error={!!error}
             onChange={onChange}
             {...props}
-            ref={dropRef}
-            inputBaseRef={inputBaseRef}
-            inputRef={inputRef}
         />
     )
 }

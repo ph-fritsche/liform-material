@@ -103,6 +103,7 @@ export const DropInput = React.forwardRef(function DropInput(props, ref) {
     const {
         accept,
         avatar,
+        className,
         inputRef,
         name,
         multiple = true,
@@ -200,7 +201,7 @@ export const DropInput = React.forwardRef(function DropInput(props, ref) {
             baseElement.current.focus()
         }
 
-        // open Dropzone directly - forwarding the event does not work it event.target is a child (e.g. Chip)
+        // open Dropzone directly - forwarding the event does not work if event.target is a child (e.g. Chip)
         if (event.key === ' ' || event.key === 'Enter') {
             openDropzone()
         }
@@ -222,8 +223,8 @@ export const DropInput = React.forwardRef(function DropInput(props, ref) {
 
     return (
         <div
-            {...others}
             {...dropRootProps}
+            className={className}
             onBlur={onBlur}
             onFocus={onFocus}
             onKeyDown={handleKeyDown}
