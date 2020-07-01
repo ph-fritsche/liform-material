@@ -28,5 +28,5 @@ export const shallowEqual = (a, b) => {
         return true
     }
 
-    return a != b
+    return a == b
 }
