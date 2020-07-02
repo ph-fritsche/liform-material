@@ -10,6 +10,9 @@ import { renderInput } from './input'
 import { renderSwitch } from './switch'
 import { ObjectWidget } from './object'
 
+import { InputAdornment, Typography } from '@material-ui/core'
+import { VpnKeyOutlined, AlternateEmailOutlined, SearchOutlined, PhoneOutlined, EditOutlined, TextFieldsOutlined } from '@material-ui/icons'
+
 export default {
     errors: () => <div>[Errors]</div>,
     field: {
@@ -38,18 +41,62 @@ export default {
         datetime: {
             render: renderDate,
         },
+        email: {
+            render: renderInput,
+            type: 'email',
+            InputProps: {
+                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><AlternateEmailOutlined/></Typography></InputAdornment>,
+            },
+        },
         file: {
             render: renderFile,
         },
         hidden: {
             render: renderHidden,
         },
+        password: {
+            render: renderInput,
+            type: 'password',
+            InputProps: {
+                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><VpnKeyOutlined/></Typography></InputAdornment>,
+            },
+        },
+        search: {
+            render: renderInput,
+            type: 'search',
+            InputProps: {
+                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><SearchOutlined/></Typography></InputAdornment>,
+            },
+        },
+        tel: {
+            render: renderInput,
+            type: 'tel',
+            InputProps: {
+                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><PhoneOutlined/></Typography></InputAdornment>,
+            },
+        },
+        text: {
+            render: renderInput,
+            InputProps: {
+                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><EditOutlined/></Typography></InputAdornment>,
+            },
+        },
         textarea: {
             render: renderInput,
             multiline: true,
+            InputProps: {
+                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><TextFieldsOutlined/></Typography></InputAdornment>,
+            },
         },
         time: {
             render: renderDate,
         },
+        url: {
+            render: renderInput,
+            type: 'url',
+            InputProps: {
+                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'>://</Typography></InputAdornment>,
+            },
+        }
     },
 }

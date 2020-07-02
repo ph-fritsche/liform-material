@@ -47,7 +47,7 @@ export const renderInput = ({liform, name, schema, meta, input, ...props}) => {
         }
     }, [schema, props.SelectProps])
 
-    const type = schema.type === 'number' || schema.type === 'integer' ? 'number' : undefined
+    const type = input.type || (schema.type === 'number' || schema.type === 'integer' ? 'number' : undefined)
     const step = schema.step || (schema.type === 'integer' ? 1 : 0.1)
 
     return (
