@@ -15,8 +15,8 @@ export const ArrayWidget = ({liform, name, schema, ...props}) => (
                     component='fieldset'
                     error={!!error}
                 >
-                    <FormLabel component='legend'>{schema.title}</FormLabel>
-                    <FormHelperText>{error || schema.description}</FormHelperText>
+                    <FormLabel component='legend' error={!!error}>{schema.title}</FormLabel>
+                    <FormHelperText error={!!error}>{error || schema.description}</FormHelperText>
                     <FormGroup>
                         { fields.map((name, index) => (
                             <FormGroup key={name}>
