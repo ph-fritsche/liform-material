@@ -1,7 +1,7 @@
 import React from 'react'
 import { FieldArray } from 'react-final-form-arrays'
 import Lifield, { liformizeName, finalizeName } from 'liform-react-final/dist/field'
-import { Button, FormGroup, FormControl, FormLabel,FormHelperText } from '@material-ui/core'
+import { FormGroup, FormControl, FormLabel,FormHelperText, IconButton } from '@material-ui/core'
 
 import { getFieldError } from './error'
 
@@ -19,7 +19,7 @@ export const ArrayWidget = ({liform, name, schema, ...props}) => (
                     <FormHelperText error={!!error}>{error || schema.description}</FormHelperText>
                     <FormGroup>
                         { fields.map((name, index) => (
-                            <FormGroup key={name}>
+                            <div key={name} style={{display: 'flex'}}>
                                 <Lifield
                                     {...props}
                                     liform={liform}
@@ -31,16 +31,16 @@ export const ArrayWidget = ({liform, name, schema, ...props}) => (
                                     }
                                 />
                                 { (schema.allowDelete || Array.isArray(meta.initial) && index >= meta.initial.length) &&
-                                    <Button onClick={() => fields.remove(index)}>
+                                    <IconButton onClick={() => fields.remove(index)} color="text.secondary" style={{fontSize: '.75em'}}>
                                         ❌
-                                    </Button>
+                                    </IconButton>
                                 }
-                            </FormGroup>
+                            </div>
                         )) }
                         { schema.allowAdd &&
-                            <Button onClick={() => fields.push()}>
+                            <IconButton onClick={() => fields.push()} color="text.secondary" style={{width: '3em', fontSize: '.75em'}}>
                                 ➕
-                            </Button>
+                            </IconButton>
                         }
                     </FormGroup>
                 </FormControl>
