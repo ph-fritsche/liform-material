@@ -3,6 +3,7 @@ import React from 'react'
 import { ArrayWidget } from './array'
 import { ButtonWidget } from './button'
 import { renderChoice } from './choice'
+import { renderColor } from './color'
 import { renderDate } from './date'
 import { renderFile } from './file'
 import { renderHidden } from './hidden'
@@ -34,6 +35,9 @@ export default {
         button: ButtonWidget,
         choice: {
             render: renderChoice,
+        },
+        color: {
+            render: renderColor,
         },
         date: {
             render: renderDate,
