@@ -12,7 +12,7 @@ import { renderSwitch } from './switch'
 import { ObjectWidget } from './object'
 
 import { InputAdornment, Typography } from '@material-ui/core'
-import { VpnKeyOutlined, AlternateEmailOutlined, SearchOutlined, PhoneOutlined, EditOutlined, TextFieldsOutlined } from '@material-ui/icons'
+import { VpnKeyOutlined, AlternateEmailOutlined, SearchOutlined, PhoneOutlined, EditOutlined, TextFieldsOutlined, SpeedOutlined } from '@material-ui/icons'
 
 export default {
     errors: () => <div>[Errors]</div>,
@@ -23,9 +23,15 @@ export default {
         },
         integer: {
             render: renderInput,
+            InputProps: {
+                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><SpeedOutlined/></Typography></InputAdornment>,
+            },
         },
         number: {
             render: renderInput,
+            InputProps: {
+                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><SpeedOutlined/></Typography></InputAdornment>,
+            },
         },
         object: ObjectWidget,
         string: {
