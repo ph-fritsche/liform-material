@@ -2,6 +2,7 @@ import React from 'react'
 import { FieldArray } from 'react-final-form-arrays'
 import Lifield, { liformizeName, finalizeName } from 'liform-react-final/dist/field'
 import { FormGroup, FormControl, FormLabel,FormHelperText, IconButton } from '@material-ui/core'
+import { RemoveCircleOutline, AddCircleOutline } from '@material-ui/icons'
 
 import { getFieldError } from './error'
 
@@ -31,15 +32,15 @@ export const ArrayWidget = ({liform, name, schema, ...props}) => (
                                     }
                                 />
                                 { (schema.allowDelete || Array.isArray(meta.initial) && index >= meta.initial.length) &&
-                                    <IconButton onClick={() => fields.remove(index)} color="text.secondary" style={{fontSize: '.75em'}}>
-                                        ❌
+                                    <IconButton onClick={() => fields.remove(index)} style={{fontSize: '.75em'}}>
+                                        <RemoveCircleOutline/>
                                     </IconButton>
                                 }
                             </div>
                         )) }
                         { schema.allowAdd &&
-                            <IconButton onClick={() => fields.push()} color="text.secondary" style={{width: '3em', fontSize: '.75em'}}>
-                                ➕
+                            <IconButton onClick={() => fields.push()} style={{width: '3em', fontSize: '.75em'}}>
+                                <AddCircleOutline/>
                             </IconButton>
                         }
                     </FormGroup>
