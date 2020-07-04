@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import { useMediaQuery, Popover, Modal, TextField, Dialog } from "@material-ui/core"
 import Field from '../Field/Field'
-import PickerInput from './PickerInput'
+import DateTimeInput from './DateTimeInput'
 import { useForkedRef } from '../util/ref'
 
-export const PickerModal = (props) => {
+export const DateTimeModal = (props) => {
     const {
         mediaQueryDesktop = '@media (pointer: fine)',
 
@@ -66,7 +66,7 @@ export const PickerModal = (props) => {
 
             helperText={value.input.map(p => p.placeholder).join('')}
 
-            inputComponent={PickerInput}
+            inputComponent={DateTimeInput}
             inputRef={inputRef}
             inputProps={{
                 dateUtil,

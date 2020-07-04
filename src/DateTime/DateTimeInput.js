@@ -48,7 +48,7 @@ const resetInput = (value) => {
     return {index: i, value: v}
 }
 
-export const PickerInput = React.forwardRef(function PickerInput(props, ref) {
+export const DateTimeInput = React.forwardRef(function DateTimeInput(props, ref) {
     const {
         className,
         classes,
@@ -249,4 +249,4 @@ export const PickerInput = React.forwardRef(function PickerInput(props, ref) {
     )
 })
 
-export default PickerInput
+export default DateTimeInput

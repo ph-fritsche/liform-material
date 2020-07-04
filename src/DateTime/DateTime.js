@@ -1,13 +1,13 @@
 import React, { useCallback, useContext, useMemo, useRef, useState } from 'react'
 import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker } from '@material-ui/pickers'
-import { PickerInput } from './PickerInput'
+import { DateTimeInput } from './DateTimeInput'
 import Field from '../Field/Field'
 import { InputAdornment, Typography } from '@material-ui/core'
 import { CalendarTodayOutlined, ScheduleOutlined, FormatSize } from '@material-ui/icons';
 import { useForkedRef } from '../util/ref'
 import { MuiPickersAdapterContext } from '@material-ui/pickers/LocalizationProvider'
 import DateFns from '@material-ui/pickers/adapter/date-fns'
-import { PickerModal } from './PickerModal'
+import { DateTimeModal } from './DateTimeModal'
 
 const adornmentIcon = {
     date: CalendarTodayOutlined,
@@ -64,11 +64,11 @@ const formatDisplay = (dateUtil, valueFormat, parsedDate) => {
     return displayDate + (displayDate && displayTime ? '\t' : '') + displayTime
 }
 
-export const Picker = React.forwardRef(function Picker(props, ref) {
+export const DateTime = React.forwardRef(function DateTime(props, ref) {
     const {
         InputProps = {},
 
-        inputComponent = PickerInput,
+        inputComponent = DateTimeInput,
         inputProps,
 
         value: valueProp,
@@ -180,7 +180,7 @@ export const Picker = React.forwardRef(function Picker(props, ref) {
             }}
         />
 
-        <PickerModal
+        <DateTimeModal
             anchorEl={rootRef.current}
             open={isPickerOpen}
             onClose={() => togglePicker(false)}

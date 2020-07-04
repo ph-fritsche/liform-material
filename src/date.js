@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Picker } from './Picker/Picker'
+import { DateTime } from './DateTime/DateTime'
 import { getFieldError } from './error'
 
 const valueFormatFromSchema = (schema) => {
@@ -33,7 +33,7 @@ export const renderDate = ({liform, name, schema, meta, input, ...props}) => {
     }, [liform, name])
 
     return (
-        <Picker
+        <DateTime
             {...input}
             label={schema.title}
             helperText={error || schema.description}
