@@ -48,6 +48,7 @@ export const ColorInput = React.forwardRef(function ColorInput(props, ref) {
             type='color'
             name={name}
             value={value}
+            onChange={() => {}}
             onClick={event => { event.preventDefault() }}
             style={{minWidth: '5em', display: 'none'}}
         />
