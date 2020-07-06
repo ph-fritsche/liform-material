@@ -27,7 +27,7 @@ export const ObjectWidget = ({liform, name, schema, ...props}) => (
                 )
             }}
         />
-        { mapProperties(schema.properties || {}, (propSchema, key) => console.log(propSchema.attr.gridSize) || (
+        { mapProperties(schema.properties || {}, (propSchema, key) => (
             <Grid item key={key}
                 { ...(typeof(propSchema.attr.gridSize) === 'object' ? propSchema.attr.gridSize : {xs: propSchema.attr.gridSize}) }
             >
