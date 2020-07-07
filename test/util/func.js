@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import Renderer from 'react-test-renderer'
-import { forkCallback, useForkedCallback } from '../../src/util/callback'
+import { forkCallback, useForkedCallback, useBoundFunction } from '../../src/util/func'
 
 describe('Fork callbacks', () => {
     it('Fork callbacks', () => {
@@ -48,5 +48,23 @@ describe('Fork callbacks', () => {
         expect(a).toEqual('bar')
         expect(b).toEqual('bar')
         expect(c).toEqual('bar')
+    })
+})
+
+describe('Bind functions', () => {
+    it('Use bound function hook', () => {
+        let args
+
+        const TestComponent = (props) => {
+            const boundFunc = useBoundFunction((...a) => { args = a }, 'foo')
+            boundFunc('bar')
+            return null
+        }
+
+        Renderer.create(
+            <TestComponent/>
+        )
+
+        expect(args).toEqual(['foo', 'bar'])
     })
 })

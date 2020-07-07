@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Field from '../Field/Field'
 import { useForkedRef, updateRef } from '../util/ref'
-import { useForkedCallback } from '../util/callback'
+import { useForkedCallback } from '../util/func'
 import { PickerModal } from './PickerModal'
 
 export const Picker = React.forwardRef(function Picker(props, ref) {

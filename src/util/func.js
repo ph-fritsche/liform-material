@@ -16,3 +16,7 @@ export const useForkedCallback = (func, newFunc, deps = []) => {
     }
     return useMemo(() => forkCallback(...func, newFunc), func.concat(newFunc, ...deps))
 }
+
+export const useBoundFunction = (func, ...args) => {
+    return useMemo(() => func.bind(undefined, ...args), args)
+}
