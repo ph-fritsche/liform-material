@@ -75,6 +75,7 @@ export const DateTimeInput = React.forwardRef(function DateTimeInput(props, ref)
 
     return (
         <AspectInput
+            ref={ref}
             {...others}
             validate={validate}
             commit={commit}

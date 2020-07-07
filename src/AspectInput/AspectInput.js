@@ -6,6 +6,7 @@ import { shallowEqual } from '../util/equal'
 
 const useStyle = makeStyles(theme => ({
     value: {
+        whiteSpace: 'pre',
     },
     valueFocus: {
         background: theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark,
@@ -35,7 +36,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         // should update the component value
         commit: commitProp,
 
-        // should be an array of objects like {type:'value'|'placeholder', value?: any, placeholder: string}
+        // should be an array of objects like {type?:'value'|any, value?: any, key?: string, placeholder?: string, text?: string, isNumeric?: boolean}
         aspects,
         display,
         placeholder,
@@ -98,11 +99,13 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             return
         }
 
-        const isNumericInput = (aspects[activeAspect.index].isNumeric ?? 'numeric') === 'numeric'
+        const isNumericInput = Boolean(aspects[activeAspect.index].isNumeric ?? true)
 
-        const paddedValue = isNumericInput
-            ? String(Number(newValue)).padStart(aspects[activeAspect.index].placeholder.length, '0')
-            : String(newValue).padStart(aspects[activeAspect.index].placeholder.length, ' ')
+        const paddedValue = !aspects[activeAspect.index].placeholder
+            ? newValue
+            : isNumericInput
+                ? String(Number(newValue)).padStart(aspects[activeAspect.index].placeholder.length, '0')
+                : String(newValue).padStart(aspects[activeAspect.index].placeholder.length, ' ')
 
         const isEmpty = isNumericInput ? newValue == 0 : String(newValue).trim() == ''
 
@@ -110,7 +113,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         const nextCharOverflow = !isEmpty && (
             isNumericInput
                 ? validateProp(newValue + '0', activeAspect.index) === undefined
-                : String(newValue).trim().length >= aspects[activeAspect.index].placeholder.length
+                : aspects[activeAspect.index].placeholder && String(newValue).trim().length >= aspects[activeAspect.index].placeholder.length
         )
 
         if (nextCharOverflow) {
@@ -141,11 +144,11 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         if (addKeys[event.key]) {
             event.preventDefault()
 
-            const isNumericInput = (aspects[activeAspect.index].isNumeric ?? 'numeric') === 'numeric'
+            const isNumericInput = Boolean(aspects[activeAspect.index].isNumeric ?? true)
 
             let newValue = isNumericInput
                 ? Number(event.target.value) + addKeys[event.key]
-                : String(event.target.value).length > 1 && String.fromCharCode(String(event.target.value).charCodeAt(-1) + addKeys[event.key])
+                : event.target.value.length > 0 && String.fromCharCode(event.target.value.charCodeAt(event.target.value.length - 1) + addKeys[event.key])
 
             newValue = validateProp(newValue, activeAspect.index)
 
@@ -153,9 +156,11 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                 return
             }
 
-            const paddedValue = isNumericInput
-                ? String(Number(newValue)).padStart(aspects[activeAspect.index].placeholder.length, '0')
-                : String(newValue).padStart(aspects[activeAspect.index].placeholder.length, ' ')
+            const paddedValue = !aspects[activeAspect.index].placeholder
+                ? newValue
+                : isNumericInput
+                    ? String(Number(newValue)).padStart(aspects[activeAspect.index].placeholder.length, '0')
+                    : String(newValue).padStart(aspects[activeAspect.index].placeholder.length, ' ')
 
             updateAspect({type: 'change', value: paddedValue})
         }
@@ -198,7 +203,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                     key={i}
                     className={style.formatter}
                 >
-                    {a.placeholder}
+                    {a.text ?? a.placeholder}
                 </span>
             )
         ))
@@ -219,12 +224,12 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             { renderedValue }
             <input
                 ref={forkedInputRef}
-                type='number'
+                type={ Boolean(aspects[activeAspect.index].isNumeric ?? true) ? 'number' : 'text' }
                 onBlur={onBlur}
                 onFocus={onFocus}
                 onKeyDown={onKeyDown}
                 onChange={onChange}
-                value={isInputFocused && activeAspect.value}
+                value={isInputFocused ? activeAspect.value : ''}
                 style={{maxHeight: 0, maxWidth: 0, padding: 0, margin: 0, border: 0}}
             />
         </div>
