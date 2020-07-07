@@ -4,7 +4,7 @@ import { ArrayWidget } from './array'
 import { ButtonWidget } from './button'
 import { renderChoice } from './choice'
 import { renderColor } from './color'
-import { renderDate } from './date'
+import { renderDate, renderDateInterval } from './date'
 import { renderFile } from './file'
 import { renderHidden } from './hidden'
 import { renderInput } from './input'
@@ -47,6 +47,9 @@ export default {
         },
         date: {
             render: renderDate,
+        },
+        dateinterval: {
+            render: renderDateInterval,
         },
         datetime: {
             render: renderDate,
