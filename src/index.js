@@ -110,6 +110,9 @@ export default {
             InputProps: {
                 endAdornment: <InputAdornment position='end'><Typography color='textSecondary'>://</Typography></InputAdornment>,
             },
-        }
+        },
+        week: {
+            render: renderDate,
+        },
     },
 }

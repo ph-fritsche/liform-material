@@ -23,6 +23,10 @@ const valueFormatFromSchema = (schema) => {
         return 'yyyy-MM-dd'
     } else if (widget.indexOf('time') >= 0) {
         return 'HH:mm'
+    } else if (widget.indexOf('week') >= 0) {
+        // https://github.com/dmtrKovalenko/date-io/issues/412
+        // return "YYYY-'W'ww"
+        return "RRRR-'W'II"
     }
 }
 
