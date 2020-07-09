@@ -66,15 +66,7 @@ export const DateTime = React.forwardRef(function DateTime(props, ref) {
         }
     }
 
-    const [isFocusLocked, lockFocus] = useState(false)
     const [isPickerOpen, setPickerOpen] = useState(false)
-    const togglePicker = open => {
-        if (open === isPickerOpen) {
-            return
-        }
-        lockFocus(open === undefined ? !isPickerOpen : open)
-        setPickerOpen(open == undefined ? !isPickerOpen : open)
-    }
 
     const AdornmentIcon = adornmentIcon['date']
 
@@ -83,10 +75,10 @@ export const DateTime = React.forwardRef(function DateTime(props, ref) {
             ref={forkedRootRef}
             {...others}
 
-            onClick={() => togglePicker(true)}
+            onClick={() => !isPickerOpen && setPickerOpen(true)}
             onPaste={onPaste}
 
-            isFocusLocked={isFocusLocked}
+            isFocusLocked={isPickerOpen}
 
             InputProps={{
                 endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><AdornmentIcon/></Typography></InputAdornment>,
@@ -106,7 +98,7 @@ export const DateTime = React.forwardRef(function DateTime(props, ref) {
         <DateTimeModal
             anchorEl={rootRef.current}
             open={isPickerOpen}
-            onClose={() => togglePicker(false)}
+            onClose={() => isPickerOpen && setPickerOpen(false)}
 
             PickerComponent={PickerComponent || guessPickerComponent(value.views)}
             PickerProps={{
