@@ -1,15 +1,35 @@
-import React, { useCallback, useEffect, useRef } from 'react'
-import { useMediaQuery, Popover, Modal, TextField, Dialog } from "@material-ui/core"
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useMediaQuery, Popover, Modal, TextField, Dialog, makeStyles } from "@material-ui/core"
 import Field from '../Field/Field'
 import DateTimeInput from './DateTimeInput'
 import { useForkedRef } from '../util/ref'
-import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker } from '@material-ui/pickers'
+import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker, Day } from '@material-ui/pickers'
+import clsx from 'clsx'
 
 const guessPickerComponent = (views) => {
     const hasDate = views.indexOf('year') >= 0 || views.indexOf('month') >= 0 || views.indexOf('date') >= 0
     const hasTime = views.indexOf('hours') >= 0 || views.indexOf('minutes') >= 0 || views.indexOf('seconds') >= 0
     return hasDate && hasTime ? StaticDateTimePicker : hasTime ? StaticTimePicker : StaticDatePicker
 }
+
+const useStyle = makeStyles(theme => ({
+    highlight: {
+        borderRadius: 0,
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.common.white,
+        "&:hover, &:focus": {
+            backgroundColor: theme.palette.primary.dark,
+        },
+    },
+    firstHighlight: {
+        borderTopLeftRadius: "50%",
+        borderBottomLeftRadius: "50%",
+    },
+    endHighlight: {
+        borderTopRightRadius: "50%",
+        borderBottomRightRadius: "50%",
+    },
+}))
 
 export const DateTimeModal = (props) => {
     const {
@@ -28,8 +48,9 @@ export const DateTimeModal = (props) => {
         PickerProps,
     } = props
 
+    const style = useStyle(props)
+
     const isDesktop = useMediaQuery(mediaQueryDesktop)
-    const isLandscape = useMediaQuery('@media (orientation: portrait)')
 
     const onDateChange = (value, variant, isFinished) => {
         onChange(value)
@@ -83,25 +104,48 @@ export const DateTimeModal = (props) => {
         />
     }, [dateUtil, value, onChange])
 
-    return (
-        <ModalComponent
-            {...ModalProps}
-            {...sharedProps}
-            {...(ModalComponent === Popover && popoverProps)}
-            {...(ModalComponent === Modal && modalProps)}
-        >
-            <PickerComponent
-                displayStaticWrapperAs={ isDesktop ? 'desktop' : 'mobile' }
-                disableMaskedInput={true}
-                dateAdapter={dateUtil}
-                renderInput={renderMobileKeyboardInput}
-                views={value.views}
+    const renderDay = useMemo(() => {
+        const hasWeek = value.input.find(v => v.placeholder && ['w','I'].indexOf(v.placeholder[0]) >= 0)
+        const hasDay = value.input.find(v => v.placeholder && ['d','D','e','i'].indexOf(v.placeholder[0]) >= 0)
+        if (hasWeek && !hasDay) {
+            const weekStart = dateUtil.startOfWeek(value.parsed)
+            const weekEnd = dateUtil.endOfWeek(value.parsed)
+            return (date, selectedDates, DayComponentProps) => (
+                <Day
+                    {...DayComponentProps}
+                    className={clsx({
+                        [style.highlight]: dateUtil.isWithinRange(date, [weekStart, weekEnd]),
+                        [style.firstHighlight]: dateUtil.isSameDay(date, weekStart),
+                        [style.endHighlight]: dateUtil.isSameDay(date, weekEnd),
+                    })}
+                />
+            )
+        }
+    }, [dateUtil, value])
 
-                {...PickerProps}
+    return open
+        ? (
+            <ModalComponent
+                {...ModalProps}
+                {...sharedProps}
+                {...(ModalComponent === Popover && popoverProps)}
+                {...(ModalComponent === Modal && modalProps)}
+            >
+                <PickerComponent
+                    displayStaticWrapperAs={ isDesktop ? 'desktop' : 'mobile' }
+                    disableMaskedInput={true}
+                    dateAdapter={dateUtil}
+                    renderInput={renderMobileKeyboardInput}
+                    renderDay={renderDay}
+                    showDaysOutsideCurrentMonth={!!renderDay}
+                    views={value.views}
 
-                value={value.parsed}
-                onDateChange={onDateChange}
-            />
-        </ModalComponent>
-    )
+                    {...PickerProps}
+
+                    value={value.parsed}
+                    onDateChange={onDateChange}
+                />
+            </ModalComponent>
+        )
+        : null
 }
