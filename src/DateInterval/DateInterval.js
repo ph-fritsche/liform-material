@@ -3,7 +3,7 @@ import Field from '../Field/Field'
 import { DateIntervalInput } from './DateIntervalInput'
 import { InputAdornment, Typography } from '@material-ui/core'
 import { CalendarTodayOutlined } from '@material-ui/icons'
-import { compileValue } from './util'
+import { compileValue } from './compileValue'
 import { intervalToString } from '../util/date'
 
 export const DateInterval = React.forwardRef(function DateInterval(props, ref) {
