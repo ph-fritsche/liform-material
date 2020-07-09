@@ -7,7 +7,7 @@ import { useForkedRef } from '../util/ref'
 import { MuiPickersAdapterContext } from '@material-ui/pickers/LocalizationProvider'
 import DateFns from '@material-ui/pickers/adapter/date-fns'
 import { DateTimeModal } from './DateTimeModal'
-import { compileValue } from './util'
+import { compileValue } from './compileValue'
 
 const adornmentIcon = {
     date: CalendarTodayOutlined,
