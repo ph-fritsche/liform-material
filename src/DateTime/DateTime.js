@@ -1,9 +1,8 @@
 import React, { useCallback, useContext, useMemo, useRef, useState } from 'react'
-import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker } from '@material-ui/pickers'
 import { DateTimeInput } from './DateTimeInput'
 import Field from '../Field/Field'
 import { InputAdornment, Typography } from '@material-ui/core'
-import { CalendarTodayOutlined, ScheduleOutlined, FormatSize } from '@material-ui/icons';
+import { CalendarTodayOutlined, ScheduleOutlined } from '@material-ui/icons';
 import { useForkedRef } from '../util/ref'
 import { MuiPickersAdapterContext } from '@material-ui/pickers/LocalizationProvider'
 import DateFns from '@material-ui/pickers/adapter/date-fns'
@@ -13,12 +12,6 @@ import { compileValue } from './util'
 const adornmentIcon = {
     date: CalendarTodayOutlined,
     time: ScheduleOutlined,
-}
-
-const guessPickerComponent = (views) => {
-    const hasDate = views.indexOf('year') >= 0 || views.indexOf('month') >= 0 || views.indexOf('date') >= 0
-    const hasTime = views.indexOf('hours') >= 0 || views.indexOf('minutes') >= 0 || views.indexOf('seconds') >= 0
-    return hasDate && hasTime ? StaticDateTimePicker : hasTime ? StaticTimePicker : StaticDatePicker
 }
 
 const useDateAdapter = () => {
@@ -37,6 +30,8 @@ export const DateTime = React.forwardRef(function DateTime(props, ref) {
         value: valueProp,
         valueFormat,
         onChange: onChangeProp,
+
+        ModalComponent = DateTimeModal,
 
         PickerComponent,
         PickerProps = {},
@@ -95,16 +90,13 @@ export const DateTime = React.forwardRef(function DateTime(props, ref) {
             }}
         />
 
-        <DateTimeModal
+        <ModalComponent
             anchorEl={rootRef.current}
             open={isPickerOpen}
             onClose={() => isPickerOpen && setPickerOpen(false)}
 
-            PickerComponent={PickerComponent || guessPickerComponent(value.views)}
-            PickerProps={{
-                ...PickerProps,
-                views: PickerProps.views || value.views,
-            }}
+            PickerComponent={PickerComponent}
+            PickerProps={PickerProps}
 
             {...{
                 dateUtil,

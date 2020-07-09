@@ -3,9 +3,20 @@ import { useMediaQuery, Popover, Modal, TextField, Dialog } from "@material-ui/c
 import Field from '../Field/Field'
 import DateTimeInput from './DateTimeInput'
 import { useForkedRef } from '../util/ref'
+import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker } from '@material-ui/pickers'
+
+const guessPickerComponent = (views) => {
+    const hasDate = views.indexOf('year') >= 0 || views.indexOf('month') >= 0 || views.indexOf('date') >= 0
+    const hasTime = views.indexOf('hours') >= 0 || views.indexOf('minutes') >= 0 || views.indexOf('seconds') >= 0
+    return hasDate && hasTime ? StaticDateTimePicker : hasTime ? StaticTimePicker : StaticDatePicker
+}
 
 export const DateTimeModal = (props) => {
     const {
+        dateUtil,
+        value,
+        onChange,
+
         mediaQueryDesktop = '@media (pointer: fine)',
 
         ModalProps,
@@ -13,12 +24,8 @@ export const DateTimeModal = (props) => {
         onClose = () => {},
         open = false,
 
-        PickerComponent,
+        PickerComponent = guessPickerComponent(value.views),
         PickerProps,
-
-        dateUtil,
-        value,
-        onChange,
     } = props
 
     const isDesktop = useMediaQuery(mediaQueryDesktop)
@@ -88,6 +95,7 @@ export const DateTimeModal = (props) => {
                 disableMaskedInput={true}
                 dateAdapter={dateUtil}
                 renderInput={renderMobileKeyboardInput}
+                views={value.views}
 
                 {...PickerProps}
 
