@@ -6,28 +6,51 @@ function daysInMonth (dateUtil, ...args) {
     return Number(dateUtil.formatByString(end, 'dd'))
 }
 
+const aspectLimits = {
+    yyyy: [0,2100],
+    YYYY: [0,2100],
+    RRRR: [0,2100],
+    Q: [1,4],
+    MM: [1,12],
+    ww: [1,53],
+    II: [1,53],
+    dd: [1,31],
+    DDD: [1,366],
+    e: [1,7],
+    i: [1,7],
+    HH: [0,23],
+    mm: [0,59],
+    ss: [0,59],
+    SSS: [0,999],
+}
+
 export function validateAspect (dateUtil, value, aspectValue, aspectIndex) {
     const placeholder = value.input[aspectIndex].placeholder
 
     aspectValue = Number(aspectValue)
 
-    if (placeholder === 'yyyy') {
-        // might want to use min and max date for autocorrection of small aspectValues
-        return aspectValue < 100
-            ? aspectValue + (aspectValue > 30 ? 1900 : 2000)
-            : aspectValue <= 2100 ? aspectValue : undefined
-    } else if (placeholder === 'MM') {
-        return aspectValue >= 1 && aspectValue <= 12 ? aspectValue : undefined
-    } else if (placeholder === 'dd') {
-        return aspectValue >= 1 && aspectValue <= daysInMonth(dateUtil, value.parsed) ? aspectValue : undefined
-    } else if (placeholder === 'HH') {
-        return aspectValue >= 0 && aspectValue <= 23 ? aspectValue : undefined
-    } else if (placeholder === 'mm' || placeholder === 'ss') {
-        return aspectValue >= 0 && aspectValue <= 59 ? aspectValue : undefined
+    if (aspectLimits[placeholder] && (
+        aspectLimits[placeholder][0] !== undefined && aspectValue < aspectLimits[placeholder][0]
+        || aspectLimits[placeholder][1] !== undefined && aspectValue > aspectLimits[placeholder][1]
+    )) {
+        return undefined
     }
+
+    if (placeholder === 'dd' && aspectValue > daysInMonth(dateUtil, value.parsed)) {
+        return undefined
+    }
+
+    return aspectValue
 }
 
 export function commitAspect (dateUtil, value, onChange, aspectValue, aspectIndex) {
+    if (['yyyy','YYYY','RRRR'].indexOf(value.input[aspectIndex].placeholder) >= 0) {
+        // might want to use min and max date for autocorrection of small aspectValues
+        if(aspectValue < 100) {
+            aspectValue = Number(aspectValue) + (aspectValue > 30 ? 1900 : 2000)
+        }
+    }
+
     const newDate = dateUtil.parse(
         value.input.map((p,i) => {
             if (p.type === 'formatter') {
