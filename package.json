@@ -21,25 +21,25 @@
   "author": "Philipp Fritsche",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.10.1",
-    "@babel/core": "^7.10.2",
-    "@babel/preset-env": "^7.10.2",
-    "@babel/preset-react": "^7.10.1",
-    "eslint": "^7.1.0",
-    "jest": "^26.0.1",
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "eslint": "^7.4.0",
+    "jest": "^26.1.0",
     "liform-theme-dev": "https://github.com/ph-fritsche/liform-theme-dev",
     "react-test-renderer": "^16.13.1"
   },
   "dependencies": {
-    "@date-io/date-fns": "1.x",
-    "@material-ui/core": "^4.10.2",
+    "@date-io/date-fns": "2.8.0",
+    "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "@material-ui/pickers": "^4.0.0-alpha.8",
+    "@material-ui/pickers": "^4.0.0-alpha.9",
     "date-fns": "^2.14.0",
     "react-color": "^2.18.1",
-    "react-dropzone": "^11.0.1"
+    "react-dropzone": "^11.0.2"
   },
   "peerDependencies": {
-    "liform-react-final": "^0.0.1-3"
+    "liform-react-final": "^1"
   }
 }
