@@ -3,7 +3,7 @@ import { useMediaQuery, Popover, Modal, TextField, Dialog, makeStyles } from "@m
 import Field from '../Field/Field'
 import DateTimeInput from './DateTimeInput'
 import { useForkedRef } from '../util/ref'
-import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker, Day } from '@material-ui/pickers'
+import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker, PickersDay } from '@material-ui/pickers'
 import clsx from 'clsx'
 
 const guessPickerComponent = (views) => {
@@ -111,7 +111,7 @@ export const DateTimeModal = (props) => {
             const weekStart = dateUtil.startOfWeek(value.parsed)
             const weekEnd = dateUtil.endOfWeek(value.parsed)
             return (date, selectedDates, DayComponentProps) => (
-                <Day
+                <PickersDay
                     {...DayComponentProps}
                     className={clsx({
                         [style.highlight]: dateUtil.isWithinRange(date, [weekStart, weekEnd]),
