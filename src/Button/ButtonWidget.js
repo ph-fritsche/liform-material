@@ -1,12 +1,14 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { Button } from '@material-ui/core'
 
-export const ButtonWidget = ({name, schema, ...props}) => {
+export const ButtonWidget = props => {
+    const {
+        schema = true,
+    } = props
+
     return (
         <Button variant="contained" color="primary">
             {schema.title}
         </Button>
     )
 }
-
-export default ButtonWidget

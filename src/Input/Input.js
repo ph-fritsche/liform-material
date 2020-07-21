@@ -1,7 +1,23 @@
 import React, { useCallback, useMemo } from 'react'
 import { TextField, MenuItem, Chip, InputAdornment } from '@material-ui/core'
 
-export const renderInput = ({name, schema, meta, input: { onChange: onChangeProp, ...input}, ...props}) => {
+export const Input = props => {
+    const {
+        name,
+        schema = true,
+        meta,
+        input: {
+            onChange: onChangeProp,
+            ...input
+        },
+        placeholder,
+
+        SelectProps,
+        InputProps,
+
+        ...others
+    } = props
+
     const choice = useMemo(() => {
         const mapOptions = (values, labels) => {
             const o = {}
@@ -17,9 +33,9 @@ export const renderInput = ({name, schema, meta, input: { onChange: onChangeProp
             return {}
         }
 
-        const selectNative = (props.SelectProps && props.SelectProps.native !== undefined) ?
-            props.SelectProps.native :
-            Object.keys(options).length > 10
+        const selectNative = (SelectProps && SelectProps.native !== undefined)
+            ? SelectProps.native
+            : Object.keys(options).length > 10
 
         return {
             props: {
@@ -27,13 +43,13 @@ export const renderInput = ({name, schema, meta, input: { onChange: onChangeProp
                 native: selectNative,
                 renderValue: (schema.type === 'array' || undefined) && !selectNative && (selected => {
                     if (selected.length === 0) {
-                        return <em>{props.placeholder}</em>
+                        return <em>{placeholder}</em>
                     }
                     return selected.map((v,i) => 
                         <Chip key={v} label={options[v]}/>
                     )
                 }),
-                ...props.SelectProps,
+                ...SelectProps,
             },
             children: Object.keys(options).map(v =>
                 selectNative ?
@@ -41,7 +57,7 @@ export const renderInput = ({name, schema, meta, input: { onChange: onChangeProp
                     <MenuItem key={v} value={v}>{options[v]}</MenuItem>
             ),
         }
-    }, [schema, props.SelectProps])
+    }, [schema, SelectProps])
 
     const type = input.type || (schema.type === 'number' || schema.type === 'integer' ? 'number' : undefined)
     const step = schema.step || (schema.type === 'integer' ? 1 : 0.1)
@@ -100,10 +116,10 @@ export const renderInput = ({name, schema, meta, input: { onChange: onChangeProp
             onChange={onChange}
             value={input.value ?? ''}
 
-            {...props}
+            {...others}
             InputProps={{
                 endAdornment: schema.symbol && <InputAdornment position='end'>{schema.symbol}</InputAdornment>,
-                ...props.InputProps,
+                ...InputProps,
             }}
             SelectProps={choice.props}
         >
@@ -111,5 +127,3 @@ export const renderInput = ({name, schema, meta, input: { onChange: onChangeProp
         </TextField>
     )
 }
-
-export default renderInput

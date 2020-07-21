@@ -99,5 +99,3 @@ export const Field = React.forwardRef(function Field(props, ref) {
         }}
     />
 })
-
-export default Field

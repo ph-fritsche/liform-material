@@ -1,51 +1,23 @@
 import React from 'react'
-import { Picker } from '../Picker/Picker'
-import { ChromePicker } from 'react-color'
-import { ColorInput } from './ColorInput'
-import { InputAdornment, Typography } from '@material-ui/core'
-import { PaletteOutlined } from '@material-ui/icons'
+import { ColorPicker } from './ColorPicker'
 
-export const Color = React.forwardRef(function Color(props, ref) {
+export const Color = props => {
     const {
-        PickerComponent = ChromePicker,
-        PickerProps,
-
-        InputProps,
-
-        value,
-        onChange,
-
+        name,
+        schema = true,
+        meta,
+        input,
         ...others
     } = props
 
-    const onPickerChange = (colorObj) => {
-        onChange(colorObj.hex)
-    }
-
     return (
-        <Picker
-            ref={ref}
-
-            PickerComponent={PickerComponent}
-            PickerProps={{
-                color: value,
-                onChange: null,
-                onChangeComplete: onPickerChange,
-                disableAlpha: true,
-                ...PickerProps,
-            }}
-
-            InputProps={{
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><PaletteOutlined/></Typography></InputAdornment>,
-                ...InputProps
-            }}
-
-            value={value}
-            onChange={onChange}
-
-            inputComponent={ColorInput}
-
+        <ColorPicker
+            {...input}
+            label={schema.title}
+            helperText={meta.error || schema.description}
+            variant={'filled'}
+            error={!!meta.error}
             {...others}
         />
     )
-})
+}

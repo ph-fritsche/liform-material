@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { validateAspect, commitAspect } from './handleAspect'
-import AspectInput from '../AspectInput/AspectInput'
+import { AspectInput } from '../AspectInput/AspectInput'
 import { useBoundFunction } from '../util/func'
 
 export const DateIntervalInput = React.forwardRef(function DateIntervalInput(props, ref) {

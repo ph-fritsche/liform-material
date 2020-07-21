@@ -235,5 +235,3 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         </div>
     )
 })
-
-export default AspectInput

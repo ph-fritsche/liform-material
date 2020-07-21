@@ -1,20 +1,19 @@
 import React from 'react'
-
-import { ArrayWidget } from './array'
-import { ButtonWidget } from './button'
-import { renderChoice } from './choice'
-import { renderColor } from './color'
-import { renderDate, renderDateInterval } from './date'
-import { renderFile } from './file'
-import { renderHidden } from './hidden'
-import { renderInput } from './input'
-import { renderSwitch } from './switch'
-import { ObjectWidget } from './object'
-
 import { InputAdornment, Typography } from '@material-ui/core'
 import { VpnKeyOutlined, AlternateEmailOutlined, SearchOutlined, PhoneOutlined, EditOutlined, TextFieldsOutlined, SpeedOutlined } from '@material-ui/icons'
 import { Container } from './render'
 import { Form, FormErrors, Action } from './sections'
+import { ArrayWidget } from './Array/ArrayWidget'
+import { ButtonWidget } from './Button/ButtonWidget'
+import { Choice } from './Choice/Choice'
+import { Color } from './Color/Color'
+import { DateInterval } from './DateInterval/DateInterval'
+import { DateTime } from './DateTime/DateTime'
+import { FileDrop } from './FileDrop/FileDrop'
+import { Hidden } from './Hidden/Hidden'
+import { Input } from './Input/Input'
+import { ObjectWidget } from './Object/ObjectWidget'
+import { Switch } from './Choice/Switch'
 
 export default {
     render: {
@@ -30,100 +29,100 @@ export default {
     field: {
         array: ArrayWidget,
         boolean: {
-            render: renderSwitch,
+            render: Switch,
         },
         integer: {
-            render: renderInput,
+            render: Input,
             InputProps: {
                 endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><SpeedOutlined/></Typography></InputAdornment>,
             },
         },
         number: {
-            render: renderInput,
+            render: Input,
             InputProps: {
                 endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><SpeedOutlined/></Typography></InputAdornment>,
             },
         },
         object: ObjectWidget,
         string: {
-            render: renderInput,
+            render: Input,
         },
 
         button: ButtonWidget,
         choice: {
-            render: renderChoice,
+            render: Choice,
         },
         color: {
-            render: renderColor,
+            render: Color,
         },
         date: {
-            render: renderDate,
+            render: DateTime,
         },
         dateinterval: {
-            render: renderDateInterval,
+            render: DateInterval,
         },
         datetime: {
-            render: renderDate,
+            render: DateTime,
         },
         email: {
-            render: renderInput,
+            render: Input,
             type: 'email',
             InputProps: {
                 endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><AlternateEmailOutlined/></Typography></InputAdornment>,
             },
         },
         file: {
-            render: renderFile,
+            render: FileDrop,
         },
         hidden: {
-            render: renderHidden,
+            render: Hidden,
         },
         password: {
-            render: renderInput,
+            render: Input,
             type: 'password',
             InputProps: {
                 endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><VpnKeyOutlined/></Typography></InputAdornment>,
             },
         },
         search: {
-            render: renderInput,
+            render: Input,
             type: 'search',
             InputProps: {
                 endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><SearchOutlined/></Typography></InputAdornment>,
             },
         },
         tel: {
-            render: renderInput,
+            render: Input,
             type: 'tel',
             InputProps: {
                 endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><PhoneOutlined/></Typography></InputAdornment>,
             },
         },
         text: {
-            render: renderInput,
+            render: Input,
             InputProps: {
                 endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><EditOutlined/></Typography></InputAdornment>,
             },
         },
         textarea: {
-            render: renderInput,
+            render: Input,
             multiline: true,
             InputProps: {
                 endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><TextFieldsOutlined/></Typography></InputAdornment>,
             },
         },
         time: {
-            render: renderDate,
+            render: DateTime,
         },
         url: {
-            render: renderInput,
+            render: Input,
             type: 'url',
             InputProps: {
                 endAdornment: <InputAdornment position='end'><Typography color='textSecondary'>://</Typography></InputAdornment>,
             },
         },
         week: {
-            render: renderDate,
+            render: DateTime,
         },
     },
 }

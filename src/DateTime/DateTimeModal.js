@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
-import { useMediaQuery, Popover, Modal, TextField, Dialog, makeStyles } from "@material-ui/core"
-import Field from '../Field/Field'
-import DateTimeInput from './DateTimeInput'
-import { useForkedRef } from '../util/ref'
-import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker, PickersDay } from '@material-ui/pickers'
 import clsx from 'clsx'
+import { useMediaQuery, Popover, Modal, Dialog, makeStyles } from "@material-ui/core"
+import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker, PickersDay } from '@material-ui/pickers'
+import { Field } from '../Field/Field'
+import { useForkedRef } from '../util/ref'
+import { DateTimeInput } from './DateTimeInput'
 
 const guessPickerComponent = (views) => {
     const hasDate = views.indexOf('year') >= 0 || views.indexOf('month') >= 0 || views.indexOf('date') >= 0

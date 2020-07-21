@@ -1,14 +1,20 @@
 import React from 'react'
-import { FormControl, FormLabel, FormControlLabel, Radio, RadioGroup, FormHelperText } from '@material-ui/core'
+import { FormControl, FormLabel, FormControlLabel, Radio, RadioGroup as MaterialRadioGroup, FormHelperText } from '@material-ui/core'
 
-export const renderRadioGroup = ({name, schema, meta, input, ...props}) => {
+export const RadioGroup = props => {
+    const {
+        schema = true,
+        meta,
+        input,
+    } = props
+
     return (
         <FormControl
             component='fieldset'
             error={!!meta.error}
         >
             <FormLabel component='legend'>{schema.title}</FormLabel>
-            <RadioGroup
+            <MaterialRadioGroup
                 value={input.value}
                 onChange={(e) => input.onChange(e.target.value)}
             >
@@ -25,10 +31,8 @@ export const renderRadioGroup = ({name, schema, meta, input, ...props}) => {
                         }
                     />
                 )}
-            </RadioGroup>
+            </MaterialRadioGroup>
             <FormHelperText>{meta.error || schema.description}</FormHelperText>
         </FormControl>
     )
 }
-
-export default renderRadioGroup

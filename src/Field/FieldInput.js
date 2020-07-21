@@ -31,5 +31,3 @@ export const FieldInput = function FieldInput(props) {
         onFocus={onFocus}
     />
 }
-
-export default FieldInput

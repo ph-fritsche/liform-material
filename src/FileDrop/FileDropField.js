@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { TextField, InputAdornment, Typography } from '@material-ui/core';
 import { makeStyles, fade } from '@material-ui/core'
 import clsx from 'clsx'
-import { DropInput } from './DropInput'
+import { FileDropInput } from './FileDropInput'
 import PublishOutlinedIcon from '@material-ui/icons/PublishOutlined';
 
 const useStyle = makeStyles(theme => ({
@@ -30,7 +30,7 @@ const useStyle = makeStyles(theme => ({
     }
 }))
 
-export const Drop = React.forwardRef(function Drop(props, ref) {
+export const FileDropField = React.forwardRef(function FileDropField(props, ref) {
     const {
         // Will get the ref to the InputBase element
         inputBaseRef,
@@ -68,7 +68,7 @@ export const Drop = React.forwardRef(function Drop(props, ref) {
                     props.InputProps && props.InputProps.className,
                     dropActive && style['dropActive.' + variant],
                 ),
-                inputComponent: DropInput,
+                inputComponent: FileDropInput,
                 ref: inputBaseRef,
                 inputRef: inputRef,
             }}
@@ -89,5 +89,3 @@ export const Drop = React.forwardRef(function Drop(props, ref) {
         />
     )
 })
-
-export default Drop

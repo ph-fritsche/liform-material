@@ -1,7 +1,13 @@
 import React from 'react'
 import { FormGroup, FormControl, FormLabel, FormControlLabel, Checkbox, FormHelperText } from '@material-ui/core'
 
-export const renderCheckboxGroup = ({name, schema, meta, input, ...props}) => {
+export const CheckboxGroup = props => {
+    const {
+        schema = true,
+        meta,
+        input,
+    } = props
+
     return (
         <FormControl
             component='fieldset'
@@ -36,5 +42,3 @@ export const renderCheckboxGroup = ({name, schema, meta, input, ...props}) => {
         </FormControl>
     )
 }
-
-export default renderCheckboxGroup

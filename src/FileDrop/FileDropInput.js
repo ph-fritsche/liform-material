@@ -99,7 +99,7 @@ const focusValueChild = (baseElement, value, valueFocus) => {
     }
 }
 
-export const DropInput = React.forwardRef(function DropInput(props, ref) {
+export const FileDropInput = React.forwardRef(function FileDropInput(props, ref) {
     const {
         accept,
         avatar,
@@ -113,7 +113,6 @@ export const DropInput = React.forwardRef(function DropInput(props, ref) {
         placeholder,
         setDropActive,
         value,
-        ...others
     } = props
 
     const baseElement = useRef()
@@ -241,5 +240,3 @@ export const DropInput = React.forwardRef(function DropInput(props, ref) {
         </div>
     )
 })
-
-export default DropInput

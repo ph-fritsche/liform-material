@@ -1,7 +1,8 @@
 import React from 'react'
-import { DateIntervalField } from './DateIntervalField'
 
-export const DateInterval = props => {
+import { FileDropField } from './FileDropField';
+
+export const FileDrop = props => {
     const {
         name,
         schema,
@@ -11,7 +12,7 @@ export const DateInterval = props => {
     } = props
 
     return (
-        <DateIntervalField
+        <FileDropField
             {...input}
             label={schema.title}
             helperText={meta.error || schema.description}

@@ -1,7 +1,13 @@
 import React from 'react'
-import { FormControl, FormControlLabel, FormHelperText, Switch } from '@material-ui/core'
+import { FormControl, FormControlLabel, FormHelperText, Switch as MaterialSwitch } from '@material-ui/core'
 
-export const renderSwitch = ({name, schema, meta, input, ...props}) => {
+export const Switch = props => {
+    const {
+        schema = true,
+        meta,
+        input,
+    } = props
+
     return (
         <FormControl
             component='div'
@@ -9,7 +15,7 @@ export const renderSwitch = ({name, schema, meta, input, ...props}) => {
         >
             <FormControlLabel
                 control={
-                    <Switch
+                    <MaterialSwitch
                         onChange={e => input.onChange(e.target.checked)}
                         checked={!!input.value}
                         name={input.name}
@@ -21,5 +27,3 @@ export const renderSwitch = ({name, schema, meta, input, ...props}) => {
         </FormControl>
     )
 }
-
-export default renderSwitch
