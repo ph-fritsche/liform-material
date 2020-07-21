@@ -1,6 +1,6 @@
 import React from 'react'
 import { FieldArray } from 'react-final-form-arrays'
-import Lifield, { liformizeName, finalizeName } from 'liform-react-final/dist/field'
+import { Lifield, liformizeName, finalizeName } from 'liform-react-final'
 import { FormGroup, FormControl, FormLabel,FormHelperText, IconButton } from '@material-ui/core'
 import { RemoveCircleOutline, AddCircleOutline } from '@material-ui/icons'
 

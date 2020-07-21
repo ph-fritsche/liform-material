@@ -13,9 +13,20 @@ import { ObjectWidget } from './object'
 
 import { InputAdornment, Typography } from '@material-ui/core'
 import { VpnKeyOutlined, AlternateEmailOutlined, SearchOutlined, PhoneOutlined, EditOutlined, TextFieldsOutlined, SpeedOutlined } from '@material-ui/icons'
+import { Container } from './render'
+import { Form, FormErrors, Action } from './sections'
 
 export default {
-    errors: () => <div>[Errors]</div>,
+    render: {
+        container: Container,
+    },
+    sections: {
+        header: null,
+        form: Form,
+        footer: null,
+        errors: FormErrors,
+        action: Action,
+    },
     field: {
         array: ArrayWidget,
         boolean: {

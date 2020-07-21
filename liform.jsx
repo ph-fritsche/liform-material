@@ -5,7 +5,7 @@ import Liform from 'liform-react-final'
 import props from './props.json'
 import MaterialTheme from './src'
 
-Liform.defaultTheme = MaterialTheme
+Liform.theme = MaterialTheme
 
 ReactDOM.render(
   <Liform {...props} name='form'>

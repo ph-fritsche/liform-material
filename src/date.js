@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import { DateTime } from './DateTime/DateTime'
-import { getFieldError } from './error'
 import { DateInterval } from './DateInterval/DateInterval'
 
 const valueFormatFromSchema = (schema) => {
@@ -30,42 +29,29 @@ const valueFormatFromSchema = (schema) => {
     }
 }
 
-export const renderDate = ({liform, name, schema, meta, input, ...props}) => {
-    const error = getFieldError(liform, name, meta)
-
-    const onChange = useCallback((value) => {
-        liform.form.change(name, value)
-    }, [liform, name])
-
+export const renderDate = ({name, schema, meta, input, ...props}) => {
     return (
         <DateTime
             {...input}
             label={schema.title}
-            helperText={error || schema.description}
+            helperText={meta.error || schema.description}
             variant={'filled'}
-            error={!!error}
-            onChange={onChange}
+            error={!!meta.error}
+            onChange={input.onChange}
             {...props}
             valueFormat={props.valueFormat || valueFormatFromSchema(schema)}
         />
     )
 }
 
-export const renderDateInterval = ({liform, name, schema, meta, input, ...props}) => {
-    const error = getFieldError(liform, name, meta)
-
-    const onChange = useCallback((value) => {
-        liform.form.change(name, value)
-    }, [liform, name])
-
+export const renderDateInterval = ({name, schema, meta, input, ...props}) => {
     return (
         <DateInterval
             {...input}
             label={schema.title}
-            helperText={error || schema.description}
+            helperText={meta.error || schema.description}
             variant={'filled'}
-            error={!!error}
-            onChange={onChange}
+            error={!!meta.error}
             {...props}
         />
     )

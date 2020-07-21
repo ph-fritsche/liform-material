@@ -1,11 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { TextField, MenuItem, Chip, InputAdornment } from '@material-ui/core'
 
-import { getFieldError } from './error'
-
-export const renderInput = ({liform, name, schema, meta, input: { onChange: onChangeProp, ...input}, ...props}) => {
-    const error = getFieldError(liform, name, meta)
-
+export const renderInput = ({name, schema, meta, input: { onChange: onChangeProp, ...input}, ...props}) => {
     const choice = useMemo(() => {
         const mapOptions = (values, labels) => {
             const o = {}
@@ -92,10 +88,10 @@ export const renderInput = ({liform, name, schema, meta, input: { onChange: onCh
         <TextField
             {...input}
             label={schema.title}
-            helperText={error || schema.description}
+            helperText={meta.error || schema.description}
             variant={'filled'}
             rowsMax={10}
-            error={!!error}
+            error={!!meta.error}
             select={!!choice.children}
             step={step}
             type={type}

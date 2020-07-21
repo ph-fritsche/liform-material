@@ -1,27 +1,23 @@
 import React from 'react'
 import { FormControl, FormControlLabel, FormHelperText, Switch } from '@material-ui/core'
 
-import { getFieldError } from './error'
-
-export const renderSwitch = ({liform, name, schema, meta, input, ...props}) => {
-    const error = getFieldError(liform, name, meta)
-
+export const renderSwitch = ({name, schema, meta, input, ...props}) => {
     return (
         <FormControl
             component='div'
-            error={!!error}
+            error={!!meta.error}
         >
             <FormControlLabel
                 control={
                     <Switch
-                        onChange={e => {liform.form.change(name, e.target.checked)}}
+                        onChange={e => input.onChange(e.target.checked)}
                         checked={!!input.value}
                         name={input.name}
                     />
                 }
                 label={schema.title}
             />
-            <FormHelperText>{error || schema.description}</FormHelperText>
+            <FormHelperText>{meta.error || schema.description}</FormHelperText>
         </FormControl>
     )
 }

@@ -1,8 +1,7 @@
 import React from 'react'
 import { Field } from 'react-final-form'
 import { FormLabel, FormHelperText, Grid } from '@material-ui/core'
-import Lifield, { finalizeName } from 'liform-react-final/dist/field'
-import { mapProperties } from 'liform-react-final/dist/properties'
+import { Lifield, finalizeName, mapProperties } from 'liform-react-final'
 
 import { getFieldError } from './error'
 

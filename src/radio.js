@@ -1,19 +1,16 @@
 import React from 'react'
 import { FormControl, FormLabel, FormControlLabel, Radio, RadioGroup, FormHelperText } from '@material-ui/core'
 
-import { getFieldError } from './error'
-
-export const renderRadioGroup = ({liform, name, schema, meta, input, ...props}) => {
-    const error = getFieldError(liform, name, meta)
+export const renderRadioGroup = ({name, schema, meta, input, ...props}) => {
     return (
         <FormControl
             component='fieldset'
-            error={!!error}
+            error={!!meta.error}
         >
             <FormLabel component='legend'>{schema.title}</FormLabel>
             <RadioGroup
                 value={input.value}
-                onChange={(e) => liform.form.change(name, e.target.value)}
+                onChange={(e) => input.onChange(e.target.value)}
             >
                 {(schema.enum || schema.items && schema.items.enum).map(elValue =>
                     <FormControlLabel
@@ -29,7 +26,7 @@ export const renderRadioGroup = ({liform, name, schema, meta, input, ...props}) 
                     />
                 )}
             </RadioGroup>
-            <FormHelperText>{error || schema.description}</FormHelperText>
+            <FormHelperText>{meta.error || schema.description}</FormHelperText>
         </FormControl>
     )
 }

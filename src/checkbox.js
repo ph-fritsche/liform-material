@@ -1,14 +1,11 @@
 import React from 'react'
 import { FormGroup, FormControl, FormLabel, FormControlLabel, Checkbox, FormHelperText } from '@material-ui/core'
 
-import { getFieldError } from './error'
-
-export const renderCheckboxGroup = ({liform, name, schema, meta, input, ...props}) => {
-    const error = getFieldError(liform, name, meta)
+export const renderCheckboxGroup = ({name, schema, meta, input, ...props}) => {
     return (
         <FormControl
             component='fieldset'
-            error={!!error}
+            error={!!meta.error}
         >
             <FormLabel component='legend'>{schema.title}</FormLabel>
             <FormGroup>
@@ -20,8 +17,7 @@ export const renderCheckboxGroup = ({liform, name, schema, meta, input, ...props
                                 name={input.name + '[]'}
                                 value={elValue}
                                 checked={input.value.indexOf(elValue) >= 0}
-                                onChange={(e) => { liform.form.change(
-                                    name,
+                                onChange={(e) => { input.onChange(
                                     e.target.checked ?
                                         input.value.concat([elValue]) :
                                         input.value.filter(v => v !== elValue)
@@ -36,7 +32,7 @@ export const renderCheckboxGroup = ({liform, name, schema, meta, input, ...props
                     />
                 )}
             </FormGroup>
-            <FormHelperText>{error || schema.description}</FormHelperText>
+            <FormHelperText>{meta.error || schema.description}</FormHelperText>
         </FormControl>
     )
 }
