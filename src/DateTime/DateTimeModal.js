@@ -54,7 +54,7 @@ export const DateTimeModal = (props) => {
 
     const onDateChange = (value, variant, isFinished) => {
         onChange(value)
-        isFinished && onClose()
+        isFinished === 'finish' && onClose()
     }
 
     const ModalComponent = isDesktop ? Popover : Dialog
