@@ -1,5 +1,5 @@
 import React from 'react'
-import { ColorPicker } from './ColorPicker'
+import { ColorField } from './ColorField'
 
 export const Color = props => {
     const {
@@ -11,11 +11,10 @@ export const Color = props => {
     } = props
 
     return (
-        <ColorPicker
+        <ColorField
             {...input}
             label={schema.title}
             helperText={meta.error || schema.description}
-            variant={'filled'}
             error={!!meta.error}
             {...others}
         />

@@ -5,7 +5,7 @@ import { ColorInput } from './ColorInput'
 import { InputAdornment, Typography } from '@material-ui/core'
 import { PaletteOutlined } from '@material-ui/icons'
 
-export const ColorPicker = React.forwardRef(function Color(props, ref) {
+export const ColorField = React.forwardRef(function ColorField(props, ref) {
     const {
         PickerComponent = ChromePicker,
         PickerProps,

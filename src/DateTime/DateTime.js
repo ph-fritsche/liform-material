@@ -1,5 +1,5 @@
 import React from 'react'
-import { DateTimePicker } from './DateTimePicker'
+import { DateTimeField } from './DateTimeField'
 
 const valueFormatFromSchema = (schema) => {
     if (schema.dateFormat) {
@@ -41,7 +41,7 @@ export const DateTime = props => {
     } = props
 
     return (
-        <DateTimePicker
+        <DateTimeField
             {...input}
             label={schema.title}
             helperText={meta.error || schema.description}

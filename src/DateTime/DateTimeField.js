@@ -3,8 +3,6 @@ import { InputAdornment, Typography } from '@material-ui/core'
 import { CalendarTodayOutlined, ScheduleOutlined } from '@material-ui/icons';
 import { MuiPickersAdapterContext } from '@material-ui/pickers/LocalizationProvider'
 import DateFns from '@material-ui/pickers/adapter/date-fns'
-import { Field } from '../Field/Field'
-import { useForkedRef } from '../util/ref'
 import { compileValue } from './compileValue'
 import { DateTimeInput } from './DateTimeInput'
 import { DateTimeModal } from './DateTimeModal'
@@ -21,7 +19,7 @@ const useDateAdapter = () => {
     return pickersContext || new DateFns()
 }
 
-export const DateTimePicker = React.forwardRef(function DateTimePicker(props, ref) {
+export const DateTimeField = React.forwardRef(function DateTimeField(props, ref) {
     const {
         InputProps = {},
 
