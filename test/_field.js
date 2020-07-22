@@ -29,7 +29,7 @@ export function renderLifield (props) {
 function expectedFormValues(value, rootName) {
     const expected = {}
 
-    function traverseValue(value, path = []) {
+    function traverseValue(value, path = ['_']) {
         if (typeof(value) === 'object') {
             if (Array.isArray(value)) {
                 value.forEach((v,i) => traverseValue(v, [].concat(path, [i])))
