@@ -5,7 +5,7 @@ import { MuiPickersAdapterContext } from '@material-ui/pickers/LocalizationProvi
 import DateFns from '@material-ui/pickers/adapter/date-fns'
 import { compileValue } from './compileValue'
 import { DateTimeInput } from './DateTimeInput'
-import { DateTimeModal } from './DateTimeModal'
+import { DateTimePicker } from './DateTimePicker'
 import { Picker } from '../Picker/Picker';
 
 const adornmentIcon = {
@@ -30,7 +30,7 @@ export const DateTimeField = React.forwardRef(function DateTimeField(props, ref)
         valueFormat,
         onChange: onChangeProp,
 
-        PickerComponent = DateTimeModal,
+        PickerComponent = DateTimePicker,
         PickerProps = {},
 
         ...others

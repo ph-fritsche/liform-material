@@ -31,7 +31,7 @@ const useStyle = makeStyles(theme => ({
     },
 }))
 
-export const DateTimeModal = (props) => {
+export const DateTimePicker = (props) => {
     const {
         dateUtil,
         value,
