@@ -16,7 +16,6 @@ export const FileDrop = props => {
             {...input}
             label={schema.title}
             helperText={meta.error || schema.description}
-            variant={'filled'}
             error={!!meta.error}
             {...others}
         />
