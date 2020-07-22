@@ -1,7 +1,13 @@
 import React from 'react'
 import { FormControl, FormLabel, FormHelperText } from '@material-ui/core'
 
-export const Hidden = ({name, schema, meta, input, ...props}) => {
+export const Hidden = props => {
+    const {
+        schema = true,
+        meta,
+        input,
+    } = props
+
     if (!meta.error) {
         return <input {...input} type='hidden'/>
     }
