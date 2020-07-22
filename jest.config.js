@@ -11,6 +11,9 @@ module.exports = {
     "testPathIgnorePatterns": [
         "/_.*$",
     ],
-    "transformIgnorePatterns": [],
-    "setupFiles": [],
+    "transformIgnorePatterns": [
+    ],
+    "setupFilesAfterEnv": [
+        "<rootDir>/test/_setup.js",
+    ],
 }
