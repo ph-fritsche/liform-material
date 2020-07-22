@@ -8,6 +8,7 @@ import { useForkedRef } from '../util/ref'
 import { compileValue } from './compileValue'
 import { DateTimeInput } from './DateTimeInput'
 import { DateTimeModal } from './DateTimeModal'
+import { Picker } from '../Picker/Picker';
 
 const adornmentIcon = {
     date: CalendarTodayOutlined,
@@ -31,16 +32,11 @@ export const DateTimePicker = React.forwardRef(function DateTimePicker(props, re
         valueFormat,
         onChange: onChangeProp,
 
-        ModalComponent = DateTimeModal,
-
-        PickerComponent,
+        PickerComponent = DateTimeModal,
         PickerProps = {},
 
         ...others
     } = props
-
-    const rootRef = useRef()
-    const forkedRootRef = useForkedRef(ref, rootRef)
 
     const dateUtil = useDateAdapter()
 
@@ -49,7 +45,8 @@ export const DateTimePicker = React.forwardRef(function DateTimePicker(props, re
     const onChange = useCallback(newValue => {
         onChangeProp(dateUtil.formatByString(newValue, value.format))
     }, [dateUtil, value.format])
-    const onPaste = event => {
+
+    const onPaste = useCallback(event => {
         event.preventDefault()
         let newValue = event.clipboardData.getData('Text')
         if (!newValue) {
@@ -59,21 +56,16 @@ export const DateTimePicker = React.forwardRef(function DateTimePicker(props, re
         if (typeof(newValue) === 'object' && String(newValue) !== 'Invalid Date') {
             onChange(newValue)
         }
-    }
-
-    const [isPickerOpen, setPickerOpen] = useState(false)
+    }, [dateUtil, onChange])
 
     const AdornmentIcon = adornmentIcon['date']
 
     return (<>
-        <Field
-            ref={forkedRootRef}
+        <Picker
+            ref={ref}
             {...others}
 
-            onClick={() => !isPickerOpen && setPickerOpen(true)}
             onPaste={onPaste}
-
-            isFocusLocked={isPickerOpen}
 
             InputProps={{
                 endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><AdornmentIcon/></Typography></InputAdornment>,
@@ -88,17 +80,11 @@ export const DateTimePicker = React.forwardRef(function DateTimePicker(props, re
                 value,
                 onChange,
             }}
-        />
-
-        <ModalComponent
-            anchorEl={rootRef.current}
-            open={isPickerOpen}
-            onClose={() => isPickerOpen && setPickerOpen(false)}
 
             PickerComponent={PickerComponent}
-            PickerProps={PickerProps}
+            PickerProps={{
+                ...PickerProps,
 
-            {...{
                 dateUtil,
                 value,
                 onChange,

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import clsx from 'clsx'
-import { useMediaQuery, Popover, Modal, Dialog, makeStyles } from "@material-ui/core"
+import { useMediaQuery, makeStyles } from "@material-ui/core"
 import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker, PickersDay } from '@material-ui/pickers'
 import { Field } from '../Field/Field'
 import { useForkedRef } from '../util/ref'
@@ -39,10 +39,7 @@ export const DateTimeModal = (props) => {
 
         mediaQueryDesktop = '@media (pointer: fine)',
 
-        ModalProps,
-        anchorEl,
         onClose = () => {},
-        open = false,
 
         PickerComponent = guessPickerComponent(value.views),
         PickerProps,
@@ -55,28 +52,6 @@ export const DateTimeModal = (props) => {
     const onDateChange = (value, variant, isFinished) => {
         onChange(value)
         isFinished === 'finish' && onClose()
-    }
-
-    const ModalComponent = isDesktop ? Popover : Dialog
-
-    const sharedProps = {
-        open,
-        onClose,
-    }
-
-    const popoverProps = {
-        anchorEl,
-        anchorOrigin: {
-          vertical: 'bottom',
-          horizontal: 'center',
-        },
-        transformOrigin: {
-          vertical: 'top',
-          horizontal: 'center',
-        },
-    }
-
-    const modalProps = {
     }
 
     const renderMobileKeyboardInput = useCallback(props => {
@@ -123,29 +98,20 @@ export const DateTimeModal = (props) => {
         }
     }, [dateUtil, value])
 
-    return open
-        ? (
-            <ModalComponent
-                {...ModalProps}
-                {...sharedProps}
-                {...(ModalComponent === Popover && popoverProps)}
-                {...(ModalComponent === Modal && modalProps)}
-            >
-                <PickerComponent
-                    displayStaticWrapperAs={ isDesktop ? 'desktop' : 'mobile' }
-                    disableMaskedInput={true}
-                    dateAdapter={dateUtil}
-                    renderInput={renderMobileKeyboardInput}
-                    renderDay={renderDay}
-                    showDaysOutsideCurrentMonth={!!renderDay}
-                    views={value.views}
+    return (
+        <PickerComponent
+            displayStaticWrapperAs={ isDesktop ? 'desktop' : 'mobile' }
+            disableMaskedInput={true}
+            dateAdapter={dateUtil}
+            renderInput={renderMobileKeyboardInput}
+            renderDay={renderDay}
+            showDaysOutsideCurrentMonth={!!renderDay}
+            views={value.views}
 
-                    {...PickerProps}
+            {...PickerProps}
 
-                    value={value.parsed}
-                    onDateChange={onDateChange}
-                />
-            </ModalComponent>
-        )
-        : null
+            value={value.parsed}
+            onDateChange={onDateChange}
+        />
+    )
 }

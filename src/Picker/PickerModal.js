@@ -10,7 +10,7 @@ export const PickerModal = (props) => {
         open = false,
 
         PickerComponent,
-        PickerProps,
+        PickerProps = {},
 
         ...others
     } = props
@@ -46,7 +46,7 @@ export const PickerModal = (props) => {
             {...(ModalComponent === Modal && modalProps)}
             {...others}
         >
-            <PickerComponent {...PickerProps}/>
+            <PickerComponent onClose={onClose} {...PickerProps}/>
         </ModalComponent>
     )
 }
