@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 
 export const updateRef = (ref, node) => {
     if (typeof(ref) === 'function') {
@@ -18,4 +18,10 @@ export const forkRef = (...ref) => {
 
 export const useForkedRef = (...ref) => {
     return useMemo(() => forkRef(...ref), ref)
+}
+
+export const useId = (value) => {
+    const random = useRef(Math.random().toString(36).substring(2,10)).current
+
+    return value !== undefined ? value : random
 }

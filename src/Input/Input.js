@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { TextField, MenuItem, Chip, InputAdornment } from '@material-ui/core'
+import { useId } from '../util/ref'
 
 export const Input = props => {
     const {
@@ -17,6 +18,8 @@ export const Input = props => {
 
         ...others
     } = props
+
+    const id = useId()
 
     const choice = useMemo(() => {
         const mapOptions = (values, labels) => {
@@ -103,6 +106,7 @@ export const Input = props => {
     return (
         <TextField
             {...input}
+            id={id}
             label={schema.title}
             helperText={meta.error || schema.description}
             variant={'filled'}

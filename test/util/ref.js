@@ -1,6 +1,6 @@
 import React from 'react'
 import Renderer from 'react-test-renderer'
-import { updateRef, forkRef, useForkedRef } from '../../src/util/ref'
+import { updateRef, forkRef, useForkedRef, useId } from '../../src/util/ref'
 
 describe('Fork refs', () => {
 
@@ -72,5 +72,31 @@ describe('Fork refs', () => {
 
         expect(refA.current).toEqual('baz')
         expect(b).toEqual('baz')
+    })
+})
+
+describe("Id ref", () => {
+    const TestComponent = ({id}) => {
+        const idRef = useId(id)
+
+        return idRef
+    }
+
+    it('Use id hook with value', () => {
+        const component = Renderer.create(<TestComponent id='foo'/>)
+
+        expect(component.toJSON()).toBe('foo')
+    })
+
+    it('Use if hook without value', () => {
+        const component = Renderer.create(<TestComponent/>)
+
+        const id = component.toJSON()
+        expect(typeof(id)).toBe('string')
+        expect(id).toHaveLength(8)
+
+        component.update(<TestComponent/>)
+
+        expect(component.toJSON()).toBe(id)
     })
 })
