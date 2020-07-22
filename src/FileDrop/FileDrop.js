@@ -4,7 +4,6 @@ import { FileDropField } from './FileDropField';
 
 export const FileDrop = props => {
     const {
-        name,
         schema,
         meta,
         input,

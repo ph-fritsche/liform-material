@@ -1,18 +1,18 @@
 import React from 'react'
 import clsx from 'clsx'
-import { makeStyles, fade } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 
-const useStyle = makeStyles(theme => ({
+const useStyle = makeStyles(() => ({
     color: {
         minHeight: '1.1876em',
         minWidth: '10em',
         width: '100%',
     },
     noColor: {
-        backgroundImage: "\
+        backgroundImage: '\
             linear-gradient(to right, hsla(0, 0%, 80%, 0.75) 50%, hsla(0, 0%, 80%, 0.75) 50%),\
             linear-gradient(to right, black 50%, white 50%),\
-            linear-gradient(to bottom, black 50%, white 50%);",
+            linear-gradient(to bottom, black 50%, white 50%);',
         backgroundBlendMode: 'normal, difference, normal',
         backgroundSize: '1.1876em 1.1876em',
         opacity: .5,
@@ -24,8 +24,6 @@ export const ColorInput = React.forwardRef(function ColorInput(props, ref) {
         className,
         name,
         value,
-
-        ...others
     } = props
 
     const style = useStyle(props)
@@ -39,13 +37,13 @@ export const ColorInput = React.forwardRef(function ColorInput(props, ref) {
                     style.color,
                     !value && style.noColor,
                 )}
-               style={{backgroundColor: value }}
+                style={{backgroundColor: value }}
             >
             </div>        
         </div>
         <input
             ref={ref}
-            type='color'
+            type="color"
             name={name}
             value={value}
             onChange={() => {}}

@@ -23,7 +23,6 @@ const resetInput = aspects => {
 export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     const {
         className,
-        classes,
 
         onBlur: onBlurProp,
         onFocus: onFocusProp,
@@ -40,8 +39,6 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         aspects,
         display,
         placeholder,
-
-        ...others
     } = props
 
     const style = useStyle()
@@ -77,7 +74,9 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         } else if (!isInputFocused && !shallowEqual(resetInput(aspects), activeAspect)) {
             updateAspect({type: 'reset'})
         }
-    }, [aspects])
+    // should not run on changes of activeAspect
+    /* eslint-disable react-hooks/exhaustive-deps */
+    }, [isInputFocused, aspects])
 
     const commitAspect = committedValue => {
         const newValue = validateProp(committedValue, activeAspect.index)
@@ -182,34 +181,38 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     const renderedValue = isInputFocused
         ? aspects.map((a,i) => (
             a.type === 'value'
-            ? (
-                <span
-                    key={i}
-                    className={clsx(
-                        style.value,
-                        activeAspect.index === i && style.valueFocus,
-                    )}
-                    onMouseDown={event => {
-                        updateAspect({type: 'setFocus', index: i})
-                        event.preventDefault()
-                    }}
-                    onClick={event => event.stopPropagation()}
-                >
-                    { i === activeAspect.index ? activeAspect.value : a.value }
-                </span>
-            )
-            : (
-                <span
-                    key={i}
-                    className={style.formatter}
-                >
-                    {a.text ?? a.placeholder}
-                </span>
-            )
+                ? (
+                    // key event handled by parent
+                    /* eslint-disable jsx-a11y/click-events-have-key-events */
+                    <span
+                        key={i}
+                        role="textbox"
+                        tabIndex={-1}
+                        className={clsx(
+                            style.value,
+                            activeAspect.index === i && style.valueFocus,
+                        )}
+                        onMouseDown={event => {
+                            updateAspect({type: 'setFocus', index: i})
+                            event.preventDefault()
+                        }}
+                        onClick={event => event.stopPropagation()}
+                    >
+                        { i === activeAspect.index ? activeAspect.value : a.value }
+                    </span>
+                )
+                : (
+                    <span
+                        key={i}
+                        className={style.formatter}
+                    >
+                        {a.text ?? a.placeholder}
+                    </span>
+                )
         ))
         : display
             ? <span className={style.value}>{display}</span>
-            : <span className='placeholder'>{placeholder}</span>
+            : <span className="placeholder">{placeholder}</span>
 
     return (
         <div
@@ -224,7 +227,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             { renderedValue }
             <input
                 ref={forkedInputRef}
-                type={ Boolean(aspects[activeAspect.index].isNumeric ?? true) ? 'number' : 'text' }
+                type={ aspects[activeAspect.index].isNumeric ?? true ? 'number' : 'text' }
                 onBlur={onBlur}
                 onFocus={onFocus}
                 onKeyDown={onKeyDown}

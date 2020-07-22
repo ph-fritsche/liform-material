@@ -1,6 +1,6 @@
 export function isEscaped (haystack, position, escapeChar = '\\') {
     let i
-    for (i = position - 1; i > 0 && haystack.charAt(i) === escapeChar; i--) {}
+    for (i = position - 1; i > 0 && haystack.charAt(i) === escapeChar; i--) { true }
     return (position - i - 1) % 2 > 0
 }
 

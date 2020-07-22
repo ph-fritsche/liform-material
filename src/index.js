@@ -34,13 +34,13 @@ export default {
         integer: {
             render: Input,
             InputProps: {
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><SpeedOutlined/></Typography></InputAdornment>,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><SpeedOutlined/></Typography></InputAdornment>,
             },
         },
         number: {
             render: Input,
             InputProps: {
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><SpeedOutlined/></Typography></InputAdornment>,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><SpeedOutlined/></Typography></InputAdornment>,
             },
         },
         object: ObjectWidget,
@@ -68,7 +68,7 @@ export default {
             render: Input,
             type: 'email',
             InputProps: {
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><AlternateEmailOutlined/></Typography></InputAdornment>,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><AlternateEmailOutlined/></Typography></InputAdornment>,
             },
         },
         file: {
@@ -81,34 +81,34 @@ export default {
             render: Input,
             type: 'password',
             InputProps: {
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><VpnKeyOutlined/></Typography></InputAdornment>,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><VpnKeyOutlined/></Typography></InputAdornment>,
             },
         },
         search: {
             render: Input,
             type: 'search',
             InputProps: {
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><SearchOutlined/></Typography></InputAdornment>,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><SearchOutlined/></Typography></InputAdornment>,
             },
         },
         tel: {
             render: Input,
             type: 'tel',
             InputProps: {
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><PhoneOutlined/></Typography></InputAdornment>,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><PhoneOutlined/></Typography></InputAdornment>,
             },
         },
         text: {
             render: Input,
             InputProps: {
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><EditOutlined/></Typography></InputAdornment>,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><EditOutlined/></Typography></InputAdornment>,
             },
         },
         textarea: {
             render: Input,
             multiline: true,
             InputProps: {
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><TextFieldsOutlined/></Typography></InputAdornment>,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><TextFieldsOutlined/></Typography></InputAdornment>,
             },
         },
         time: {
@@ -118,7 +118,7 @@ export default {
             render: Input,
             type: 'url',
             InputProps: {
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'>://</Typography></InputAdornment>,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary">://</Typography></InputAdornment>,
             },
         },
         week: {

@@ -9,16 +9,16 @@ export const Hidden = props => {
     } = props
 
     if (!meta.error) {
-        return <input {...input} type='hidden'/>
+        return <input {...input} type="hidden"/>
     }
 
     return (
         <FormControl
-            component='fieldset'
+            component="fieldset"
             error={!!meta.error}
         >
-            <FormLabel component='legend'>{schema.title}</FormLabel>
-            <input {...input} type='hidden'/>
+            <FormLabel component="legend">{schema.title}</FormLabel>
+            <input {...input} type="hidden"/>
             <FormHelperText>{meta.error || schema.description}</FormHelperText>
         </FormControl>
     )

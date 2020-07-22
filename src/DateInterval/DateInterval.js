@@ -3,7 +3,6 @@ import { DateIntervalField } from './DateIntervalField'
 
 export const DateInterval = props => {
     const {
-        name,
         schema,
         meta,
         input,

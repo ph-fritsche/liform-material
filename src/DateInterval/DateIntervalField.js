@@ -34,7 +34,7 @@ export const DateIntervalField = React.forwardRef(function DateIntervalField(pro
             onClick={() => inputRef.current.focus()}
 
             InputProps={{
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><CalendarTodayOutlined/></Typography></InputAdornment>,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><CalendarTodayOutlined/></Typography></InputAdornment>,
                 ...InputProps,
             }}
 

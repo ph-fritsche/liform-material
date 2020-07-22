@@ -1,5 +1,5 @@
 import React from 'react'
-import { useMediaQuery, Popover, Modal, Dialog } from "@material-ui/core"
+import { useMediaQuery, Popover, Modal, Dialog } from '@material-ui/core'
 
 export const PickerModal = (props) => {
     const {
@@ -27,12 +27,12 @@ export const PickerModal = (props) => {
     const popoverProps = {
         anchorEl,
         anchorOrigin: {
-          vertical: 'bottom',
-          horizontal: 'center',
+            vertical: 'bottom',
+            horizontal: 'center',
         },
         transformOrigin: {
-          vertical: 'top',
-          horizontal: 'center',
+            vertical: 'top',
+            horizontal: 'center',
         },
     }
 

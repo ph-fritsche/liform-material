@@ -30,7 +30,6 @@ const valueFormatFromSchema = (schema) => {
 
 export const DateTime = props => {
     const {
-        name,
         schema,
         meta,
         input,

@@ -14,9 +14,11 @@ export const useForkedCallback = (func, newFunc, deps = []) => {
     if (!Array.isArray(func)) {
         func = [func]
     }
+    /* eslint-disable react-hooks/exhaustive-deps */
     return useMemo(() => forkCallback(...func, newFunc), func.concat(deps))
 }
 
 export const useBoundFunction = (func, ...args) => {
+    /* eslint-disable react-hooks/exhaustive-deps */
     return useMemo(() => func.bind(undefined, ...args), args)
 }

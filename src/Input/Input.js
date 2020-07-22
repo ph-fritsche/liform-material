@@ -4,7 +4,6 @@ import { useId } from '../util/ref'
 
 export const Input = props => {
     const {
-        name,
         schema = true,
         meta,
         input: {
@@ -48,7 +47,7 @@ export const Input = props => {
                     if (selected.length === 0) {
                         return <em>{placeholder}</em>
                     }
-                    return selected.map((v,i) => 
+                    return selected.map(v =>
                         <Chip key={v} label={options[v]}/>
                     )
                 }),
@@ -60,7 +59,7 @@ export const Input = props => {
                     <MenuItem key={v} value={v}>{options[v]}</MenuItem>
             ),
         }
-    }, [schema, SelectProps])
+    }, [schema, placeholder, SelectProps])
 
     const type = input.type || (schema.type === 'number' || schema.type === 'integer' ? 'number' : undefined)
     const step = schema.step || (schema.type === 'integer' ? 1 : 0.1)
@@ -122,7 +121,7 @@ export const Input = props => {
 
             {...others}
             InputProps={{
-                endAdornment: schema.symbol && <InputAdornment position='end'>{schema.symbol}</InputAdornment>,
+                endAdornment: schema.symbol && <InputAdornment position="end">{schema.symbol}</InputAdornment>,
                 ...InputProps,
             }}
             SelectProps={choice.props}

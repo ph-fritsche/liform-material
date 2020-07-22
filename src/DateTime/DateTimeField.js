@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useContext, useMemo } from 'react'
 import { InputAdornment, Typography } from '@material-ui/core'
 import { CalendarTodayOutlined, ScheduleOutlined } from '@material-ui/icons';
 import { MuiPickersAdapterContext } from '@material-ui/pickers/LocalizationProvider'
@@ -38,11 +38,11 @@ export const DateTimeField = React.forwardRef(function DateTimeField(props, ref)
 
     const dateUtil = useDateAdapter()
 
-    const value = useMemo(() => compileValue(dateUtil, valueProp, valueFormat), [valueProp, valueFormat])
+    const value = useMemo(() => compileValue(dateUtil, valueProp, valueFormat), [dateUtil, valueProp, valueFormat])
 
     const onChange = useCallback(newValue => {
         onChangeProp(dateUtil.formatByString(newValue, value.format))
-    }, [dateUtil, value.format])
+    }, [onChangeProp, dateUtil, value.format])
 
     const onPaste = useCallback(event => {
         event.preventDefault()
@@ -66,7 +66,7 @@ export const DateTimeField = React.forwardRef(function DateTimeField(props, ref)
             onPaste={onPaste}
 
             InputProps={{
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><AdornmentIcon/></Typography></InputAdornment>,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><AdornmentIcon/></Typography></InputAdornment>,
                 ...InputProps,
             }}
 

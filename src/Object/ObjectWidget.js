@@ -27,7 +27,7 @@ export const ObjectWidget = props => {
                             <div
                                 style={{marginTop: (schema.attr.gridSpacing || (name ? 1 : 3)) * .5 - .5 + 'em' }}
                             >
-                                <FormLabel component='legend' error={!!error}>{schema.title}</FormLabel>
+                                <FormLabel component="legend" error={!!error}>{schema.title}</FormLabel>
                                 <FormHelperText error={!!error}>{error || schema.description}</FormHelperText>
                             </div>
                         </Grid>

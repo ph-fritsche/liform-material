@@ -23,10 +23,10 @@ export const ArrayWidget = props => {
 
                 return (
                     <FormControl
-                        component='fieldset'
+                        component="fieldset"
                         error={!!error}
                     >
-                        <FormLabel component='legend' error={!!error}>{schema.title}</FormLabel>
+                        <FormLabel component="legend" error={!!error}>{schema.title}</FormLabel>
                         <FormHelperText error={!!error}>{error || schema.description}</FormHelperText>
                         <FormGroup>
                             { fields.map((name, index) => (

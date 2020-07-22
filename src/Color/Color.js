@@ -3,7 +3,6 @@ import { ColorField } from './ColorField'
 
 export const Color = props => {
     const {
-        name,
         schema = true,
         meta,
         input,

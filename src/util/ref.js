@@ -17,6 +17,7 @@ export const forkRef = (...ref) => {
 }
 
 export const useForkedRef = (...ref) => {
+    /* eslint-disable react-hooks/exhaustive-deps */
     return useMemo(() => forkRef(...ref), ref)
 }
 

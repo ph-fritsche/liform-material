@@ -24,15 +24,15 @@ export const FileDropField = React.forwardRef(function FileDropField(props, ref)
 
             // These will be passed to the InputBase variant
             InputProps={{
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><PublishOutlinedIcon/></Typography></InputAdornment>,
-                ...props.InputProps,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><PublishOutlinedIcon/></Typography></InputAdornment>,
+                ...InputProps,
             }}
 
             isTarget={dropActive}
 
             inputComponent={FileDropInput}
             inputProps={{
-                ...props.inputProps,
+                ...inputProps,
 
                 accept,
                 multiple,

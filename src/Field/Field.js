@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { TextField } from '@material-ui/core';
 import { makeStyles, fade } from '@material-ui/core'
 import clsx from 'clsx'
@@ -19,7 +19,7 @@ const useStyle = makeStyles(theme => ({
             color: 'currentColor',
             opacity: 0,
             transition: theme.transitions.create('opacity', {
-              duration: theme.transitions.duration.shorter,
+                duration: theme.transitions.duration.shorter,
             }),
             display: 'inline-block',
             'min-height': '1.1876em',

@@ -10,7 +10,7 @@ export const Switch = props => {
 
     return (
         <FormControl
-            component='div'
+            component="div"
             error={!!meta.error}
         >
             <FormControlLabel

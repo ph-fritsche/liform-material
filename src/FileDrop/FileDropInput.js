@@ -2,11 +2,11 @@ import React, { useCallback, useRef, useState } from 'react'
 import { Chip, Avatar } from '@material-ui/core'
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import { useDropzone } from 'react-dropzone'
-import { updateRef, useForkedRef } from '../util/ref'
+import { useForkedRef } from '../util/ref'
 import { indexOfChild } from '../util/dom'
 
 const fileNameInfo = (filename) => {
-    const basename = filename.replace(/.*[\\\/]/, '')
+    const basename = filename.replace(/.*[\\/]/, '')
     const lastDot = basename.lastIndexOf('.')
 
     return lastDot > 0 ? {name: basename.slice(0, lastDot), extension: basename.slice(lastDot)} : {name: basename, extension: ''}
@@ -80,7 +80,7 @@ const renderValue = ({baseElement, avatar, onBlur, onChange, setValueFocus}, val
                 key={file.url}
                 file={file}
                 avatar={avatar}
-                tabIndex='-1'
+                tabIndex="-1"
                 onDelete={handleDelete.bind(null, file)}
                 onClick={event => event.stopPropagation()}
                 onFocus={() => setValueFocus(file)}
@@ -119,13 +119,9 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
     const [valueFocus, setValueFocus] = useState()
     const [isFocusLocked, lockFocus] = useState(false)
 
-    const onDragEnter = useCallback(event => {
-        setDropActive(true)
-    }, [setDropActive])
-    const onDragLeave = useCallback(event => {
-        setDropActive(false)
-    }, [setDropActive])
-    const onDialogClose = useCallback(event => {
+    const onDragEnter = useCallback(() => setDropActive(true), [setDropActive])
+    const onDragLeave = useCallback(() => setDropActive(false), [setDropActive])
+    const onDialogClose = useCallback(() => {
         lockFocus(false)
         focusValueChild(baseElement.current, value, valueFocus)
     }, [baseElement, value, valueFocus])
@@ -136,7 +132,7 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
             multiple? (value || []).concat(files) : files[0]
         )
         baseElement.current.children[(value || []).length].focus()
-    }, [value])
+    }, [setDropActive, onChange, multiple, value])
     const {
         getRootProps,
         getInputProps,
@@ -150,24 +146,31 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
     })
     const dropRootProps = getRootProps()
     const dropInputProps = getInputProps()
+    const {
+        onBlur: dropBlur,
+        onFocus: dropFocus,
+    } = dropRootProps
+    const {
+        onClick: dropClick,
+    } = dropInputProps
 
     const onBlur = useCallback(event => {
         if (!isFocusLocked) {
-            dropRootProps.onBlur(event)
+            dropBlur(event)
             onBlurProp && onBlurProp(event)
         }
-    }, [onBlurProp, dropRootProps.onBlur])
+    }, [isFocusLocked, onBlurProp, dropBlur])
     const onFocus = useCallback(event => {
         if (!isFocusLocked) {
-            dropRootProps.onFocus(event)
+            dropFocus(event)
             onFocusProp && onFocusProp(event)
         }
-    }, [onFocusProp, dropRootProps.onFocus])
+    }, [isFocusLocked, onFocusProp, dropFocus])
 
     const onInputClick = useCallback(event => {
         lockFocus(true)
-        dropInputProps.onClick(event)
-    })
+        dropClick(event)
+    }, [dropClick])
 
     const handleKeyDown = useCallback(event => {
         const stepKeys = {
@@ -202,9 +205,10 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
 
         // open Dropzone directly - forwarding the event does not work if event.target is a child (e.g. Chip)
         if (event.key === ' ' || event.key === 'Enter') {
+            event.preventDefault()
             openDropzone()
         }
-    }, [baseElement, dropRootProps.onKeyDown])
+    }, [baseElement, openDropzone])
 
     const updateRootRefs = useForkedRef(ref, dropRootProps.ref, baseElement)
     const updateInputRefs = useForkedRef(inputRef, dropInputProps.ref)
@@ -218,15 +222,17 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
             valueFocus,
             setValueFocus,
         }, value)
-        : <span className='placeholder'>{placeholder}</span>
+        : <span className="placeholder">{placeholder}</span>
 
     return (
         <div
             {...dropRootProps}
             className={className}
+            role="button"
             onBlur={onBlur}
             onFocus={onFocus}
             onKeyDown={handleKeyDown}
+            tabIndex={0}
             ref={updateRootRefs}
         >
             { renderedValue }

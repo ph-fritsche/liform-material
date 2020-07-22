@@ -10,10 +10,10 @@ export const RadioGroup = props => {
 
     return (
         <FormControl
-            component='fieldset'
+            component="fieldset"
             error={!!meta.error}
         >
-            <FormLabel component='legend'>{schema.title}</FormLabel>
+            <FormLabel component="legend">{schema.title}</FormLabel>
             <MaterialRadioGroup
                 value={input.value}
                 onChange={(e) => input.onChange(e.target.value)}

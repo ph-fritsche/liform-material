@@ -36,7 +36,7 @@ export const ColorField = React.forwardRef(function ColorField(props, ref) {
             }}
 
             InputProps={{
-                endAdornment: <InputAdornment position='end'><Typography color='textSecondary'><PaletteOutlined/></Typography></InputAdornment>,
+                endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><PaletteOutlined/></Typography></InputAdornment>,
                 ...InputProps
             }}
 
