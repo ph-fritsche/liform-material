@@ -85,7 +85,7 @@ export const Input = props => {
     const onBlur = useCallback(event => {
         let v = event.target.value !== '' ? event.target.value : undefined
 
-        if (event.target.value !== '' && schema.type === 'number' || schema.type === 'integer') {
+        if (event.target.value !== '' && (schema.type === 'number' || schema.type === 'integer')) {
             v = Number(event.target.value)
             const step = schema.step || schema.type === 'integer' && 1 || undefined
             if (step) {
