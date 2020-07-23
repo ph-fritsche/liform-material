@@ -68,7 +68,6 @@ describe('Fork refs', () => {
             {
                 createNodeMock: (element) => {
                     if (element.type === 'p') {
-                        console.log('Created a p element')
                         return 'baz' + (i++)
                     }
                 }
