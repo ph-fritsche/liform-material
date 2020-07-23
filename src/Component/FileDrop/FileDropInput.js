@@ -2,8 +2,8 @@ import React, { useCallback, useRef, useState } from 'react'
 import { Chip, Avatar } from '@material-ui/core'
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import { useDropzone } from 'react-dropzone'
-import { useForkedRef } from '../util/ref'
-import { indexOfChild } from '../util/dom'
+import { useForkedRef } from '../../util/ref'
+import { indexOfChild } from '../../util/dom'
 
 const fileNameInfo = (filename) => {
     const basename = filename.replace(/.*[\\/]/, '')

@@ -1,4 +1,4 @@
-import { testLifield } from '../_field'
+import { testLifield } from './_field'
 import { fireEvent } from '@testing-library/react'
 
 describe('Basic input', () => {

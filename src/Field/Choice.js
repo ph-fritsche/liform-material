@@ -1,7 +1,7 @@
 import React from 'react'
-import { Input } from '../Input/Input'
 import { CheckboxGroup } from './CheckboxGroup'
 import { RadioGroup } from './RadioGroup'
+import { Select } from './Select'
 
 export const Choice = props => {
     const {
@@ -9,7 +9,7 @@ export const Choice = props => {
     } = props
 
     if (!schema.choiceExpanded) {
-        return Input(props)
+        return <Select {...props}/>
     }
 
     return schema.type === 'array' ? <CheckboxGroup {...props}/> : <RadioGroup {...props}/>

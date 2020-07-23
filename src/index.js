@@ -1,19 +1,24 @@
 import React from 'react'
 import { InputAdornment, Typography } from '@material-ui/core'
 import { VpnKeyOutlined, AlternateEmailOutlined, SearchOutlined, PhoneOutlined, EditOutlined, TextFieldsOutlined, SpeedOutlined } from '@material-ui/icons'
+
 import { Container } from './render'
 import { Form, FormErrors, Action } from './sections'
-import { ArrayWidget } from './Array/ArrayWidget'
-import { ButtonWidget } from './Button/ButtonWidget'
-import { Choice } from './Choice/Choice'
-import { Color } from './Color/Color'
-import { DateInterval } from './DateInterval/DateInterval'
-import { DateTime } from './DateTime/DateTime'
-import { FileDrop } from './FileDrop/FileDrop'
-import { Hidden } from './Hidden/Hidden'
-import { Input } from './Input/Input'
-import { ObjectWidget } from './Object/ObjectWidget'
-import { Switch } from './Choice/Switch'
+
+import { ArrayWidget } from './Field/ArrayWidget'
+import { ButtonWidget } from './Field/ButtonWidget'
+import { Choice } from './Field/Choice'
+import { BaseRender } from './Field/BaseRender'
+import { Hidden } from './Field/Hidden'
+import { StringRender } from './Field/StringRender'
+import { NumberRender } from './Field/NumberRender'
+import { ObjectWidget } from './Field/ObjectWidget'
+import { Switch } from './Field/Switch'
+import { DateTime } from './Field/DateTime'
+
+import { ColorField } from './Component/Color/ColorField'
+import { DateIntervalField } from './Component/DateInterval/DateIntervalField'
+import { FileDropField } from './Component/FileDrop/FileDropField'
 
 export default {
     render: {
@@ -32,20 +37,20 @@ export default {
             render: Switch,
         },
         integer: {
-            render: Input,
+            render: NumberRender,
             InputProps: {
                 endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><SpeedOutlined/></Typography></InputAdornment>,
             },
         },
         number: {
-            render: Input,
+            render: NumberRender,
             InputProps: {
                 endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><SpeedOutlined/></Typography></InputAdornment>,
             },
         },
         object: ObjectWidget,
         string: {
-            render: Input,
+            render: StringRender,
         },
 
         button: ButtonWidget,
@@ -53,59 +58,62 @@ export default {
             render: Choice,
         },
         color: {
-            render: Color,
+            render: BaseRender,
+            Component: ColorField,
         },
         date: {
             render: DateTime,
         },
         dateinterval: {
-            render: DateInterval,
+            render: BaseRender,
+            Component: DateIntervalField,
         },
         datetime: {
             render: DateTime,
         },
         email: {
-            render: Input,
+            render: StringRender,
             type: 'email',
             InputProps: {
                 endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><AlternateEmailOutlined/></Typography></InputAdornment>,
             },
         },
         file: {
-            render: FileDrop,
+            render: BaseRender,
+            Component: FileDropField,
         },
         hidden: {
             render: Hidden,
         },
         password: {
-            render: Input,
+            render: StringRender,
             type: 'password',
             InputProps: {
                 endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><VpnKeyOutlined/></Typography></InputAdornment>,
             },
         },
         search: {
-            render: Input,
+            render: StringRender,
             type: 'search',
             InputProps: {
                 endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><SearchOutlined/></Typography></InputAdornment>,
             },
         },
         tel: {
-            render: Input,
+            render: StringRender,
             type: 'tel',
             InputProps: {
                 endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><PhoneOutlined/></Typography></InputAdornment>,
             },
         },
         text: {
-            render: Input,
+            render: StringRender,
             InputProps: {
                 endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><EditOutlined/></Typography></InputAdornment>,
             },
         },
         textarea: {
-            render: Input,
+            render: StringRender,
             multiline: true,
             InputProps: {
                 endAdornment: <InputAdornment position="end"><Typography color="textSecondary"><TextFieldsOutlined/></Typography></InputAdornment>,
@@ -115,7 +123,7 @@ export default {
             render: DateTime,
         },
         url: {
-            render: Input,
+            render: StringRender,
             type: 'url',
             InputProps: {
                 endAdornment: <InputAdornment position="end"><Typography color="textSecondary">://</Typography></InputAdornment>,

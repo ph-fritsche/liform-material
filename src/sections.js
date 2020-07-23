@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 import { Lifield, finalizeName } from 'liform-react-final'
-import { Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core'
 
 export const Form = (props) => (
     <Lifield

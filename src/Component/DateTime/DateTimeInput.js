@@ -1,10 +1,11 @@
 import React from 'react'
-import { validateAspect, commitAspect } from './handleAspect'
 import { AspectInput } from '../AspectInput/AspectInput'
-import { useBoundFunction } from '../util/func'
+import { useBoundFunction } from '../../util/func'
+import { validateAspect, commitAspect } from './handleAspect'
 
-export const DateIntervalInput = React.forwardRef(function DateIntervalInput(props, ref) {
+export const DateTimeInput = React.forwardRef(function DateTimeInput(props, ref) {
     const {
+        dateUtil,
         onChange,
         value,
         placeholder,
@@ -12,9 +13,9 @@ export const DateIntervalInput = React.forwardRef(function DateIntervalInput(pro
         ...others
     } = props
 
-    const validate = useBoundFunction(validateAspect, value.input)
+    const validate = useBoundFunction(validateAspect, dateUtil, value)
 
-    const commit = useBoundFunction(commitAspect, value.input, onChange)
+    const commit = useBoundFunction(commitAspect, dateUtil, value, onChange)
 
     return (
         <AspectInput

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { FileDropField } from './FileDropField';
+import { FileDropField } from '../Component/FileDrop/FileDropField';
 
 export const FileDrop = props => {
     const {

@@ -1,21 +1,24 @@
 import React from 'react'
-import { ColorField } from './ColorField'
+import { Field } from '../Component/Field/Field'
 
-export const Color = props => {
+export const BaseRender = props => {
     const {
         schema = true,
         meta,
         input,
+
+        Component = Field,
+
         ...others
     } = props
 
     return (
-        <ColorField
-            {...input}
+        <Component
             label={schema.title}
             helperText={meta.error || schema.description}
             error={!!meta.error}
             {...others}
+            {...input}
         />
     )
 }

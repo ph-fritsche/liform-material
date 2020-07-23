@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef } from 'react'
 import { InputAdornment, Typography } from '@material-ui/core'
 import { CalendarTodayOutlined } from '@material-ui/icons'
 import { Field } from '../Field/Field'
-import { intervalToString } from '../util/date'
+import { intervalToString } from '../../util/date'
 import { compileValue } from './compileValue'
 import { DateIntervalInput } from './DateIntervalInput'
 

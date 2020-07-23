@@ -1,5 +1,5 @@
 import DateFns from '@material-ui/pickers/adapter/date-fns'
-import { placeholdersFromFormat, buildPickerViews, buildInputAspects, compileValue, aspectsFromPlaceholders, buildDisplayFormats } from '../../src/DateTime/compileValue'
+import { placeholdersFromFormat, buildPickerViews, buildInputAspects, compileValue, aspectsFromPlaceholders, buildDisplayFormats } from '../../../src/Component/DateTime/compileValue'
 
 const dateUtil = new DateFns()
 

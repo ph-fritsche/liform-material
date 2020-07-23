@@ -1,5 +1,5 @@
-import { intervalFromString } from '../util/date'
-import { indexOfUnescaped } from '../util/string'
+import { intervalFromString } from '../../util/date'
+import { indexOfUnescaped } from '../../util/string'
 
 export function aspectsFromValue (parsedValue, valuePattern) {
     if (!parsedValue) {

@@ -1,8 +1,8 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react'
 import { makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
-import { useForkedRef } from '../util/ref'
-import { shallowEqual } from '../util/equal'
+import { useForkedRef } from '../../util/ref'
+import { shallowEqual } from '../../util/equal'
 
 const useStyle = makeStyles(theme => ({
     value: {

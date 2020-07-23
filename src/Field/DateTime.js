@@ -1,5 +1,6 @@
 import React from 'react'
-import { DateTimeField } from './DateTimeField'
+import { DateTimeField } from '../Component/DateTime/DateTimeField'
+import { BaseRender } from './BaseRender'
 
 const valueFormatFromSchema = (schema) => {
     if (schema.dateFormat) {
@@ -30,24 +31,15 @@ const valueFormatFromSchema = (schema) => {
 
 export const DateTime = props => {
     const {
-        schema,
-        meta,
-        input,
-
+        schema = true,
         valueFormat = valueFormatFromSchema(schema),
-
-        ...others
     } = props
 
     return (
-        <DateTimeField
-            {...input}
-            label={schema.title}
-            helperText={meta.error || schema.description}
-            error={!!meta.error}
-            onChange={input.onChange}
+        <BaseRender
+            {...props}
+            Component={DateTimeField}
             valueFormat={valueFormat}
-            {...others}
         />
     )
 }
