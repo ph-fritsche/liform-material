@@ -110,7 +110,7 @@ describe("Id ref", () => {
         expect(component.toJSON()).toBe('foo')
     })
 
-    it('Use if hook without value', () => {
+    it('Use id hook without value', () => {
         const component = Renderer.create(<TestComponent/>)
 
         const id = component.toJSON()

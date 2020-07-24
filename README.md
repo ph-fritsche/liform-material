@@ -22,7 +22,7 @@ import MaterialTheme from 'liform-material'
 const myFormComponent = (
   <Liform
     // liformProps as provided by Pitch/Liform
-    {...liformProps
+    {...liformProps}
     // add the material theme
     theme={MaterialTheme}
   />
