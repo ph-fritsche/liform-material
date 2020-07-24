@@ -56,4 +56,123 @@ describe('Basic input', () => {
 
         expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: 456})
     })
+
+    it('Render and change a check input', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'boolean',
+                title: 'foo',
+            },
+            value: false,
+        })
+
+        fireEvent.click(rendered.field)
+    
+        expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: true})
+
+        fireEvent.click(rendered.field)
+    
+        expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: false})
+    })
+})
+
+describe('Complex input', () => {
+    it('Render and change an array', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'array',
+                title: 'foo',
+                items: {
+                    type: 'string',
+                },
+            },
+            value: ['bar'],
+        })
+
+        const field0 = rendered.result.getByRole('textbox')
+
+        fireEvent.change(field0, {target: {value: 'baz'}})
+
+        expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [field0.name]: 'baz'})
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(['baz']))
+    })
+
+    it('Add and remove extra elements of array', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'array',
+                title: 'foo',
+                items: {
+                    type: 'string',
+                },
+                allowAdd: true,
+            },
+            value: ['bar'],
+        })
+
+        rendered.result.getByRole('textbox')
+        expect(rendered.result.queryAllByLabelText('Remove entry')).toHaveLength(0)
+
+        fireEvent.click(rendered.result.getByLabelText('Add entry'))
+
+        expect(rendered.result.getAllByRole('textbox')).toHaveLength(2)
+
+        fireEvent.change(rendered.result.getAllByRole('textbox')[1], {target: {value: 'baz'}})
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(['bar', 'baz']))
+
+        fireEvent.click(rendered.result.getByLabelText('Remove entry'))
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(['bar']))
+        expect(rendered.result.queryAllByLabelText('Remove entry')).toHaveLength(0)
+    })
+
+    it('Remove and add existing elements of array', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'array',
+                title: 'foo',
+                items: {
+                    type: 'string',
+                },
+                allowDelete: true,
+            },
+            value: ['bar'],
+        })
+
+        rendered.result.getByRole('textbox')
+        expect(rendered.result.queryAllByLabelText('Add entry')).toHaveLength(0)
+
+        fireEvent.click(rendered.result.getByLabelText('Remove entry'))
+        
+        expect(rendered.result.queryAllByRole('textbox')).toHaveLength(0)
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify([]))
+        
+        fireEvent.click(rendered.result.getByLabelText('Add entry'))
+        
+        expect(rendered.result.getAllByRole('textbox')).toHaveLength(1)
+        expect(rendered.result.queryAllByLabelText('Add entry')).toHaveLength(0)
+    })
+
+    it('Render and change an object', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'object',
+                title: 'foo',
+                properties: {
+                    a: {
+                        type: 'string',
+                        title: 'foo-a',
+                    },
+                },
+            },
+        })
+
+        const fieldA = rendered.result.getByLabelText('foo-a')
+
+        fireEvent.change(fieldA, {target: {value: 'bar'}})
+
+        expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [fieldA.name]: 'bar'})
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify({a: 'bar'}))
+    })
 })

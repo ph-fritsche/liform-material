@@ -9,7 +9,7 @@ export function FieldTestLiform (props) {
         <Liform
             theme={MaterialTheme}
             name="form"
-            render={{container: p => <form id="container">{p.children}</form>}}
+            render={{container: p => <form id="container" data-values={JSON.stringify(p.form.getState().values._)}>{p.children}</form>}}
             {...props}
         >
             { ({liform}) => <Lifield schema={liform.schema}/> }
