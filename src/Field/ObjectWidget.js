@@ -13,40 +13,53 @@ export const ObjectWidget = props => {
         ...others
     } = props
 
-    return (
-        <Grid container
-            spacing={ schema.attr.gridSpacing || (name ? 1 : 3) }
-        >
-            <Field
-                name={finalizeName(name)}
-                render={({meta}) => {
-                    const error = getFieldError(liform, finalizeName(name), meta)
+    const gridSpacing = getAttrProp(schema, 'gridSpacing') ?? (name ? 1 : 3)
 
-                    return (error || schema.title) && (
-                        <Grid item xs={12}>
-                            <div
-                                style={{marginTop: (schema.attr.gridSpacing || (name ? 1 : 3)) * .5 - .5 + 'em' }}
-                            >
-                                <FormLabel component="legend" error={!!error}>{schema.title}</FormLabel>
-                                <FormHelperText error={!!error}>{error || schema.description}</FormHelperText>
-                            </div>
+    return (
+        <fieldset style={{margin: 0, padding: 0, border: 0}}>
+            <legend style={{width: 0, height: 0, overflow: 'hidden'}}>
+                {schema.title}
+            </legend>
+            <Grid container
+                spacing={gridSpacing}
+            >
+                <Field
+                    name={finalizeName(name)}
+                    render={({meta}) => {
+                        const error = getFieldError(liform, finalizeName(name), meta)
+
+                        return (error || schema.title) && (
+                            <Grid item xs={12}>
+                                <div
+                                    style={{marginTop: gridSpacing * .5 - .5 + 'em' }}
+                                >
+                                    <FormLabel error={!!error} aria-hidden="true">{schema.title}</FormLabel>
+                                    <FormHelperText error={!!error}>{error || schema.description}</FormHelperText>
+                                </div>
+                            </Grid>
+                        )
+                    }}
+                />
+                { mapProperties(schema.properties || {}, (propSchema, key) => {
+                    const gridSize = getAttrProp(propSchema, 'gridSize')
+                    return (
+                        <Grid item key={key}
+                            { ...(typeof(gridSize) === 'object' ? gridSize : {xs: gridSize}) }
+                        >
+                            <Lifield key={key}
+                                {...others}
+                                name={ (name || '') + ((name && String(name).slice(-1) !== ']') ? '.' : '') + key }
+                                schema={ propSchema }
+                                required={ Array.isArray(schema.required) && schema.required.indexOf(key) >= 0 }
+                            />
                         </Grid>
                     )
-                }}
-            />
-            { mapProperties(schema.properties || {}, (propSchema, key) => (
-                <Grid item key={key}
-                    { ...(typeof(propSchema.attr.gridSize) === 'object' ? propSchema.attr.gridSize : {xs: propSchema.attr.gridSize}) }
-                >
-                    <Lifield key={key}
-                        {...others}
-                        liform={liform}
-                        name={ (name || '') + ((name && String(name).slice(-1) !== ']') ? '.' : '') + key }
-                        schema={ propSchema }
-                        required={ Array.isArray(schema.required) && schema.required.indexOf(key) >= 0 }
-                    />
-                </Grid>
-            )) }
-        </Grid>
+                }) }
+            </Grid>
+        </fieldset>
     )
+}
+
+function getAttrProp(schema, propName) {
+    return schema.attr && schema.attr[propName]
 }
