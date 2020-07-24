@@ -4,6 +4,8 @@ import { makeStyles, fade } from '@material-ui/core'
 import clsx from 'clsx'
 import { FieldInput } from './FieldInput'
 import { useId } from '../../util/ref';
+import NativeSelectInput from '@material-ui/core/NativeSelect/NativeSelectInput';
+import SelectInput from '@material-ui/core/Select/SelectInput';
 
 const useStyle = makeStyles(theme => ({
     'fitcontent': {
@@ -50,18 +52,23 @@ export const Field = React.forwardRef(function Field(props, ref) {
         // Highlight the field as target of an action
         isTarget,
 
+        // Default to filled variant
+        variant = 'filled',
+
+        select = false,
+
         // These will be passed to the InputBase variant
-        InputProps,
+        InputProps: InputPropsProp = {},
+
+        // These will be passed to Select component if select=true
+        SelectProps: SelectPropsProp = {},
+
+        // These will be passed to InputProps.inputComponent
+        inputProps: inputPropsProp = {},
 
         // Custom component for rendering the input
         // Defaults to native input
-        inputComponent,
-
-        // These will be passed to InputProps.inputComponent
-        inputProps,
-
-        // Default to filled variant
-        variant = 'filled',
+        inputComponent = !select ? undefined : SelectPropsProp.native ? NativeSelectInput : SelectInput,
 
         ...others
     } = props
@@ -69,6 +76,27 @@ export const Field = React.forwardRef(function Field(props, ref) {
     const id = useId()
     
     const style = useStyle(props)
+
+    const InputProps = {
+        ...InputPropsProp,
+        className: clsx(
+            InputPropsProp.className,
+            isTarget && style['targetActive.' + variant],
+        ),
+        inputComponent: FieldInput,
+        ref: inputBaseRef,
+        inputRef: inputRef,
+    }
+
+    const inputProps = {
+        ...inputPropsProp,
+        className: clsx(
+            inputPropsProp.className,
+            style.fitcontent,
+        ),
+        isFocusLocked,
+        inputComponent,
+    }
 
     return <TextField
         ref={ref}
@@ -81,25 +109,10 @@ export const Field = React.forwardRef(function Field(props, ref) {
         )}
         variant={variant}
 
-        InputProps={{
-            ...InputProps,
-            className: clsx(
-                InputProps && InputProps.className,
-                isTarget && style['targetActive.' + variant],
-            ),
-            inputComponent: FieldInput,
-            ref: inputBaseRef,
-            inputRef: inputRef,
-        }}
-
-        inputProps={{
-            ...inputProps,
-            className: clsx(
-                inputProps && inputProps.className,
-                style.fitcontent,
-            ),
-            isFocusLocked,
-            inputComponent,
-        }}
+        select={select}
+        {...(select
+            ? {SelectProps: {...InputProps, inputProps, ...SelectPropsProp}}
+            : {InputProps, inputProps}
+        )}
     />
 })
