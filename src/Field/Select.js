@@ -15,7 +15,7 @@ export const Select = props => {
         schema = true,
         placeholder,
 
-        SelectProps,
+        SelectProps = {},
     } = props
 
     const options = useMemo(() => (
@@ -27,7 +27,7 @@ export const Select = props => {
     const selectNative = SelectProps.native ?? Object.keys(options).length > 10
 
     const renderValue = useMemo(() => {
-        if (schema.type === 'array' || selectNative) {
+        if (schema.type !== 'array' || selectNative) {
             return undefined
         }
         return selected => {
