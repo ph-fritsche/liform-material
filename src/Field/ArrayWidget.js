@@ -33,8 +33,8 @@ export const ArrayWidget = props => {
                                 <div key={name} style={{display: 'flex'}}>
                                     <Lifield
                                         {...others}
-                                        liform={liform}
                                         name={liformizeName(`${name}`)}
+                                        placeholder={schema.placeholder}
                                         schema={
                                             Array.isArray(schema.items) ?
                                                 (index <= schema.items.length ? schema.items[index] : schema.additionalItems) : 
@@ -42,14 +42,14 @@ export const ArrayWidget = props => {
                                         }
                                     />
                                     { (schema.allowDelete || Array.isArray(meta.initial) && index >= meta.initial.length) &&
-                                        <IconButton onClick={() => fields.remove(index)} style={{fontSize: '.75em'}}>
+                                        <IconButton onClick={() => fields.remove(index)} style={{fontSize: '.75em'}} aria-label="Remove entry">
                                             <RemoveCircleOutline/>
                                         </IconButton>
                                     }
                                 </div>
                             )) }
-                            { schema.allowAdd &&
-                                <IconButton onClick={() => fields.push()} style={{width: '3em', fontSize: '.75em'}}>
+                            { (schema.allowAdd || fields.length < (Array.isArray(meta.initial) ? meta.initial.length : 0)) &&
+                                <IconButton onClick={() => fields.push()} style={{width: '3em', fontSize: '.75em'}} aria-label="Add entry">
                                     <AddCircleOutline/>
                                 </IconButton>
                             }
