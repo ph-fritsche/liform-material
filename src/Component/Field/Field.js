@@ -37,6 +37,8 @@ const useStyle = makeStyles(theme => ({
  */
 export const Field = React.forwardRef(function Field(props, ref) {
     const {
+        name,
+
         // className for the TextField component
         className,
 
@@ -101,6 +103,7 @@ export const Field = React.forwardRef(function Field(props, ref) {
     return <TextField
         ref={ref}
         id={id}
+        name={ select && SelectPropsProp.multiple ? name + '[]' : name }
         {...others}
 
         className={clsx(
@@ -109,10 +112,19 @@ export const Field = React.forwardRef(function Field(props, ref) {
         )}
         variant={variant}
 
-        select={select}
         {...(select
-            ? {SelectProps: {...InputProps, inputProps, ...SelectPropsProp}}
-            : {InputProps, inputProps}
+            ? {
+                select,
+                SelectProps: {
+                    ...InputProps,
+                    inputProps,
+                    ...SelectPropsProp
+                },
+            }
+            : {
+                InputProps,
+                inputProps,
+            }
         )}
     />
 })
