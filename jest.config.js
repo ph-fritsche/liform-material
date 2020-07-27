@@ -9,7 +9,7 @@ module.exports = {
         "<rootDir>/test/**/*.{js,jsx}",
     ],
     "testPathIgnorePatterns": [
-        "/_.*$",
+        "/_.*(?<!.test.js)$",
     ],
     "transformIgnorePatterns": [
     ],

@@ -1,5 +1,6 @@
 import { testLifield } from './_field'
 import { fireEvent } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 describe('Basic input', () => {
     it('Render and change string input', () => {
@@ -76,7 +77,7 @@ describe('Basic input', () => {
     })
 })
 
-describe('Complex input', () => {
+describe('Complex types', () => {
     it('Render and change an array', () => {
         const rendered = testLifield({
             schema: {
@@ -174,5 +175,81 @@ describe('Complex input', () => {
 
         expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [fieldA.name]: 'bar'})
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify({a: 'bar'}))
+    })
+})
+
+describe('Choice', () => {
+    it('Render and change small select', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'string',
+                title: 'foo',
+                enum: ['a', 'b', 'c'],
+                enumTitles: ['Abc', 'Bcd', 'Cde'],
+            },
+            value: 'b',
+        })
+
+        expect(rendered.result.queryAllByText('Cde')).toHaveLength(0)
+
+        userEvent.click(rendered.result.getByText('Bcd'))
+        userEvent.click(rendered.result.getByText('Cde'))
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify('c'))
+    })
+
+    it('Render and change big select', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'string',
+                title: 'foo',
+                enum: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's'],
+                enumTitles: ['Abc', 'Bcd', 'Cde', 'Def', 'Efg', 'Fgh', 'Ghi', 'Hij', 'Ijk', 'Jkl', 'Klm', 'Lmn', 'Mno', 'Nop', 'Opq', 'Pqr', 'Qrs', 'Rst', 'Stu'],
+            },
+            value: 'b',
+        })
+
+        expect(rendered.field).toBeInstanceOf(HTMLSelectElement)
+
+        userEvent.selectOptions(rendered.field, rendered.result.getByText('Cde'))
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify('c'))
+    })
+
+    it('Render and change small multiple select', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'array',
+                title: 'foo',
+                enum: ['a', 'b', 'c'],
+                enumTitles: ['Abc', 'Bcd', 'Cde'],
+            },
+            value: ['b'],
+        })
+
+        expect(rendered.result.queryAllByText('Cde')).toHaveLength(0)
+
+        userEvent.click(rendered.field)
+        userEvent.click(rendered.result.getByText('Cde'))
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(['b', 'c']))
+    })
+
+    it('Render and change big multiple select', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'array',
+                title: 'foo',
+                enum: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's'],
+                enumTitles: ['Abc', 'Bcd', 'Cde', 'Def', 'Efg', 'Fgh', 'Ghi', 'Hij', 'Ijk', 'Jkl', 'Klm', 'Lmn', 'Mno', 'Nop', 'Opq', 'Pqr', 'Qrs', 'Rst', 'Stu'],
+            },
+            value: ['b'],
+        })
+
+        expect(rendered.field).toBeInstanceOf(HTMLSelectElement)
+
+        userEvent.selectOptions(rendered.field, rendered.result.getByText('Cde'))
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(['b', 'c']))
     })
 })

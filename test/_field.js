@@ -42,7 +42,7 @@ function expectedFormValues(value, rootName) {
             expected[htmlizeName(path.join('.'), rootName)] = value
         }
     }
-    traverseValue(value)
+    value !== undefined && traverseValue(value)
 
     return expected
 }
@@ -50,7 +50,7 @@ function expectedFormValues(value, rootName) {
 export function testLifield (props) {
     const rendered = renderLifield(props)
 
-    expect(rendered.form).toHaveFormValues(rendered.expectedFormValues)
+    expect(rendered.form).toContainFormValues(rendered.expectedFormValues)
 
     if (props.schema && props.schema.title) {
         rendered.field = rendered.result.getbyL(props.schema.title)
