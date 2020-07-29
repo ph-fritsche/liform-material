@@ -21,8 +21,11 @@ export const NumberRender = props => {
 
     const onChange = useCallback(event => {
         const v = event.target.value !== '' ? Number(event.target.value) : undefined
-        // accept empty values if the change was triggered by deleting the only char
-        if (v === undefined && event.nativeEvent.inputType === 'deleteContentBackward'
+
+        // accept empty values if the change was triggered by deleting
+        if (v === undefined
+            && (event.nativeEvent.data === undefined || event.nativeEvent.data === null)
+            && (event.nativeEvent.inputType === undefined || event.nativeEvent.inputType === 'deleteContentBackward')
         // accept everything else if it is a valid number
             || v == event.target.value && (schema.type !== 'integer' || Number.isInteger(v))
         ) {
