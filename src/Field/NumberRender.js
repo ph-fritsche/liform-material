@@ -57,8 +57,6 @@ export const NumberRender = props => {
         onBlurProp(event)
     }, [schema, valueProp, onChangeProp, onBlurProp])
 
-    const value = valueProp ?? ''
-
     return (
         <BaseRender
             step={step}
@@ -70,7 +68,6 @@ export const NumberRender = props => {
                 ...input,
                 onChange,
                 onBlur,
-                value,
             }}
             InputProps={{
                 endAdornment: schema.symbol && <InputAdornment position="end">{schema.symbol}</InputAdornment>,
