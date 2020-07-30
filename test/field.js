@@ -1,6 +1,6 @@
 import { testLifield } from './_field'
-import { fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { fireEvent } from '@testing-library/react'
 
 describe('Basic input', () => {
     it('Render and change string input', () => {
@@ -12,7 +12,8 @@ describe('Basic input', () => {
             value: 'bar',
         })
 
-        fireEvent.change(rendered.field, {target: {value: 'baz'}})
+        userEvent.clear(rendered.field)
+        userEvent.type(rendered.field, 'baz')
 
         expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: 'baz'})
     })
@@ -24,18 +25,23 @@ describe('Basic input', () => {
                 title: 'foo',
                 step: .2,
             },
-            value: 123,
+            value: 456,
         })
 
-        fireEvent.change(rendered.field, {target: {value: 456}})
+        userEvent.type(rendered.field, '{backspace}{backspace}{backspace}')
 
+        expect(rendered.form.getAttribute('data-values')).toBe(null)
+        expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: null})
+
+        userEvent.type(rendered.field, '456')
+        
         expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: 456})
 
         fireEvent.change(rendered.field, {target: {value: 456.75}})
 
         expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: 456.75})
         
-        fireEvent.blur(rendered.field)
+        userEvent.click(rendered.form)
 
         expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: 456.8})
     })
@@ -49,7 +55,12 @@ describe('Basic input', () => {
             value: 123,
         })
 
-        fireEvent.change(rendered.field, {target: {value: 456}})
+        userEvent.type(rendered.field, '{backspace}{backspace}{backspace}')
+
+        expect(rendered.form.getAttribute('data-values')).toBe(null)
+        expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: null})
+
+        userEvent.type(rendered.field, '456')
 
         expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: 456})
 
@@ -67,11 +78,11 @@ describe('Basic input', () => {
             value: false,
         })
 
-        fireEvent.click(rendered.field)
+        userEvent.click(rendered.field)
     
         expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: true})
 
-        fireEvent.click(rendered.field)
+        userEvent.click(rendered.field)
     
         expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: false})
     })
@@ -92,7 +103,8 @@ describe('Complex types', () => {
 
         const field0 = rendered.result.getByRole('textbox')
 
-        fireEvent.change(field0, {target: {value: 'baz'}})
+        userEvent.clear(field0)
+        userEvent.type(field0, 'baz')
 
         expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [field0.name]: 'baz'})
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(['baz']))
@@ -114,15 +126,15 @@ describe('Complex types', () => {
         rendered.result.getByRole('textbox')
         expect(rendered.result.queryAllByLabelText('Remove entry')).toHaveLength(0)
 
-        fireEvent.click(rendered.result.getByLabelText('Add entry'))
+        userEvent.click(rendered.result.getByLabelText('Add entry'))
 
         expect(rendered.result.getAllByRole('textbox')).toHaveLength(2)
 
-        fireEvent.change(rendered.result.getAllByRole('textbox')[1], {target: {value: 'baz'}})
+        userEvent.type(rendered.result.getAllByRole('textbox')[1], 'baz')
 
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(['bar', 'baz']))
 
-        fireEvent.click(rendered.result.getByLabelText('Remove entry'))
+        userEvent.click(rendered.result.getByLabelText('Remove entry'))
 
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(['bar']))
         expect(rendered.result.queryAllByLabelText('Remove entry')).toHaveLength(0)
@@ -144,12 +156,12 @@ describe('Complex types', () => {
         rendered.result.getByRole('textbox')
         expect(rendered.result.queryAllByLabelText('Add entry')).toHaveLength(0)
 
-        fireEvent.click(rendered.result.getByLabelText('Remove entry'))
+        userEvent.click(rendered.result.getByLabelText('Remove entry'))
         
         expect(rendered.result.queryAllByRole('textbox')).toHaveLength(0)
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify([]))
         
-        fireEvent.click(rendered.result.getByLabelText('Add entry'))
+        userEvent.click(rendered.result.getByLabelText('Add entry'))
         
         expect(rendered.result.getAllByRole('textbox')).toHaveLength(1)
         expect(rendered.result.queryAllByLabelText('Add entry')).toHaveLength(0)
@@ -171,7 +183,7 @@ describe('Complex types', () => {
 
         const fieldA = rendered.result.getByLabelText('foo-a')
 
-        fireEvent.change(fieldA, {target: {value: 'bar'}})
+        userEvent.type(fieldA, 'bar')
 
         expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [fieldA.name]: 'bar'})
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify({a: 'bar'}))
