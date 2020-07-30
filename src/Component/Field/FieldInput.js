@@ -10,6 +10,7 @@ export const FieldInput = function FieldInput(props) {
         focusRef,
         onBlur: onBlurProp,
         onFocus: onFocusProp,
+        value = typeof(InputComponent) === 'string' && props.onChange ? '' : undefined,
 
         ...others
     } = props
@@ -29,5 +30,6 @@ export const FieldInput = function FieldInput(props) {
         {...others}
         onBlur={onBlur}
         onFocus={onFocus}
+        value={value}
     />
 }
