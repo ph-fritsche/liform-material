@@ -10,7 +10,7 @@ export const Form = (props) => (
 
 export const Action = ({liform: { schema }}) => (
     <Grid container
-        spacing={ schema.attr.gridSpacing || 3 }
+        spacing={ schema.attr && schema.attr.gridSpacing || 3 }
         justify="space-evenly"
     >
         <Grid item>
