@@ -26,7 +26,7 @@ export const DateTimeField = React.forwardRef(function DateTimeField(props, ref)
         inputComponent = DateTimeInput,
         inputProps,
 
-        value: valueProp,
+        value,
         valueFormat,
         onChange: onChangeProp,
 
@@ -38,11 +38,11 @@ export const DateTimeField = React.forwardRef(function DateTimeField(props, ref)
 
     const dateUtil = useDateAdapter()
 
-    const value = useMemo(() => compileValue(dateUtil, valueProp, valueFormat), [dateUtil, valueProp, valueFormat])
+    const valueObject = useMemo(() => compileValue(dateUtil, value, valueFormat), [dateUtil, value, valueFormat])
 
     const onChange = useCallback(newValue => {
-        onChangeProp(dateUtil.formatByString(newValue, value.format))
-    }, [onChangeProp, dateUtil, value.format])
+        onChangeProp(dateUtil.formatByString(newValue, valueObject.format))
+    }, [onChangeProp, dateUtil, valueObject.format])
 
     const onPaste = useCallback(event => {
         event.preventDefault()
@@ -61,6 +61,7 @@ export const DateTimeField = React.forwardRef(function DateTimeField(props, ref)
     return (<>
         <Picker
             ref={ref}
+            value={value}
             {...others}
 
             onPaste={onPaste}
@@ -75,7 +76,7 @@ export const DateTimeField = React.forwardRef(function DateTimeField(props, ref)
                 ...inputProps,
 
                 dateUtil,
-                value,
+                valueObject,
                 onChange,
             }}
 
@@ -84,7 +85,7 @@ export const DateTimeField = React.forwardRef(function DateTimeField(props, ref)
                 ...PickerProps,
 
                 dateUtil,
-                value,
+                valueObject,
                 onChange,
             }}
         />

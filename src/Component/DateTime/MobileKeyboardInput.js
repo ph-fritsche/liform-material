@@ -7,7 +7,7 @@ export function MobileKeyboardInput (props) {
     const {
         inputRef: inputRefProp,
         dateUtil,
-        value,
+        valueObject,
         onChange,
     } = props
 
@@ -22,14 +22,15 @@ export function MobileKeyboardInput (props) {
         variant="standard"
         fullWidth={true}
         onFocus={event => event.target !== mobileKeyboardInputRef.current && mobileKeyboardInputRef.current.focus() }
+        value={valueObject.display}
 
-        helperText={value.input.map(p => p.placeholder).join('')}
+        helperText={valueObject.input.map(p => p.placeholder).join('')}
 
         inputComponent={DateTimeInput}
         inputRef={inputRef}
         inputProps={{
             dateUtil,
-            value,
+            valueObject,
             onChange,
         }}
     />

@@ -32,14 +32,14 @@ const useStyle = makeStyles(theme => ({
 export const DateTimePicker = (props) => {
     const {
         dateUtil,
-        value,
+        valueObject,
         onChange,
 
         mediaQueryDesktop = '@media (pointer: fine)',
 
         onClose = () => {},
 
-        PickerComponent = guessPickerComponent(value.views),
+        PickerComponent = guessPickerComponent(valueObject.views),
         PickerProps,
     } = props
 
@@ -47,17 +47,17 @@ export const DateTimePicker = (props) => {
 
     const isDesktop = useMediaQuery(mediaQueryDesktop)
 
-    const onDateChange = (value, variant, isFinished) => {
-        onChange(value)
+    const onDateChange = (valueObject, variant, isFinished) => {
+        onChange(valueObject)
         isFinished === 'finish' && onClose()
     }
 
     const renderDay = useMemo(() => {
-        const hasWeek = value.input.find(v => v.placeholder && ['w','I'].indexOf(v.placeholder[0]) >= 0)
-        const hasDay = value.input.find(v => v.placeholder && ['d','D','e','i'].indexOf(v.placeholder[0]) >= 0)
+        const hasWeek = valueObject.input.find(v => v.placeholder && ['w','I'].indexOf(v.placeholder[0]) >= 0)
+        const hasDay = valueObject.input.find(v => v.placeholder && ['d','D','e','i'].indexOf(v.placeholder[0]) >= 0)
         if (hasWeek && !hasDay) {
-            const weekStart = dateUtil.startOfWeek(value.parsed)
-            const weekEnd = dateUtil.endOfWeek(value.parsed)
+            const weekStart = dateUtil.startOfWeek(valueObject.parsed)
+            const weekEnd = dateUtil.endOfWeek(valueObject.parsed)
             return function Day(date, selectedDates, DayComponentProps) {
                 return (
                     <PickersDay
@@ -71,7 +71,7 @@ export const DateTimePicker = (props) => {
                 )
             }
         }
-    }, [dateUtil, value, style])
+    }, [dateUtil, valueObject, style])
 
     return (
         <PickerComponent
@@ -79,15 +79,15 @@ export const DateTimePicker = (props) => {
             disableMaskedInput={true}
             dateAdapter={dateUtil}
             renderInput={({inputRef}) => (
-                <MobileKeyboardInput inputRef={inputRef} dateUtil={dateUtil} value={value} onChange={onChange}/>
+                <MobileKeyboardInput inputRef={inputRef} dateUtil={dateUtil} valueObject={valueObject} onChange={onChange}/>
             )}
             renderDay={renderDay}
             showDaysOutsideCurrentMonth={!!renderDay}
-            views={value.views}
+            views={valueObject.views}
 
             {...PickerProps}
 
-            value={value.parsed}
+            value={valueObject.parsed}
             onDateChange={onDateChange}
         />
     )

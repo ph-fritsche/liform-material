@@ -8,14 +8,15 @@ export const DateTimeInput = React.forwardRef(function DateTimeInput(props, ref)
         dateUtil,
         onChange,
         value,
+        valueObject,
         placeholder,
 
         ...others
     } = props
 
-    const validate = useBoundFunction(validateAspect, dateUtil, value)
+    const validate = useBoundFunction(validateAspect, dateUtil, valueObject)
 
-    const commit = useBoundFunction(commitAspect, dateUtil, value, onChange)
+    const commit = useBoundFunction(commitAspect, dateUtil, valueObject, onChange)
 
     return (
         <AspectInput
@@ -23,8 +24,8 @@ export const DateTimeInput = React.forwardRef(function DateTimeInput(props, ref)
             {...others}
             validate={validate}
             commit={commit}
-            aspects={value.input}
-            display={value.display}
+            aspects={valueObject.input}
+            display={valueObject.display}
             placeholder={placeholder}
         />
     )

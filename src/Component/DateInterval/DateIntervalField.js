@@ -13,14 +13,14 @@ export const DateIntervalField = React.forwardRef(function DateIntervalField(pro
         inputComponent = DateIntervalInput,
         inputProps = {},
         
-        value: valueProp,
+        value,
         valuePattern,
         onChange: onChangeProp,
 
         ...others
     } = props
 
-    const value = useMemo(() => compileValue(valueProp, valuePattern), [valueProp, valuePattern])
+    const valueObject = useMemo(() => compileValue(value, valuePattern), [value, valuePattern])
 
     const onChange = useCallback(value => onChangeProp(intervalToString(value)), [onChangeProp])
 
@@ -29,6 +29,7 @@ export const DateIntervalField = React.forwardRef(function DateIntervalField(pro
     return (
         <Field
             ref={ref}
+            value={value}
             {...others}
 
             onClick={() => inputRef.current.focus()}
@@ -43,6 +44,7 @@ export const DateIntervalField = React.forwardRef(function DateIntervalField(pro
                 ...inputProps,
 
                 value,
+                valueObject,
                 onChange,
             }}
 
