@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import { DateTimeInput } from './DateTimeInput'
-import { Field } from 'react-final-form'
+import { Field } from '../Field/Field'
 import { useForkedRef } from '../../util/ref'
 
 export function MobileKeyboardInput (props) {
