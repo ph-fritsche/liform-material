@@ -9,7 +9,6 @@ export const DateTimeInput = React.forwardRef(function DateTimeInput(props, ref)
     const {
         dateUtil,
         onChange,
-        value,
         valueObject,
         placeholder,
 
@@ -36,7 +35,6 @@ export const DateTimeInput = React.forwardRef(function DateTimeInput(props, ref)
 DateTimeInput.propTypes = {
     dateUtil: PropTypes.shape(AspectsDateUtilProps),
     onChange: PropTypes.func,
-    value: PropTypes.any,
     valueObject: CompiledValueProp,
     placeholder: PropTypes.string,
 }

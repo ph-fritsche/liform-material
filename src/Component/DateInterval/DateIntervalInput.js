@@ -8,7 +8,6 @@ import { CompiledValueProp } from './compileValue'
 export const DateIntervalInput = React.forwardRef(function DateIntervalInput(props, ref) {
     const {
         onChange,
-        value,
         valueObject,
         placeholder,
 
@@ -34,7 +33,6 @@ export const DateIntervalInput = React.forwardRef(function DateIntervalInput(pro
 
 DateIntervalInput.propTypes = {
     onChange: PropTypes.func,
-    value: PropTypes.any,
     valueObject: CompiledValueProp,
     placeholder: PropTypes.string,
 }
