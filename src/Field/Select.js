@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { MenuItem, Chip } from '@material-ui/core'
 import { BaseRender } from './BaseRender'
 import { FieldRenderProps } from 'liform-react-final/dist/field'
@@ -15,6 +15,11 @@ export const Select = props => {
     const {
         schema = true,
         placeholder,
+
+        input: {
+            onChange: onChangeProp,
+            ...input
+        },
 
         SelectProps = {},
     } = props
@@ -49,9 +54,16 @@ export const Select = props => {
         )
     ), [options, selectNative])
 
+    const onChange = useCallback(event => onChangeProp(extractNativeSelectValue(event)), [onChangeProp])
+
     return (
         <BaseRender
             {...props}
+
+            input={{
+                ...input,
+                onChange,
+            }}
 
             select={true}
             SelectProps={{
@@ -67,3 +79,19 @@ export const Select = props => {
 }
 
 Select.propTypes = FieldRenderProps
+
+function extractNativeSelectValue (event) {
+    if (!event || !(event.target instanceof HTMLSelectElement)) {
+        return event
+    }
+
+    if (event.target.hasAttribute('multiple')) {
+        const v = []
+        for (let i = 0; i < event.target.selectedOptions.length; i++) {
+            v.push(event.target.selectedOptions.item(i).value)
+        }
+        return v
+    }
+
+    return event.target.value
+}
