@@ -134,3 +134,5 @@ export default {
         },
     },
 }
+
+export * from './Component'
