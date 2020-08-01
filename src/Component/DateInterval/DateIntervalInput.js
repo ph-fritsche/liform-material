@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { validateAspect, commitAspect } from './handleAspect'
 import { AspectInput } from '../AspectInput/AspectInput'
 import { useBoundFunction } from '../../util/func'
+import { CompiledValueProp } from './compileValue'
 
 export const DateIntervalInput = React.forwardRef(function DateIntervalInput(props, ref) {
     const {
@@ -29,3 +31,10 @@ export const DateIntervalInput = React.forwardRef(function DateIntervalInput(pro
         />
     )
 })
+
+DateIntervalInput.propTypes = {
+    onChange: PropTypes.func,
+    value: PropTypes.any,
+    valueObject: CompiledValueProp,
+    placeholder: PropTypes.string,
+}

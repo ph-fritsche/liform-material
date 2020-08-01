@@ -1,5 +1,6 @@
 import React from 'react'
 import { FormControl, FormLabel, FormControlLabel, Radio, RadioGroup as MaterialRadioGroup, FormHelperText } from '@material-ui/core'
+import { FieldRenderProps } from 'liform-react-final/dist/field'
 
 export const RadioGroup = props => {
     const {
@@ -36,3 +37,5 @@ export const RadioGroup = props => {
         </FormControl>
     )
 }
+
+RadioGroup.propTypes = FieldRenderProps

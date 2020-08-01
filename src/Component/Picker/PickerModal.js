@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useMediaQuery, Popover, Modal, Dialog } from '@material-ui/core'
 
 export const PickerModal = (props) => {
@@ -49,4 +50,13 @@ export const PickerModal = (props) => {
             <PickerComponent onClose={onClose} {...PickerProps}/>
         </ModalComponent>
     )
+}
+
+PickerModal.propTypes = {
+    mediaQueryDesktop: PropTypes.string,
+    anchorEl: PropTypes.instanceOf(HTMLElement),
+    onClose: PropTypes.func,
+    open: PropTypes.bool,
+    PickerComponent: PropTypes.elementType.isRequired,
+    PickerProps: PropTypes.object,
 }

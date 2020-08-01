@@ -1,5 +1,6 @@
 import React from 'react'
 import { FormControl, FormControlLabel, FormHelperText, Switch as MaterialSwitch } from '@material-ui/core'
+import { FieldRenderProps } from 'liform-react-final/dist/field'
 
 export const Switch = props => {
     const {
@@ -27,3 +28,5 @@ export const Switch = props => {
         </FormControl>
     )
 }
+
+Switch.propTypes = FieldRenderProps

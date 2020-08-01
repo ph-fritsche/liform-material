@@ -1,5 +1,6 @@
 import React from 'react'
 import { FormControl, FormLabel, FormHelperText } from '@material-ui/core'
+import { FieldRenderProps } from 'liform-react-final/dist/field'
 
 export const Hidden = props => {
     const {
@@ -23,3 +24,5 @@ export const Hidden = props => {
         </FormControl>
     )
 }
+
+Hidden.propTypes = FieldRenderProps

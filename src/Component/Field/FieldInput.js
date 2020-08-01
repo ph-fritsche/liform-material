@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import PropTypes from 'prop-types'
 import { updateRef } from '../../util/ref'
 
 export const FieldInput = function FieldInput(props) {
@@ -32,4 +33,15 @@ export const FieldInput = function FieldInput(props) {
         onFocus={onFocus}
         value={value}
     />
+}
+
+FieldInput.propTypes = {
+    inputComponent: PropTypes.elementType,
+    inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    isFocusLocked: PropTypes.bool,
+    focusRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    onBlur: PropTypes.func,
+    onFocus: PropTypes.func,
+    onChange: PropTypes.func,
+    value: PropTypes.any,
 }

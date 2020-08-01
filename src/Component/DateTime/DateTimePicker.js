@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react'
+import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { useMediaQuery, makeStyles } from '@material-ui/core'
 import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker, PickersDay } from '@material-ui/pickers'
 import { MobileKeyboardInput } from './MobileKeyboardInput'
+import { CompiledValueProp } from './compileValue'
 
 const guessPickerComponent = (views) => {
     const hasDate = views.indexOf('year') >= 0 || views.indexOf('month') >= 0 || views.indexOf('date') >= 0
@@ -91,4 +93,19 @@ export const DateTimePicker = (props) => {
             onDateChange={onDateChange}
         />
     )
+}
+
+DateTimePicker.propTypes = {
+    dateUtil: PropTypes.shape({
+        startOfWeek: PropTypes.func.isRequired,
+        endOfWeek: PropTypes.func.isRequired,
+        isWithinRange: PropTypes.func.isRequired,
+        isSameDay: PropTypes.func.isRequired,
+    }).isRequired,
+    valueObject: CompiledValueProp,
+    onChange: PropTypes.func.isRequired,
+    mediaQueryDesktop: PropTypes.string,
+    onClose: PropTypes.func,
+    PickerComponent: PropTypes.elementType,
+    PickerProps: PropTypes.object,
 }

@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react'
+import PropTypes from 'prop-types'
 import { InputAdornment, Typography } from '@material-ui/core'
 import { CalendarTodayOutlined, ScheduleOutlined } from '@material-ui/icons';
 import { MuiPickersAdapterContext } from '@material-ui/pickers/LocalizationProvider'
@@ -91,3 +92,14 @@ export const DateTimeField = React.forwardRef(function DateTimeField(props, ref)
         />
     </>)
 })
+
+DateTimeField.propTypes = {
+    InputProps: PropTypes.object,
+    inputComponent: PropTypes.elementType,
+    inputProps: PropTypes.object,
+    value: PropTypes.string,
+    valueFormat: PropTypes.string,
+    onChange: PropTypes.func,
+    PickerComponent: PropTypes.elementType,
+    PickerProps: PropTypes.object,
+}

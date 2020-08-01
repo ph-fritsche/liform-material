@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import { useForkedRef } from '../../util/ref'
@@ -35,7 +36,6 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         // should update the component value
         commit: commitProp,
 
-        // should be an array of objects like {type?:'value'|any, value?: any, key?: string, placeholder?: string, text?: string, isNumeric?: boolean}
         aspects,
         display,
         placeholder,
@@ -238,3 +238,33 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         </div>
     )
 })
+
+AspectInput.propTypes = {
+    className: PropTypes.string,
+    onBlur: PropTypes.func,
+    onFocus: PropTypes.func,
+    validate: PropTypes.func,
+    commit: PropTypes.func,
+    aspects: PropTypes.arrayOf(PropTypes.oneOfType([
+        PropTypes.shape({
+            type: PropTypes.oneOf(['value']).isRequired,
+            value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+            placeholder: PropTypes.string,
+            isNumeric: PropTypes.bool,
+        }),
+        PropTypes.shape({
+            text: PropTypes.string.isRequired,
+        }),
+    ])).isRequired,
+    display: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.element,
+        PropTypes.arrayOf([PropTypes.string, PropTypes.element]),
+    ]).isRequired,
+    placeholder: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.element,
+        PropTypes.arrayOf([PropTypes.string, PropTypes.element]),
+        PropTypes.oneOf([null])
+    ]).isRequired,
+}

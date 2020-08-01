@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { intervalFromString } from '../../util/date'
 import { indexOfUnescaped } from '../../util/string'
 
@@ -61,3 +62,19 @@ export function compileValue (valueProp, valuePattern) {
 
     return {parsed, input, display}
 }
+
+export const CompiledValueProp = PropTypes.exact({
+    parsed: PropTypes.object,
+    input: PropTypes.arrayOf(PropTypes.oneOfType([
+        PropTypes.exact({
+            type: PropTypes.oneOf(['value']),
+            key: PropTypes.string,
+            value: PropTypes.oneOfType([PropTypes.oneOf(['+','-']), PropTypes.number]),
+            isNumeric: PropTypes.bool,
+        }),
+        PropTypes.exact({
+            text: PropTypes.string,
+        }),
+    ])),
+    display: PropTypes.string,
+})

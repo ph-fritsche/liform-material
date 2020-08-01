@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { InputAdornment, Typography } from '@material-ui/core';
 import PublishOutlinedIcon from '@material-ui/icons/PublishOutlined';
 import { Field } from '../Field/Field';
@@ -41,3 +42,10 @@ export const FileDropField = React.forwardRef(function FileDropField(props, ref)
         />
     )
 })
+
+FileDropField.propTypes = {
+    InputProps: PropTypes.object,
+    inputProps: PropTypes.object,
+    accept: PropTypes.string,
+    multiple: PropTypes.bool,
+}

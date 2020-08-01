@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 function daysInMonth (dateUtil, ...args) {
     const d = typeof(args[0]) === 'object'
         ? args[0]
@@ -78,3 +80,9 @@ export function commitAspect (dateUtil, value, onChange, aspectValue, aspectInde
     }
 }
 
+export const AspectsDateUtilProps = {
+    date: PropTypes.func,
+    endOfMonth: PropTypes.func,
+    formatByString: PropTypes.func,
+    parse: PropTypes.func,
+}

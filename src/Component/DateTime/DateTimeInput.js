@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { AspectInput } from '../AspectInput/AspectInput'
 import { useBoundFunction } from '../../util/func'
-import { validateAspect, commitAspect } from './handleAspect'
+import { validateAspect, commitAspect, AspectsDateUtilProps } from './handleAspect'
+import { CompiledValueProp } from './compileValue'
 
 export const DateTimeInput = React.forwardRef(function DateTimeInput(props, ref) {
     const {
@@ -30,3 +32,11 @@ export const DateTimeInput = React.forwardRef(function DateTimeInput(props, ref)
         />
     )
 })
+
+DateTimeInput.propTypes = {
+    dateUtil: PropTypes.shape(AspectsDateUtilProps),
+    onChange: PropTypes.func,
+    value: PropTypes.any,
+    valueObject: CompiledValueProp,
+    placeholder: PropTypes.string,
+}

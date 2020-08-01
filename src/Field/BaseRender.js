@@ -1,5 +1,6 @@
 import React from 'react'
 import { Field } from '../Component/Field/Field'
+import { FieldRenderProps } from 'liform-react-final/dist/field'
 
 export const BaseRender = props => {
     const {
@@ -22,3 +23,5 @@ export const BaseRender = props => {
         />
     )
 }
+
+BaseRender.propTypes = FieldRenderProps

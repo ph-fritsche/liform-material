@@ -1,10 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { FieldArray } from 'react-final-form-arrays'
 import { Lifield, liformizeName, finalizeName } from 'liform-react-final'
 import { FormGroup, FormControl, FormLabel,FormHelperText, IconButton } from '@material-ui/core'
 import { RemoveCircleOutline, AddCircleOutline } from '@material-ui/icons'
 
 import { getFieldError } from '../error'
+import { LiformContextProp } from 'liform-react-final/dist/form'
+import { SchemaProp } from 'liform-react-final/dist/schema'
 
 export const ArrayWidget = props => {
     const {
@@ -59,4 +62,10 @@ export const ArrayWidget = props => {
             }}
         />
     )
+}
+
+ArrayWidget.propTypes = {
+    liform: LiformContextProp,
+    schema: SchemaProp,
+    name: PropTypes.string,
 }

@@ -1,7 +1,9 @@
 import React, { useRef, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { DateTimeInput } from './DateTimeInput'
 import { Field } from '../Field/Field'
 import { useForkedRef } from '../../util/ref'
+import { CompiledValueProp } from './compileValue'
 
 export function MobileKeyboardInput (props) {
     const {
@@ -34,4 +36,11 @@ export function MobileKeyboardInput (props) {
             onChange,
         }}
     />
+}
+
+MobileKeyboardInput.propTypes = {
+    inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    dateUtil: PropTypes.object,
+    valueObject: CompiledValueProp,
+    onChange: PropTypes.func,
 }

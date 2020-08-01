@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 /**
  * @see https://date-fns.org/v2.14.0/docs/format
  */
@@ -155,3 +157,20 @@ export function compileValue (dateUtil, valueProp, valueFormat) {
 
     return {format, parsed, views, input, display}
 }
+
+export const CompiledValueProp = PropTypes.exact({
+    format: PropTypes.string,
+    parsed: PropTypes.object,
+    views: PropTypes.arrayOf(PropTypes.string),
+    input: PropTypes.arrayOf(PropTypes.oneOfType([
+        PropTypes.exact({
+            type: PropTypes.oneOf(['value']),
+            value: PropTypes.string,
+            placeholder: PropTypes.string,
+        }),
+        PropTypes.exact({
+            text: PropTypes.string,
+        }),
+    ])),
+    display: PropTypes.string,
+})

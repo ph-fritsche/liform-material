@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { LiformContextProp } from 'liform-react-final/dist/form'
 
 export const Container = (props) => (
     <form
@@ -10,3 +12,16 @@ export const Container = (props) => (
         { props.children }
     </form>
 )
+
+Container.propTypes = {
+    handleSubmit: PropTypes.func,
+    handleReset: PropTypes.func,
+    method: PropTypes.string,
+    action: PropTypes.string,
+    liform: LiformContextProp.isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.arrayOf(PropTypes.element),
+        PropTypes.oneOf([null])
+    ]),
+}

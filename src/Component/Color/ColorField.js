@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Picker } from '../Picker/Picker'
 import { ChromePicker } from 'react-color'
 import { ColorInput } from './ColorInput'
@@ -49,3 +50,11 @@ export const ColorField = React.forwardRef(function ColorField(props, ref) {
         />
     )
 })
+
+ColorField.propTypes = {
+    PickerComponent: PropTypes.elementType,
+    PickerProps: PropTypes.object,
+    InputProps: PropTypes.object,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+}

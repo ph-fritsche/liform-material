@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core'
 
@@ -52,3 +53,9 @@ export const ColorInput = React.forwardRef(function ColorInput(props, ref) {
         />
     </>)
 })
+
+ColorInput.propTypes = {
+    className: PropTypes.string,
+    name: PropTypes.string,
+    value: PropTypes.string,
+}

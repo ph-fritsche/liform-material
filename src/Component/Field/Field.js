@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { TextField } from '@material-ui/core';
 import { makeStyles, fade } from '@material-ui/core'
 import clsx from 'clsx'
@@ -128,3 +129,18 @@ export const Field = React.forwardRef(function Field(props, ref) {
         )}
     />
 })
+
+Field.propTypes = {
+    name: PropTypes.string,
+    className: PropTypes.string,
+    inputBaseRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    isFocusLocked: PropTypes.bool,
+    isTarget: PropTypes.bool,
+    variant: PropTypes.string,
+    select: PropTypes.bool,
+    InputProps: PropTypes.object,
+    SelectProps: PropTypes.object,
+    inputProps: PropTypes.object,
+    inputComponent: PropTypes.elementType,
+}

@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Chip, Avatar } from '@material-ui/core'
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import { useDropzone } from 'react-dropzone'
@@ -44,6 +45,11 @@ const FileChip = ({file, avatar, ...others}) => {
             {...others}
         />
     )
+}
+
+FileChip.propTypes = {
+    file: PropTypes.instanceOf(File),
+    avatar: PropTypes.func,
 }
 
 const renderValue = ({baseElement, avatar, onBlur, onChange, setValueFocus}, value) => {
@@ -246,3 +252,22 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
         </div>
     )
 })
+
+FileDropInput.propTypes = {
+    accept: PropTypes.string,
+    avatar: FileChip.propTypes.avatar,
+    className: PropTypes.string,
+    inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    name: PropTypes.string,
+    multiple: PropTypes.bool,
+    onBlur: PropTypes.func,
+    onChange: PropTypes.func,
+    onFocus: PropTypes.func,
+    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.element, PropTypes.arrayOf(PropTypes.element, PropTypes.string), PropTypes.oneOf([null])]),
+    setDropActive: PropTypes.func,
+    value: PropTypes.oneOfType([
+        PropTypes.oneOf([null, '']),
+        PropTypes.instanceOf(File),
+        PropTypes.arrayOf(PropTypes.instanceOf(File)),
+    ]),
+}

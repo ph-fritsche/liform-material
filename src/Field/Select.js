@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import { MenuItem, Chip } from '@material-ui/core'
 import { BaseRender } from './BaseRender'
+import { FieldRenderProps } from 'liform-react-final/dist/field'
 
 function mapOptionsLabels (values, labels) {
     const o = {}
@@ -64,3 +65,5 @@ export const Select = props => {
         </BaseRender>
     )
 }
+
+Select.propTypes = FieldRenderProps

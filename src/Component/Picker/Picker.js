@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Field } from '../Field/Field'
 import { useForkedCallback } from '../../util/func'
 import { useForkedRef, updateRef } from '../../util/ref'
@@ -75,3 +76,15 @@ export const Picker = React.forwardRef(function Picker(props, ref) {
         />
     </>)
 })
+
+Picker.propTypes = {
+    open: PropTypes.bool,
+    toggle: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    onClick: PropTypes.func,
+    onClose: PropTypes.func,
+    value: PropTypes.any,
+    onChange: PropTypes.func,
+    ModalProps: PropTypes.object,
+    PickerComponent: PropTypes.elementType,
+    PickerProps: PropTypes.object,
+}

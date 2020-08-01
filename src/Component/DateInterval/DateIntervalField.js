@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react'
+import PropTypes from 'prop-types'
 import { InputAdornment, Typography } from '@material-ui/core'
 import { CalendarTodayOutlined } from '@material-ui/icons'
 import { Field } from '../Field/Field'
@@ -52,3 +53,12 @@ export const DateIntervalField = React.forwardRef(function DateIntervalField(pro
         />
     )
 })
+
+DateIntervalField.propTypes = {
+    InputProps: PropTypes.object,
+    inputComponent: PropTypes.elementType,
+    inputProps: PropTypes.object,
+    value: PropTypes.string,
+    valuePattern: PropTypes.string,
+    onChange: PropTypes.func,
+}

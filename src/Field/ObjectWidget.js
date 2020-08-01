@@ -1,9 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Field } from 'react-final-form'
 import { FormLabel, FormHelperText, Grid } from '@material-ui/core'
 import { Lifield, finalizeName, mapProperties } from 'liform-react-final'
 
 import { getFieldError } from '../error'
+import { LiformContextProp } from 'liform-react-final/dist/form'
+import { SchemaProp } from 'liform-react-final/dist/schema'
 
 export const ObjectWidget = props => {
     const {
@@ -58,6 +61,12 @@ export const ObjectWidget = props => {
             </Grid>
         </fieldset>
     )
+}
+
+ObjectWidget.propTypes = {
+    liform: LiformContextProp,
+    schema: SchemaProp,
+    name: PropTypes.string,
 }
 
 function getAttrProp(schema, propName) {

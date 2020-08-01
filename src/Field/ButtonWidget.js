@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
+import { SchemaProp } from 'liform-react-final/dist/schema'
 
 export const ButtonWidget = props => {
     const {
@@ -11,4 +12,8 @@ export const ButtonWidget = props => {
             {schema.title}
         </Button>
     )
+}
+
+ButtonWidget.propTypes = {
+    schema: SchemaProp,
 }

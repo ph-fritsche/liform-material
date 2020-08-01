@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { Choice } from './Choice'
 import { BaseRender } from './BaseRender'
+import { FieldRenderProps } from 'liform-react-final/dist/field'
 
 export const StringRender = props => {
     const {
@@ -11,6 +12,8 @@ export const StringRender = props => {
         ? <Choice {...props}/>
         : <TextRender {...props}/>
 }
+
+StringRender.propTypes = FieldRenderProps
 
 const TextRender = props => {
     const {
@@ -45,3 +48,5 @@ const TextRender = props => {
         />
     )
 }
+
+TextRender.propTypes = FieldRenderProps
