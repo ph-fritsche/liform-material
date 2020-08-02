@@ -1,52 +1,61 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Lifield, finalizeName } from 'liform-react-final'
-import { Grid } from '@material-ui/core'
-import { LiformContextProp } from 'liform-react-final/dist/form'
+import { Grid, FormControl, FormLabel, FormHelperText } from '@material-ui/core'
+import { FormRenderProps } from 'liform-react-final'
 
-export const Form = (props) => (
-    <Lifield
-        schema={props.liform.schema}
-    />
-)
-
-Form.propTypes = {
-    liform: LiformContextProp.isRequired,
+export const Form = props => {
+    const {
+        liform: {
+            schema = true,
+        },
+    } = props
+    return <Lifield schema={schema}/>
 }
 
-export const Action = ({liform: { schema }}) => (
-    <Grid container
-        spacing={ schema.attr && schema.attr.gridSpacing || 3 }
-        justify="space-evenly"
-    >
-        <Grid item>
-            <Lifield
-                schema={{        
-                    widget: ['reset','button'],
-                    title: 'Reset',
-                }}
-            />
-        </Grid>
-        <Grid item>
-            <Lifield
-                schema={{        
-                    widget: ['submit','button'],
-                    title: 'Submit',
-                }}
-            />
-        </Grid>
-    </Grid>
-)
+Form.propTypes = FormRenderProps
 
-Action.propTypes = {
-    liform: LiformContextProp.isRequired,
+export const Action = props => {
+    const {
+        liform: {
+            schema = true,
+        },
+    } = props
+
+    return (
+        <Grid container
+            spacing={ schema.attr && schema.attr.gridSpacing || 3 }
+            justify="space-evenly"
+        >
+            <Grid item>
+                <Lifield
+                    schema={{        
+                        widget: ['reset','button'],
+                        title: 'Reset',
+                    }}
+                />
+            </Grid>
+            <Grid item>
+                <Lifield
+                    schema={{        
+                        widget: ['submit','button'],
+                        title: 'Submit',
+                    }}
+                />
+            </Grid>
+        </Grid>
+    )
 }
+
+Action.propTypes = FormRenderProps
 
 const Errors = ({errors, title}) => (
-    <div className="liform-error-group">
-        { title && <strong>{title}</strong> }
-        { errors.map((e,i) => <div key={i} className="liform-error">{e}</div>) }
-    </div>
+    <Grid item xs={12}>
+        <FormControl error={true}>
+            <FormLabel error={true}>{title}</FormLabel>
+            { errors.map((e,i) => <FormHelperText key={i} error={true}>{e}</FormHelperText>) }
+        </FormControl>
+    </Grid>
 )
 
 Errors.propTypes = {
@@ -55,18 +64,29 @@ Errors.propTypes = {
 }
 
 export const FormErrors = (props) => {
-    if (!props.liform.meta.errors) {
-        return null
-    }
+    const {
+        liform: {
+            form,
+            schema = true,
+            meta: {
+                errors = {},
+            },
+        },
+    } = props
 
-    const registered = props.liform.form.getRegisteredFields()
-    const errorPaths = Object.keys(props.liform.meta.errors).filter(key => registered.indexOf(finalizeName(key)) < 0)
+    const registered = form.getRegisteredFields()
+    const errorPaths = Object.keys(errors).filter(key => registered.indexOf(finalizeName(key)) < 0)
 
-    return <div className="liform-errors">
-        { errorPaths.map(propertyPath => <Errors key={propertyPath} title={propertyPath} errors={props.liform.meta.errors[propertyPath]}/>) }
-    </div>
+    return errorPaths.length === 0
+        ? null
+        : (
+            <Grid container
+                spacing={ schema.attr && schema.attr.gridSpacing || 3 }
+                justify="space-evenly"
+            >
+                { errorPaths.map(propertyPath => <Errors key={propertyPath} title={propertyPath} errors={errors[propertyPath]}/>) }
+            </Grid>
+        )
 }
 
-FormErrors.propTypes = {
-    liform: LiformContextProp.isRequired,
-}
+FormErrors.propTypes = FormRenderProps
