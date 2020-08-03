@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
-import { LiformContextProp, SchemaProp } from 'liform-react-final'
+import { SchemaProp } from 'liform-react-final'
 
 export const ButtonWidget = props => {
     const {
