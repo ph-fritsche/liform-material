@@ -75,6 +75,8 @@ describe('Basic input', () => {
         userEvent.type(rendered.field, 'baz')
 
         expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, [rendered.field.name]: 'baz'})
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify('baz'))
     })
 
     it('Render and change number input', () => {
@@ -287,6 +289,23 @@ describe('Choice', () => {
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify('c'))
     })
 
+    it('Render and change expanded choice', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'string',
+                title: 'foo',
+                enum: ['a', 'b', 'c'],
+                enumTitles: ['Abc', 'Bcd', 'Cde'],
+                choiceExpanded: true,
+            },
+            value: 'b',
+        })
+
+        userEvent.click(rendered.result.getByLabelText('Cde'))
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify('c'))
+    })
+
     it('Render and change small multiple select', () => {
         const rendered = testLifield({
             schema: {
@@ -322,5 +341,70 @@ describe('Choice', () => {
         userEvent.selectOptions(rendered.field, rendered.result.getByText('Cde'))
 
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(['b', 'c']))
+    })
+
+    it('Render and change expanded multiple choice', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'array',
+                title: 'foo',
+                enum: ['a', 'b', 'c'],
+                enumTitles: ['Abc', 'Bcd', 'Cde'],
+                choiceExpanded: true,
+            },
+            value: ['b'],
+        })
+
+        userEvent.click(rendered.result.getByLabelText('Cde'))
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(['b', 'c']))
+
+        userEvent.click(rendered.result.getByLabelText('Bcd'))
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(['c']))
+    })
+})
+
+describe('Hidden', () => {
+    it('Render and change hidden input', () => {
+        const rendered = renderLifield({
+            schema: {
+                type: 'string',
+                widget: 'hidden',
+                title: 'foo',
+            },
+            value: 'bar',
+        })
+
+        expect(rendered.form).toEqualFormValues({'form': 'bar'})
+
+        const input = rendered.form.querySelector('input[name=form]')
+
+        fireEvent.change(input, {target: {value: 'baz'}})
+        fireEvent.blur(input)
+
+        expect(rendered.form).toHaveFormValues({...rendered.expectedFormValues, 'form': 'baz'})
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify('baz'))
+    })
+
+    it('Render errors for hidden input', () => {
+        const rendered = renderLifield({
+            schema: {
+                type: 'string',
+                widget: 'hidden',
+                title: 'foo',
+            },
+            value: 'bar',
+            meta: {
+                errors: {
+                    '': ['This is invalid.'],
+                },
+            }
+        })
+
+        expect(rendered.form).toEqualFormValues({'form': 'bar'})
+
+        expect(rendered.field).toHaveTextContent('This is invalid.')
     })
 })

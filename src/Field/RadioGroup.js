@@ -6,28 +6,37 @@ export const RadioGroup = props => {
     const {
         schema = true,
         meta,
-        input,
+        input: {
+            name,
+            onBlur,
+            onFocus,
+            onChange,
+            value,
+        },
     } = props
 
     return (
         <FormControl
             component="fieldset"
             error={!!meta.error}
+            onBlur={onBlur}
+            onFocus={onFocus}
         >
             <FormLabel component="legend">{schema.title}</FormLabel>
             <MaterialRadioGroup
-                value={input.value}
-                onChange={(e) => input.onChange(e.target.value)}
+                name={name}
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
             >
-                {(schema.enum || schema.items && schema.items.enum).map(elValue =>
+                {(schema.enum || schema.items && schema.items.enum).map((elValue, i) =>
                     <FormControlLabel
                         key={elValue}
                         control={
                             <Radio value={elValue}/>
                         }
                         label={
-                            schema.enumTitles && schema.enumTitles[elValue]
-                            || schema.items && schema.items.enumTitles && schema.items.enumTitles[elValue]
+                            schema.enumTitles && schema.enumTitles[i]
+                            || schema.items && schema.items.enumTitles && schema.items.enumTitles[i]
                             || elValue
                         }
                     />

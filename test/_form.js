@@ -50,10 +50,12 @@ export function getFormValues (formElement) {
                     })
                 }
             } else if (e instanceof HTMLInputElement && e.getAttribute('type') === 'checkbox') {
-                values.push({
-                    key: e.getAttribute('name'),
-                    value: e.checked,
-                })
+                if (e.checked || e.hasAttribute('value') === false || e.getAttribute('value') === '') {
+                    values.push({
+                        key: e.getAttribute('name'),
+                        value: (e.hasAttribute('value') && e.getAttribute('value') !== '') ? e.getAttribute('value') : e.checked,
+                    })
+                }
             } else if (e instanceof HTMLInputElement && e.getAttribute('type') === 'radio') {
                 if (e.checked) {
                     values.push({

@@ -1,25 +1,33 @@
 import React from 'react'
 import { FormControl, FormLabel, FormHelperText } from '@material-ui/core'
-import { FieldRenderProps } from 'liform-react-final/dist/field'
+import { FieldRenderProps } from 'liform-react-final'
 
 export const Hidden = props => {
     const {
         schema = true,
         meta,
-        input,
+        input: {
+            name,
+            onBlur,
+            onFocus,
+            onChange,
+            value,
+        },
     } = props
 
-    if (!meta.error) {
-        return <input {...input} type="hidden"/>
+    if (!meta.errors) {
+        return <input type="hidden" name={name} value={value} onChange={e => onChange(e.target.value)} onBlur={e => onChange(e.target.value)}/>
     }
 
     return (
         <FormControl
             component="fieldset"
             error={!!meta.error}
+            onBlur={onBlur}
+            onFocus={onFocus}
         >
             <FormLabel component="legend">{schema.title}</FormLabel>
-            <input {...input} type="hidden"/>
+            <input type="hidden" name={name} value={value} onChange={e => onChange(e.target.value)} onBlur={e => onChange(e.target.value)}/>
             <FormHelperText>{meta.error || schema.description}</FormHelperText>
         </FormControl>
     )

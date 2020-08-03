@@ -156,6 +156,48 @@ describe('Get form values', () => {
             {key: 'field', value: 'baz'},
         ])
     })
+
+    it('Get checkbox input', () => {
+        body.innerHTML = `
+            <form id='testform'>
+                <input type='checkbox' name='fieldA' checked/>
+                <input type='checkbox' name='fieldB'/>
+                <input type='checkbox' name='fieldC' value='foo' checked/>
+                <input type='checkbox' name='fieldD' value='bar'/>
+            </form>
+        `
+
+        expect(getFormValues(body.querySelector('#testform'))).toEqual([
+            {key: 'fieldA', value: true},
+            {key: 'fieldB', value: false},
+            {key: 'fieldC', value: 'foo'},
+        ])
+    })
+
+    it('Get radio input', () => {
+        body.innerHTML = `
+            <form id='testform'>
+                <input type='radio' name='fieldA' value='foo'/>
+                <input type='radio' name='fieldA' value='bar'/>
+                <input type='radio' name='fieldA' value='baz'/>
+            </form>
+        `
+
+        expect(getFormValues(body.querySelector('#testform'))).toEqual([
+        ])
+
+        body.innerHTML = `
+            <form id='testform'>
+                <input type='radio' name='fieldA' value='foo'/>
+                <input type='radio' name='fieldA' value='bar' checked/>
+                <input type='radio' name='fieldA' value='baz'/>
+            </form>
+        `
+
+        expect(getFormValues(body.querySelector('#testform'))).toEqual([
+            {key: 'fieldA', value: 'bar'},
+        ])
+    })
 })
 
 describe('Expect extension toEqualFormValues', () => {
