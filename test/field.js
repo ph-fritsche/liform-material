@@ -405,6 +405,6 @@ describe('Hidden', () => {
 
         expect(rendered.form).toEqualFormValues({'form': 'bar'})
 
-        expect(rendered.field).toHaveTextContent('This is invalid.')
+        expect(rendered.form).toHaveTextContent('This is invalid.')
     })
 })

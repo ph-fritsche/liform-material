@@ -15,7 +15,7 @@ export const Hidden = props => {
         },
     } = props
 
-    if (!meta.errors) {
+    if (!meta.error) {
         return <input type="hidden" name={name} value={value} onChange={e => onChange(e.target.value)} onBlur={e => onChange(e.target.value)}/>
     }
 
