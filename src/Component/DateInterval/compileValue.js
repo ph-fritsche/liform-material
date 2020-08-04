@@ -36,7 +36,7 @@ export function aspectsFromValue (parsedValue, valuePattern) {
                 v += (parsedValue.weeks ?? 0) * 7
             }
             aspects.push(
-                {type: 'value', key: o[2], value: v },
+                {key: o[2], value: v, label: o[2].substr(0,1).toUpperCase() + o[2].substr(1)},
                 {text: o[1]},
             )
         }
@@ -67,9 +67,9 @@ export const CompiledValueProp = PropTypes.exact({
     parsed: PropTypes.object,
     input: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.exact({
-            type: PropTypes.oneOf(['value']),
             key: PropTypes.string,
             value: PropTypes.oneOfType([PropTypes.oneOf(['+','-']), PropTypes.number]),
+            label: PropTypes.string,
             isNumeric: PropTypes.bool,
         }),
         PropTypes.exact({

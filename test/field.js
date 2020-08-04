@@ -5,6 +5,7 @@ import { fireEvent } from '@testing-library/react'
 import { Liform, Lifield, htmlizeName } from 'liform-react-final'
 import * as customQueries from './_query'
 import MaterialTheme from '../src'
+import DateFnsUtils from '@date-io/date-fns'
 
 function FieldTestLiform (props) {
     return (
@@ -406,5 +407,76 @@ describe('Hidden', () => {
         expect(rendered.form).toEqualFormValues({'form': 'bar'})
 
         expect(rendered.form).toHaveTextContent('This is invalid.')
+    })
+})
+
+describe('Date', () => {
+    const dateUtil = new DateFnsUtils()
+
+    it('Render and change date input per picker', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'string',
+                widget: 'date',
+                title: 'foo',
+            },
+        })
+
+        userEvent.click(rendered.field)
+
+        // since the value is undefined current month should be displayed in the picker
+        const d = new Date()
+        userEvent.click(rendered.result.getByLabelText(dateUtil.format(d, 'fullDate')))
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
+    })
+
+    it('Render and change date input per keyboard', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'string',
+                widget: 'date',
+                title: 'foo',
+            },
+        })
+
+        const getActiveElement = (document => document.activeElement).bind(undefined, rendered.form.ownerDocument)
+
+        const d = new Date()
+
+        userEvent.tab()
+
+        expect(rendered.field).toHaveFocus()
+        expect(getActiveElement()).toHaveAttribute('aria-label', 'Year')
+        expect(getActiveElement()).toHaveValue(d.getFullYear())
+
+        // next year
+        fireEvent.keyDown(getActiveElement(), {key: 'ArrowUp'})
+        d.setFullYear(d.getFullYear() +1)
+
+        // next aspect
+        fireEvent.keyDown(getActiveElement(), {key: 'ArrowRight'})
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
+        expect(getActiveElement()).toHaveAttribute('aria-label', 'Month')
+        expect(getActiveElement()).toHaveValue(d.getMonth()+1)
+
+        // this should jump to the next aspect
+        userEvent.type(getActiveElement(), '8')
+        d.setMonth(7)
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
+        expect(getActiveElement()).toHaveAttribute('aria-label', 'Day of the month')
+        expect(getActiveElement()).toHaveValue(d.getDate())
+
+        userEvent.type(getActiveElement(), '1')
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
+        expect(getActiveElement()).toHaveValue(1)
+
+        userEvent.type(getActiveElement(), '7')
+        d.setDate(17)
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
     })
 })

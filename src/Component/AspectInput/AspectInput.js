@@ -1,28 +1,40 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react'
+import React, { useEffect, useReducer, useRef, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import { useForkedRef } from '../../util/ref'
-import { shallowEqual } from '../../util/equal'
+import { useForkedCallback } from '../../util/func'
 
 const useStyle = makeStyles(theme => ({
     value: {
         whiteSpace: 'pre',
+        boxSizing: 'content-box',
+        padding: '2px 2px',
+        margin: '-2px -2px',
+        outline: 0,
     },
     valueFocus: {
         background: theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark,
         color: theme.palette.primary.contrastText,
+        '&::selection': {
+            background: theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark,
+            color: theme.palette.primary.contrastText,
+        },
+        fontSize: 'inherit',
+        border: 0,
+        outline: 0,
     },
 }))
 
 const resetInput = aspects => {
-    const i = aspects.findIndex(p => p.type === 'value')
+    const i = aspects.findIndex(p => Object.keys(p).includes('value'))
     const v = aspects[i].value
     return {index: i, value: v}
 }
 
 export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     const {
+        id,
         className,
 
         onBlur: onBlurProp,
@@ -51,7 +63,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     const [activeAspect, updateAspect] = useReducer((state, action) => {
         if (action.type === 'moveFocus' && action.step) {
             for (let i = state.index + action.step; i >= 0 && i < aspects.length; i += action.step) {
-                if (aspects[i].type === 'value') {
+                if (Object.keys(aspects[i]).includes('value')) {
                     return {index: i, value: aspects[i].value}
                 }
             }
@@ -69,10 +81,8 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     }, aspects, resetInput)
 
     useEffect(() => {
-        if (isInputFocused && aspects[activeAspect.index].value != activeAspect.value) {
+        if (aspects[activeAspect.index].value != activeAspect.value) {
             updateAspect({type: 'change', value: aspects[activeAspect.index].value})
-        } else if (!isInputFocused && !shallowEqual(resetInput(aspects), activeAspect)) {
-            updateAspect({type: 'reset'})
         }
     // should not run on changes of activeAspect
     /* eslint-disable react-hooks/exhaustive-deps */
@@ -99,6 +109,10 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         }
 
         const isNumericInput = Boolean(aspects[activeAspect.index].isNumeric ?? true)
+
+        if (isNumericInput && isNaN(newValue)) {
+            return
+        }
 
         const paddedValue = !aspects[activeAspect.index].placeholder
             ? newValue
@@ -165,12 +179,14 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         }
     }
 
-    const onFocus = () => setInputFocus(true)
-
-    const onBlur = event => {
-        commitAspect(event.target.value)
-        setInputFocus(false)
-    }
+    const gridRef = useRef()
+    const onFocus = useForkedCallback(onFocusProp, (e) => e.target.getAttribute('tabindex') === '0' && setInputFocus(true), [setInputFocus])
+    const onBlur = useCallback(event => {
+        if (!event.relatedTarget || event.relatedTarget.parentElement !== gridRef.current) {
+            setInputFocus(false)
+            onBlurProp(event)
+        }
+    }, [onBlurProp, setInputFocus])
 
     useEffect(() => {
         if (isInputFocused) {
@@ -179,67 +195,84 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     }, [aspects, isInputFocused, activeAspect.index])
 
     const renderedValue = isInputFocused
-        ? aspects.map((a,i) => (
-            a.type === 'value'
-                ? (
-                    // key event handled by parent
-                    /* eslint-disable jsx-a11y/click-events-have-key-events */
-                    <span
-                        key={i}
-                        role="textbox"
-                        tabIndex={-1}
-                        className={clsx(
-                            style.value,
-                            activeAspect.index === i && style.valueFocus,
-                        )}
-                        onMouseDown={event => {
-                            updateAspect({type: 'setFocus', index: i})
-                            event.preventDefault()
-                        }}
-                        onClick={event => event.stopPropagation()}
-                    >
-                        { i === activeAspect.index ? activeAspect.value : a.value }
-                    </span>
-                )
-                : (
-                    <span
-                        key={i}
-                        className={style.formatter}
-                    >
-                        {a.text ?? a.placeholder}
-                    </span>
-                )
-        ))
-        : display
-            ? <span className={style.value}>{display}</span>
-            : <span className="placeholder">{placeholder}</span>
+        ? aspects.map((a,i) => {
+            if (Object.keys(a).includes('value')) {
+                const isActive = i === activeAspect.index
+                const isNumeric = a.isNumeric ?? true
+                const AspectComponent = isActive ? 'input' : 'span'
 
-    return (
+                return (
+                    <AspectComponent
+                        key={i}
+                        aria-label={a.label}
+                        onClick={event => {
+                            updateAspect({type: 'setFocus', index: i})
+                            event.stopPropagation()
+                        }}
+                        title={a.label}
+                        {...(isActive
+                            ? {
+                                ref: forkedInputRef,
+                                role: 'textbox',
+                                className: clsx(style.value, style.valueFocus),
+                                tabIndex: 0,
+                                onBlur: event => event.target.value !== aspects[activeAspect.index].value && commitAspect(activeAspect.value),
+                                onKeyDown,
+                                onChange,
+                                value: activeAspect.value,
+
+                                // style of number inputs is suspect to the user agent
+                                type: isNumeric ? 'tel' : 'text',
+                                pattern: a.pattern || (isNumeric ? '\\d*\\' + String(1.5).substr(1,1) + '\\d*' : undefined),
+
+                                style: { width: a.placeholder ? a.placeholder.length + 'ch' : undefined },
+                            }
+                            : {
+                                role: 'gridcell',
+                                className: style.value,
+                                tabIndex: -1,
+                            }
+                        )}
+                    >
+                        { isActive ? undefined : a.value }
+                    </AspectComponent>
+                )
+            }
+
+            return (
+                <span
+                    key={i}
+                    className={style.formatter}
+                >
+                    {a.text ?? a.placeholder}
+                </span>
+            )
+        })
+        : display
+            ? <span tabIndex="-1" className={style.value}>{display}</span>
+            : <span tabIndex="-1" className={clsx(style.value, 'placeholder')}>{placeholder}</span>
+
+    return <>
         <div
-            tabIndex={-1}
-            onFocus={onFocusProp}
-            onBlur={onBlurProp}
-            className={clsx (
+            ref={gridRef}
+            id={id}
+            role={ isInputFocused ? 'grid' : undefined }
+            onBlur={onBlur}
+            onFocus={onFocus}
+            className={clsx(
                 className,
                 style.input
             )}
         >
+            { isInputFocused ? null : <span role="button" ref={forkedInputRef} tabIndex="0"/> }
             { renderedValue }
-            <input
-                ref={forkedInputRef}
-                type={ aspects[activeAspect.index].isNumeric ?? true ? 'number' : 'text' }
-                onBlur={onBlur}
-                onFocus={onFocus}
-                onKeyDown={onKeyDown}
-                onChange={onChange}
-                value={isInputFocused ? activeAspect.value : ''}
-                style={{maxHeight: 0, maxWidth: 0, padding: 0, margin: 0, border: 0}}
-            />
         </div>
-    )
+        <input type="hidden" name={name} value={aspects.map(a => Object.keys(a).includes('value') ? a.value : a.text).join('')}/>
+    </>
 })
 
 AspectInput.propTypes = {
+    id: PropTypes.string,
     className: PropTypes.string,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
@@ -247,9 +280,10 @@ AspectInput.propTypes = {
     commit: PropTypes.func,
     aspects: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.shape({
-            type: PropTypes.oneOf(['value']).isRequired,
             value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+            label: PropTypes.string,
             placeholder: PropTypes.string,
+            pattern: PropTypes.string,
             isNumeric: PropTypes.bool,
         }),
         PropTypes.shape({
@@ -266,5 +300,5 @@ AspectInput.propTypes = {
         PropTypes.element,
         PropTypes.arrayOf([PropTypes.string, PropTypes.element]),
         PropTypes.oneOf([null])
-    ]).isRequired,
+    ]),
 }

@@ -76,6 +76,23 @@ export function aspectsFromPlaceholders (placeholders) {
     return aspects
 }
 
+const aspectsLabel = {
+    'y': 'Year',
+    'Y': 'Year',
+    'R': 'ISO year',
+    'Q': 'Quarter',
+    'M': 'Month',
+    'w': 'Week',
+    'I': 'ISO week',
+    'd': 'Day of the month',
+    'D': 'Day of the year',
+    'e': 'Day of the week',
+    'i': 'ISO day of the week',
+    'H': 'Hours',
+    'm': 'Minutes',
+    's': 'Seconds',
+}
+
 export function buildInputAspects (aspects) {
     const dateAspects = []
 
@@ -88,7 +105,7 @@ export function buildInputAspects (aspects) {
         } else if (k[0] === 'w' || k[0] === 'I') {
             dateAspects.push({text: 'W'})
         }
-        dateAspects.push({type: 'value', placeholder: k})
+        dateAspects.push({placeholder: k, label: aspectsLabel[k.substr(0,1)]})
     }
 
     const timeAspects = []
@@ -98,7 +115,7 @@ export function buildInputAspects (aspects) {
         } else if (timeAspects.length) {
             timeAspects.push({text: ':'})
         }
-        timeAspects.push({type: 'value', placeholder: k})
+        timeAspects.push({placeholder: k, label: aspectsLabel[k.substr(0,1)]})
     }
 
     return [].concat(
@@ -164,9 +181,9 @@ export const CompiledValueProp = PropTypes.exact({
     views: PropTypes.arrayOf(PropTypes.string),
     input: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.exact({
-            type: PropTypes.oneOf(['value']),
             value: PropTypes.string,
             placeholder: PropTypes.string,
+            label: PropTypes.string,
         }),
         PropTypes.exact({
             text: PropTypes.string,
