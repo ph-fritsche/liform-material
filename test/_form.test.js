@@ -1,4 +1,4 @@
-import { normalizeFormValues, getFormValues } from './_form'
+import { normalizeFormValues, getFormValues, resemblesFormValue } from './_form'
 import './_form'
 
 describe('Normalize form values', () => {
@@ -152,8 +152,22 @@ describe('Get form values', () => {
         `
 
         expect(getFormValues(body.querySelector('#testform'))).toEqual([
-            {key: 'field', value: 'bar'},
-            {key: 'field', value: 'baz'},
+            {key: 'field', value: ['bar', 'baz']},
+        ])
+
+        body.innerHTML = `
+            <form id='testform'>
+                <select name='field[]' multiple>
+                    <option>foo</option>
+                    <option selected>bar</option>
+                    <option selected value='baz'>BAZ</option>
+                </select>
+            </form>
+        `
+
+        expect(getFormValues(body.querySelector('#testform'))).toEqual([
+            {key: 'field[]', value: 'bar'},
+            {key: 'field[]', value: 'baz'},
         ])
     })
 
@@ -197,6 +211,70 @@ describe('Get form values', () => {
         expect(getFormValues(body.querySelector('#testform'))).toEqual([
             {key: 'fieldA', value: 'bar'},
         ])
+    })
+})
+
+describe('Resembling comparison', () => {
+    it.each([
+        ['foo', 'foo', true],
+        ['1', 1, true],
+        ['0', 0, true],
+        ['false', false, true],
+        ['', '', true],
+        ['', null, true],
+        ['', undefined, true],
+        ['', [], true],
+        ['', 'foo', false],
+        ['', 1, false],
+        ['', 0, false],
+        ['', false, false],
+        ['', ['0'], false],
+        [0, 0, true],
+        [0, '0', true],
+        [0, '', false],
+        [0, false, false],
+        [1, 1, true],
+        [1, '1', true],
+        [1, 'foo', false],
+        [1, true, false],
+        [true, true, true],
+        [true, 'true', true],
+        [true, '1', true],
+        [true, 1, true],
+        [true, 'foo', true],
+        [true, ['a'], true],
+        [true, '0', false],
+        [true, 0, false],
+        [true, [], false],
+        [true, '', false],
+        [false, false, true],
+        [false, 'false', true],
+        [false, '', true],
+        [false, [], true],
+        [false, 0, true],
+        [false, null, true],
+        [false, '0', true],
+        [null, null, true],
+        [null, undefined, true],
+        [null, '', true],
+        [null, '0', false],
+        [null, false, false],
+        [null, 0, false],
+        [undefined, null, true],
+        [undefined, undefined, true],
+        [undefined, '', true],
+        [undefined, '0', false],
+        [undefined, false, false],
+        [undefined, 0, false],
+        [[], '', true],
+        [[], null, true],
+        [[], undefined, true],
+        [[], true, false],
+        [[], 0, false],
+        [['a','b'], 'a,b', true],
+        [['a','b'], true, false],
+    ])('Compare to %p - %p should result in %p', (expectedValue, receivedValue, expectedComparison) => {
+        expect(resemblesFormValue(expectedValue, receivedValue)).toBe(expectedComparison)
     })
 })
 
@@ -285,5 +363,105 @@ describe('Expect extension toContainFormValues', () => {
         expect(form).toContainFormValues({
             'foo': 'fooValue',
         })
+    })
+})
+
+describe('Expect extention toResembleInputValue', () => {
+    it.each([
+        [`<input value=""/>`, [null, undefined, '', false, []], ['0', 0]],
+        [`<input value="0"/>`, [0, false, '0'], [null, undefined, []]],
+        [`<input value="1"/>`, [1, true, '1'], ['foo']],
+        [`<input value="fooValue"/>`, ['fooValue', true], [1]],
+        [`<input type="checkbox" value="fooValue" checked/>`, ['fooValue', true], [1, 'true']],
+        [`<input type="checkbox" checked/>`, [true, 'true'], ['foo']],
+        [`<input type="checkbox" value="fooValue"/>`, ['', null, undefined, false, []], [0]],
+        [`<input type="number" value=""/>`, [null, undefined, '', false], [0]],
+        [`<input type="number" value="0"/>`, [0, false, '0'], [null, undefined, '']],
+        [`<input type="number" value="1"/>`, [1, true, '1'], [1.2]],
+        [`<select><option selected>bar</option></select>`, ['bar', ['bar'], true], [[], null, undefined, '', false]],
+        [`<select multiple><option selected>bar</option><option selected>baz</option></select>`, [['bar', 'baz'], 'bar,baz', true], [1]],
+        [`<select multiple></select>`, [[], false, null, undefined, ''], [0]],
+    ])('Compare input values %p', (field, expectedValues, unexpectedValues) => {
+        const container = document.createElement('div')
+        container.innerHTML = field
+
+        for (const v of expectedValues) {
+            expect(container.firstChild).toResembleInputValue(v)
+        }
+
+        for (const v of unexpectedValues) {
+            expect(() => {
+                expect(container.firstChild).toResembleInputValue(v)
+            }).toThrowError(JSON.stringify(v))
+        }
+    })
+})
+
+describe('Expect extension toResembleFormValues', () => {
+    const body = document.createElement('body')
+    body.innerHTML = `
+        <form id='testform'>
+            <input type='text' name='foo' value='fooValue'/>
+            <input type='number' name='bar' value=''/>
+            <input type='checkbox' name='baz' value='fooValue' checked/>
+            <select multiple name='choice'><option value='foo'/><option selected value='bar'/><option selected value='baz'/></select>
+            <select multiple name='choiceB[]'><option value='foo'/><option selected value='bar'/><option selected value='baz'/></select>
+        </form>
+    `
+    const form = body.querySelector('#testform')
+
+    it('Passes for resembling values', () => {
+        expect(form).toResembleFormValues({
+            'foo': true,
+            'bar': undefined,
+            'baz': true,
+            'choice': 'bar,baz',
+            'choiceB[0]': true,
+            'choiceB[1]': 'baz',
+        })
+
+        expect(form).toResembleFormValues({
+            'foo': 'fooValue',
+            'bar': '',
+            'baz': 'fooValue',
+            'choice': ['bar', 'baz'],
+            'choiceB[0]': 'bar',
+            'choiceB[1]': 'baz',
+        })
+    })
+
+    it('Fails for missing field', () => {
+        expect(() => {
+            expect(form).toResembleFormValues({
+                'foo': 'fooValue',
+                'bar': '',
+                'baz': 'fooValue',
+                'choice': ['bar', 'baz'],
+                'choiceB[0]': 'bar',
+                'choiceB[1]': 'baz',
+                'anotherField': 'fooValue',
+            })
+        }).toThrowError()
+    })
+
+    it('Fails for wrong value', () => {
+        expect(() => {
+            expect(form).toResembleFormValues({
+                'foo': 'fooValue',
+                'bar': 0,
+                'baz': 'fooValue',
+                'choice': ['bar', 'baz'],
+                'choiceB[0]': 'bar',
+                'choiceB[1]': 'baz',
+            })
+        }).toThrowError()
+    })
+
+    it('Fails for extra field', () => {
+        expect(() => {
+            expect(form).toResembleFormValues({
+                'foo': 'fooValue',
+            })
+        }).toThrowError()
     })
 })
