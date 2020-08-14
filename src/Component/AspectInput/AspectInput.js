@@ -17,7 +17,7 @@ const useStyle = makeStyles(theme => ({
         background: theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark,
         color: theme.palette.primary.contrastText,
         '&::selection': {
-            background: theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark,
+            background: 'transparent',
             color: theme.palette.primary.contrastText,
         },
         fontSize: 'inherit',
@@ -182,14 +182,21 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     const gridRef = useRef()
     const onFocus = useForkedCallback(onFocusProp, (e) => e.target.getAttribute('tabindex') === '0' && setInputFocus(true), [setInputFocus])
     const onBlur = useCallback(event => {
-        if (!event.relatedTarget || event.relatedTarget.parentElement !== gridRef.current) {
-            setInputFocus(false)
-            onBlurProp(event)
+        if (event.relatedTarget) {
+            let el = event.relatedTarget
+            do {
+                if (el === gridRef.current) {
+                    return
+                }
+            } while (el = el.parentElement)
         }
+        setInputFocus(false)
+        onBlurProp(event)
     }, [onBlurProp, setInputFocus])
 
     useEffect(() => {
         if (isInputFocused) {
+            inputRef.current.focus()
             inputRef.current.select()
         }
     }, [aspects, isInputFocused, activeAspect.index])
@@ -199,43 +206,43 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             if (Object.keys(a).includes('value')) {
                 const isActive = i === activeAspect.index
                 const isNumeric = a.isNumeric ?? true
-                const AspectComponent = isActive ? 'input' : 'span'
 
                 return (
-                    <AspectComponent
-                        key={i}
-                        aria-label={a.label}
-                        onClick={event => {
-                            updateAspect({type: 'setFocus', index: i})
-                            event.stopPropagation()
-                        }}
-                        title={a.label}
-                        {...(isActive
-                            ? {
-                                ref: forkedInputRef,
-                                role: 'textbox',
-                                className: clsx(style.value, style.valueFocus),
-                                tabIndex: 0,
-                                onBlur: event => event.target.value !== aspects[activeAspect.index].value && commitAspect(activeAspect.value),
-                                onKeyDown,
-                                onChange,
-                                value: activeAspect.value,
+                    <span key={i} role="gridcell">
+                        <input
+                            
+                            ref={ isActive ? forkedInputRef : null }
 
-                                // style of number inputs is suspect to the user agent
-                                type: isNumeric ? 'tel' : 'text',
-                                pattern: a.pattern || (isNumeric ? '\\d*\\' + String(1.5).substr(1,1) + '\\d*' : undefined),
+                            aria-label={a.label}
+                            title={a.label}
 
-                                style: { width: a.placeholder ? a.placeholder.length + 'ch' : undefined },
-                            }
-                            : {
-                                role: 'gridcell',
-                                className: style.value,
-                                tabIndex: -1,
-                            }
-                        )}
-                    >
-                        { isActive ? undefined : a.value }
-                    </AspectComponent>
+                            tabIndex={ isActive ? 0 : -1 }
+                            onFocus={event => {
+                                updateAspect({type: 'setFocus', index: i})
+                                event.stopPropagation()
+                            }}
+
+                            type="text"
+                            pattern={ a.pattern || (isNumeric ? '\\d*\\' + String(1.5).substr(1,1) + '\\d*' : undefined) }
+
+                            className={clsx(style.value, isActive && style.valueFocus)}
+                            style={{ width: a.placeholder ? a.placeholder.length + 'ch' : undefined }}
+                            {...(isActive
+                                ? {
+                                    onBlur: event => event.target.value !== aspects[activeAspect.index].value && commitAspect(activeAspect.value),
+                                    onKeyDown,
+                                    onChange,
+                                    value: activeAspect.value,
+                                }
+                                : {
+                                    className: style.value,
+                                    tabIndex: -1,
+                                    value: a.value,
+                                    readOnly: true,
+                                }
+                            )}
+                        />
+                    </span>
                 )
             }
 
@@ -243,20 +250,29 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                 <span
                     key={i}
                     className={style.formatter}
+                    aria-hidden="true"
                 >
                     {a.text ?? a.placeholder}
                 </span>
             )
         })
-        : display
-            ? <span tabIndex="-1" className={style.value}>{display}</span>
-            : <span tabIndex="-1" className={clsx(style.value, 'placeholder')}>{placeholder}</span>
+        : (
+            <span className="gridcell">
+                <span role="button" ref={forkedInputRef} tabIndex="0"/>
+                { display
+                    ? <span>{display}</span>
+                    : <span className="placeholder">{placeholder}</span>
+                }
+            </span>
+        )
 
     return <>
         <div
             ref={gridRef}
             id={id}
-            role={ isInputFocused ? 'grid' : undefined }
+            aria-labelledby={id + '-label'}
+            tabIndex='-1'
+            role="grid"
             onBlur={onBlur}
             onFocus={onFocus}
             className={clsx(
@@ -264,8 +280,9 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                 style.input
             )}
         >
-            { isInputFocused ? null : <span role="button" ref={forkedInputRef} tabIndex="0"/> }
-            { renderedValue }
+            <div role="row">
+                { renderedValue }
+            </div>
         </div>
         <input type="hidden" name={name} value={aspects.map(a => Object.keys(a).includes('value') ? a.value : a.text).join('')}/>
     </>
@@ -276,8 +293,8 @@ AspectInput.propTypes = {
     className: PropTypes.string,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
-    validate: PropTypes.func,
-    commit: PropTypes.func,
+    validate: PropTypes.func.isRequired,
+    commit: PropTypes.func.isRequired,
     aspects: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.shape({
             value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
