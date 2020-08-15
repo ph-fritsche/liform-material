@@ -7,23 +7,26 @@ import { useForkedCallback } from '../../util/func'
 
 const useStyle = makeStyles(theme => ({
     value: {
-        whiteSpace: 'pre',
         boxSizing: 'content-box',
         padding: '2px 2px',
         margin: '-2px -2px',
-        outline: 0,
     },
     valueFocus: {
         background: theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark,
-        color: theme.palette.primary.contrastText,
-        '&::selection': {
+        '& $input': {
+            outline: 0,
+
             background: 'transparent',
-            color: theme.palette.primary.contrastText,
+            color: 'transparent',
+            textShadow: '0 0 0 ' + theme.palette.primary.contrastText,
+            '&::selection': {
+                background: 'transparent',
+                color: 'transparent',
+                textShadow: '0 0 0 ' + theme.palette.primary.contrastText,
+            },
         },
-        fontSize: 'inherit',
-        border: 0,
-        outline: 0,
     },
+    input: {},
 }))
 
 const resetInput = aspects => {
@@ -97,12 +100,12 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         commitProp(committedValue, activeAspect.index)
     }
 
-    const onChange = event => {
-        let newValue = event.target.value === ''
-            || validateProp(event.target.value, activeAspect.index)
-            ? event.target.value
-            : validateProp(event.target.value.substr(-1), activeAspect.index)
-                && event.target.value.substr(-1)
+    const onInput = event => {
+        const inputValue = event.target.innerText
+
+        let newValue = inputValue === '' || validateProp(inputValue, activeAspect.index)
+            ? inputValue
+            : validateProp(inputValue.substr(-1), activeAspect.index) && inputValue.substr(-1)
 
         if (newValue === undefined) {
             return
@@ -129,16 +132,20 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                 : aspects[activeAspect.index].placeholder && String(newValue).trim().length >= aspects[activeAspect.index].placeholder.length
         )
 
+        updateAspect({type: 'change', value: paddedValue})
+
+        event.target.innerText = paddedValue
+        setSelection(event.target, true)
+
         if (nextCharOverflow) {
-            updateAspect({type: 'change', value: paddedValue})
             updateAspect({type: 'moveFocus', step: 1})
             commitAspect(paddedValue)
-        } else {
-            updateAspect({type: 'change', value: paddedValue})
         }
     }
 
     const onKeyDown = event => {
+        const inputValue = event.target.innerText
+
         const moveKeys = {
             'ArrowLeft': -1,
             'ArrowRight': 1,
@@ -146,7 +153,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         if (moveKeys[event.key]) {
             event.preventDefault()
 
-            commitAspect(event.target.value)
+            commitAspect(inputValue)
             updateAspect({type: 'moveFocus', step: moveKeys[event.key]})
         }
 
@@ -160,8 +167,8 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             const isNumericInput = Boolean(aspects[activeAspect.index].isNumeric ?? true)
 
             let newValue = isNumericInput
-                ? Number(event.target.value) + addKeys[event.key]
-                : event.target.value.length > 0 && String.fromCharCode(event.target.value.charCodeAt(event.target.value.length - 1) + addKeys[event.key])
+                ? Number(inputValue) + addKeys[event.key]
+                : inputValue.length > 0 && String.fromCharCode(inputValue.charCodeAt(inputValue.length - 1) + addKeys[event.key])
 
             newValue = validateProp(newValue, activeAspect.index)
 
@@ -188,7 +195,8 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                 if (el === gridRef.current) {
                     return
                 }
-            } while (el = el.parentElement)
+                el = el.parentElement
+            } while (el)
         }
         setInputFocus(false)
         onBlurProp(event)
@@ -197,7 +205,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     useEffect(() => {
         if (isInputFocused) {
             inputRef.current.focus()
-            inputRef.current.select()
+            setSelection(inputRef.current)
         }
     }, [aspects, isInputFocused, activeAspect.index])
 
@@ -208,11 +216,17 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                 const isNumeric = a.isNumeric ?? true
 
                 return (
-                    <span key={i} role="gridcell">
-                        <input
-                            
+                    <span
+                        key={i}
+                        role="gridcell"
+                        className={clsx(style.value, isActive && style.valueFocus)}
+                    >
+                        <span
                             ref={ isActive ? forkedInputRef : null }
 
+                            role="textbox"
+                            className={style.input}
+                            
                             aria-label={a.label}
                             title={a.label}
 
@@ -221,27 +235,23 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                                 updateAspect({type: 'setFocus', index: i})
                                 event.stopPropagation()
                             }}
+                            onClick={event => {
+                                event.stopPropagation()
+                            }}
 
-                            type="text"
+                            inputMode={ a.inputMode || (isNumeric ? 'decimal' : 'text') }
                             pattern={ a.pattern || (isNumeric ? '\\d*\\' + String(1.5).substr(1,1) + '\\d*' : undefined) }
 
-                            className={clsx(style.value, isActive && style.valueFocus)}
-                            style={{ width: a.placeholder ? a.placeholder.length + 'ch' : undefined }}
-                            {...(isActive
-                                ? {
-                                    onBlur: event => event.target.value !== aspects[activeAspect.index].value && commitAspect(activeAspect.value),
-                                    onKeyDown,
-                                    onChange,
-                                    value: activeAspect.value,
-                                }
-                                : {
-                                    className: style.value,
-                                    tabIndex: -1,
-                                    value: a.value,
-                                    readOnly: true,
-                                }
-                            )}
-                        />
+                            contentEditable={isActive}
+                            suppressContentEditableWarning="true"
+                            onBlur={event => {
+                                isActive && event.target.value !== aspects[activeAspect.index].value && commitAspect(activeAspect.value)
+                            }}
+                            onKeyDown={isActive ? onKeyDown : undefined}
+                            onInput={isActive ? onInput : undefined}
+                        >
+                            { isActive ? activeAspect.value : a.value }
+                        </span>
                     </span>
                 )
             }
@@ -257,7 +267,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             )
         })
         : (
-            <span className="gridcell">
+            <span role="gridcell">
                 <span role="button" ref={forkedInputRef} tabIndex="0"/>
                 { display
                     ? <span>{display}</span>
@@ -269,16 +279,17 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     return <>
         <div
             ref={gridRef}
+
             id={id}
             aria-labelledby={id + '-label'}
-            tabIndex='-1'
+
             role="grid"
+            tabIndex="-1"
+
             onBlur={onBlur}
             onFocus={onFocus}
-            className={clsx(
-                className,
-                style.input
-            )}
+
+            className={className}
         >
             <div role="row">
                 { renderedValue }
@@ -318,4 +329,13 @@ AspectInput.propTypes = {
         PropTypes.arrayOf([PropTypes.string, PropTypes.element]),
         PropTypes.oneOf([null])
     ]),
+}
+
+function setSelection (element, collapse) {
+    const sel = element.ownerDocument.getSelection()
+    sel.removeAllRanges()
+    sel.selectAllChildren(element)
+    if (collapse) {
+        sel.collapseToEnd()
+    }
 }

@@ -76,7 +76,7 @@ describe('AspectInput', () => {
         for (let i = 0; i < testAspects.length; i++) {
             const a = testAspects[i]
             if (Object.keys(a).includes('value')) {
-                expect(getByLabelText(aspectCells[i], a.label)).toHaveValue(a.value)
+                expect(getByLabelText(aspectCells[i], a.label)).toHaveTextContent(a.value, {normalizeWhitespace: false})
             } else {
                 expect(aspectCells[i]).toHaveTextContent(a.text)
             }
