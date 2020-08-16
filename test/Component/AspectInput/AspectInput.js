@@ -1,42 +1,64 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { render, fireEvent, getByLabelText } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AspectInput } from '../../../src'
+import { useForkedCallback } from '../../../src/util/func'
 
 describe('AspectInput', () => {
-    const testAspects = [
-        {value: '12', label: 'firstAspect'},
-        {text: ';'},
-        {value: '    b', label: 'secondAspect', placeholder: 'tttt', isNumeric: false},
-        {text: '-'},
-        {value: '0024', label: 'thirdAspect', placeholder: 'xxxx'},
-    ]
-
-    function validateAspects (value, index) {
-        if (index === 1) {
-            return (value > 10 && value < 20) ? value : undefined
-        } else if (index === 2) {
-            return ['a','b','c'].includes(value) ? value : undefined
-        } else if (index === 3) {
-            return (value >= 0 && value <= 1000) ? value : undefined
-        }
+    function getTestAspects () {
+        return [
+            {value: '12', label: 'firstAspect'},
+            {text: ';'},
+            {value: '    b', label: 'secondAspect', placeholder: 'tttt', isNumeric: false},
+            {text: '-'},
+            {value: '0024', label: 'thirdAspect', placeholder: 'xxxx'},
+        ]
     }
 
-    function renderAspects (props) {
+    function TestComponent (props) {
+        const [testAspects, setAspects] = useState(getTestAspects())
+
+        function validateAspects (value, index) {
+            if (index === 0) {
+                return (value >= 1 && value < 20) ? value : undefined
+            } else if (index === 2) {
+                return ['a','b','c'].includes(String(value).trim()) ? value : undefined
+            } else if (index === 4) {
+                return (value >= 1 && value <= 1000) ? value : undefined
+            }
+        }
+    
+        const commitAspects = useForkedCallback(props.commit, (value, index) => {
+            testAspects[index].value = value
+            setAspects(testAspects)
+        }, [testAspects, setAspects])
+
+        return (
+            <AspectInput
+                {...props}
+                aspects={testAspects}
+                validate={validateAspects}
+                commit={commitAspects}
+            />
+        )
+    }
+
+    function renderAspects () {
+        const commit = jest.fn()
+
         const result = render(
             <div>
                 <button data-testid='otherControl'/>
                 <label id='someId-label'>someLabelText</label>
-                <AspectInput
+                <TestComponent
                     id={'someId'}
-                    aspects={testAspects}
                     display="foo"
-                    validate={validateAspects}
-                    commit={() => {}}
-                    {...props}
+                    commit={commit}
                 />
             </div>
         )
+
+        result.commit = commit
 
         result.getByTestId('otherControl').focus()
 
@@ -61,6 +83,7 @@ describe('AspectInput', () => {
 
     it('Render aspects when being focused by keyboard', () => {
         const result = renderAspects()
+        const testAspects = getTestAspects()
 
         userEvent.tab()
 
@@ -104,6 +127,69 @@ describe('AspectInput', () => {
 
         fireEvent.keyDown(result.getByLabelText('thirdAspect'), {key: 'ArrowLeft'})
 
+        expect(result.getByLabelText('secondAspect')).toHaveFocus()
+    })
+
+    it('Manipulate aspect value with arrow keys', () => {
+        const result = renderAspects()
+
+        userEvent.tab()
+
+        fireEvent.keyDown(result.getByLabelText('firstAspect'), {key: 'ArrowUp'})
+
+        expect(result.getByLabelText('firstAspect')).toHaveTextContent('13')
+
+        fireEvent.blur(result.getByLabelText('firstAspect'), {relatedTarget: result.getByLabelText('secondAspect')})
+        fireEvent.focus(result.getByLabelText('secondAspect'))
+
+        expect(result.commit).toHaveBeenNthCalledWith(1, '13', 0)
+
+        fireEvent.keyDown(result.getByLabelText('secondAspect'), {key: 'ArrowUp'})
+
+        expect(result.getByLabelText('secondAspect')).toHaveTextContent('   c', {normalizeWhitespace: false})
+        
+        fireEvent.blur(result.getByLabelText('secondAspect'), {relatedTarget: result.getByLabelText('thirdAspect')})
+        fireEvent.focus(result.getByLabelText('thirdAspect'))
+
+        expect(result.commit).toHaveBeenNthCalledWith(2, '   c', 2)
+
+        fireEvent.keyDown(result.getByLabelText('thirdAspect'), {key: 'ArrowDown'})
+
+        expect(result.getByLabelText('thirdAspect')).toHaveTextContent('0023')
+    })
+
+    it('Manipulate aspect per typing', () => {
+        const result = renderAspects()
+        const selection = result.container.ownerDocument.getSelection()
+
+        userEvent.tab()
+
+        expect(selection.toString()).toBe('12')
+
+        fireEvent.input(result.getByLabelText('firstAspect'), {target: {textContent: '1'}})
+
+        expect(result.getByLabelText('firstAspect')).toHaveTextContent('1')
+        expect(result.getByLabelText('firstAspect')).toHaveFocus()
+        expect(selection.toString()).toBe('')
+        expect(selection.anchorOffset).toBe(1)
+        expect(result.commit).not.toBeCalled()
+
+        fireEvent.input(result.getByLabelText('firstAspect'), {target: {textContent: '17'}})
+        
+        expect(result.getByLabelText('firstAspect')).toHaveTextContent('17')
+        expect(result.commit).toHaveBeenNthCalledWith(1, '17', 0)
+        expect(result.getByLabelText('secondAspect')).toHaveFocus()
+
+        fireEvent.blur(result.getByLabelText('secondAspect'), {relatedTarget: result.getByLabelText('firstAspect')})
+        fireEvent.focus(result.getByLabelText('firstAspect'))
+
+        expect(result.getByLabelText('firstAspect')).toHaveFocus()
+        expect(selection.toString()).toBe('17')
+
+        fireEvent.input(result.getByLabelText('firstAspect'), {target: {textContent: '3'}})
+        
+        expect(result.getByLabelText('firstAspect')).toHaveTextContent('3')
+        expect(result.commit).toHaveBeenNthCalledWith(2, '3', 0)
         expect(result.getByLabelText('secondAspect')).toHaveFocus()
     })
 })

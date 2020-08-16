@@ -92,6 +92,10 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     }, [isInputFocused, aspects])
 
     const commitAspect = committedValue => {
+        if (committedValue === aspects[activeAspect.index].value) {
+            return
+        }
+
         const newValue = validateProp(committedValue, activeAspect.index)
         if (newValue === undefined) {
             return
@@ -101,7 +105,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     }
 
     const onInput = event => {
-        const inputValue = event.target.innerText
+        const inputValue = event.target.textContent
 
         let newValue = inputValue === '' || validateProp(inputValue, activeAspect.index)
             ? inputValue
@@ -134,7 +138,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
 
         updateAspect({type: 'change', value: paddedValue})
 
-        event.target.innerText = paddedValue
+        event.target.textContent = paddedValue
         setSelection(event.target, true)
 
         if (nextCharOverflow) {
@@ -144,7 +148,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     }
 
     const onKeyDown = event => {
-        const inputValue = event.target.innerText
+        const inputValue = event.target.textContent
 
         const moveKeys = {
             'ArrowLeft': -1,
@@ -177,7 +181,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             }
 
             const paddedValue = !aspects[activeAspect.index].placeholder
-                ? newValue
+                ? String(newValue)
                 : isNumericInput
                     ? String(Number(newValue)).padStart(aspects[activeAspect.index].placeholder.length, '0')
                     : String(newValue).padStart(aspects[activeAspect.index].placeholder.length, ' ')
@@ -199,7 +203,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             } while (el)
         }
         setInputFocus(false)
-        onBlurProp(event)
+        onBlurProp && onBlurProp(event)
     }, [onBlurProp, setInputFocus])
 
     useEffect(() => {
