@@ -446,9 +446,8 @@ describe('Date', () => {
 
         userEvent.tab()
 
-        expect(rendered.field).toHaveFocus()
-        expect(getActiveElement()).toHaveAttribute('aria-label', 'Year')
-        expect(getActiveElement()).toHaveValue(d.getFullYear())
+        expect(rendered.result.getByLabelText('Year')).toHaveFocus()
+        expect(getActiveElement()).toHaveTextContent(new RegExp('^0*' + d.getFullYear() + '$'))
 
         // next year
         fireEvent.keyDown(getActiveElement(), {key: 'ArrowUp'})
@@ -458,21 +457,21 @@ describe('Date', () => {
         fireEvent.keyDown(getActiveElement(), {key: 'ArrowRight'})
 
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
-        expect(getActiveElement()).toHaveAttribute('aria-label', 'Month')
-        expect(getActiveElement()).toHaveValue(d.getMonth()+1)
+        expect(rendered.result.getByLabelText('Month')).toHaveFocus()
+        expect(getActiveElement()).toHaveTextContent(new RegExp('^0*' + (d.getMonth()+1) + '$'))
 
         // this should jump to the next aspect
         userEvent.type(getActiveElement(), '8')
         d.setMonth(7)
 
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
-        expect(getActiveElement()).toHaveAttribute('aria-label', 'Day of the month')
-        expect(getActiveElement()).toHaveValue(d.getDate())
+        expect(rendered.result.getByLabelText('Day of the month')).toHaveFocus()
+        expect(getActiveElement()).toHaveTextContent(new RegExp('^0*' + (d.getDate()) + '$'))
 
         userEvent.type(getActiveElement(), '1')
 
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
-        expect(getActiveElement()).toHaveValue(1)
+        expect(getActiveElement()).toHaveTextContent('01')
 
         userEvent.type(getActiveElement(), '7')
         d.setDate(17)
