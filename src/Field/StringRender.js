@@ -37,7 +37,7 @@ const TextRender = props => {
 
     return (
         <BaseRender
-            rowsMax={10}
+            maxRows={10}
 
             {...props}
 

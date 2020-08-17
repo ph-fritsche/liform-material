@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { TextField } from '@material-ui/core';
+import { TextField, TextareaAutosize } from '@material-ui/core';
 import { makeStyles, fade } from '@material-ui/core'
 import clsx from 'clsx'
 import { FieldInput } from './FieldInput'
@@ -59,6 +59,8 @@ export const Field = React.forwardRef(function Field(props, ref) {
         variant = 'filled',
 
         select = false,
+        multiline = false,
+        rows,
 
         // These will be passed to the InputBase variant
         InputProps: InputPropsProp = {},
@@ -71,7 +73,12 @@ export const Field = React.forwardRef(function Field(props, ref) {
 
         // Custom component for rendering the input
         // Defaults to native input
-        inputComponent = !select ? undefined : SelectPropsProp.native ? NativeSelectInput : SelectInput,
+        inputComponent = !select
+            ? (multiline
+                ? (rows ? 'textarea' : TextareaAutosize)
+                : undefined
+            )
+            : SelectPropsProp.native ? NativeSelectInput : SelectInput,
 
         ...others
     } = props
@@ -123,6 +130,8 @@ export const Field = React.forwardRef(function Field(props, ref) {
                 },
             }
             : {
+                multiline,
+                rows,
                 InputProps,
                 inputProps,
             }
@@ -139,6 +148,8 @@ Field.propTypes = {
     isTarget: PropTypes.bool,
     variant: PropTypes.string,
     select: PropTypes.bool,
+    multiline: PropTypes.bool,
+    rows: PropTypes.number,
     InputProps: PropTypes.object,
     SelectProps: PropTypes.object,
     inputProps: PropTypes.object,

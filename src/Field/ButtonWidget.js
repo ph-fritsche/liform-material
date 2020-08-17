@@ -18,7 +18,7 @@ export const ButtonWidget = props => {
     return (
         <Button
             variant={ types.indexOf(type) >= 0 && 'contained' || 'text' }
-            color={ type === 'submit' && 'primary' || 'default' }
+            color={ type === 'submit' && 'primary' || 'inherit' }
             type={type}
         >
             {schema.title}
