@@ -85,6 +85,7 @@ export const DateTimePicker = (props) => {
             )}
             renderDay={renderDay}
             showDaysOutsideCurrentMonth={!!renderDay}
+            allowSameDateSelection={true}
             views={valueObject.views}
 
             {...PickerProps}
