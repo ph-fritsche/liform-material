@@ -6,6 +6,7 @@ import { Liform, Lifield, htmlizeName } from 'liform-react-final'
 import * as customQueries from './_query'
 import MaterialTheme from '../src'
 import DateFnsUtils from '@date-io/date-fns'
+import { moveFocus } from './_dom'
 
 function FieldTestLiform (props) {
     return (
@@ -477,5 +478,53 @@ describe('Date', () => {
         d.setDate(17)
 
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
+    })
+
+    it('Render and change time input', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'string',
+                widget: 'time',
+                title: 'foo',
+            },
+        })
+
+        userEvent.click(rendered.result.getByLabelText('foo'))
+
+        userEvent.click(rendered.result.getByText('AM'))
+
+        // ClockNumbers do not handle click events
+        fireEvent.keyDown(rendered.result.getByLabelText('8 hours'), {key: ' '})
+        fireEvent.keyDown(rendered.result.getByLabelText('45 minutes'), {key: ' '})
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify("08:45"))
+    })
+})
+
+describe('DateInterval', () => {
+    it('Render and change DateInterval', () => {
+        const rendered = testLifield({
+            schema: {
+                type: 'string',
+                widget: 'dateinterval',
+                title: 'foo',
+            },
+        })
+
+        userEvent.click(rendered.result.getByLabelText('foo'))
+
+        userEvent.type(rendered.result.getByLabelText('Years'), '12', {skipClick: true})
+
+        moveFocus(rendered.result.getByLabelText('Days'))
+
+        userEvent.type(rendered.result.getByLabelText('Days'), '34', {skipClick: true})
+
+        moveFocus(rendered.result.getByLabelText('Minutes'))
+
+        userEvent.type(rendered.result.getByLabelText('Minutes'), '56', {skipClick: true})
+
+        userEvent.tab()
+
+        expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify("P12Y34DT56M"))
     })
 })

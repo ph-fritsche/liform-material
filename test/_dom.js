@@ -1,3 +1,5 @@
+import { fireEvent } from "@testing-library/react"
+
 expect.extend({
     toHaveFocusedDescendant (element) {
         let el = element.ownerDocument.activeElement
@@ -21,3 +23,11 @@ expect.extend({
         }
     }
 })
+
+export function moveFocus(element) {
+    const previousElement = element.ownerDocument.activeElement
+    if (previousElement) {
+        fireEvent.blur(previousElement, {relatedTarget: element})
+    }
+    fireEvent.focus(element, {relatedTarget: previousElement})
+}
