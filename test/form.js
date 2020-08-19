@@ -12,6 +12,28 @@ const TestField = (name, render) => {
 }
 
 describe('Sections', () => {
+    it('Call render.field', () => {
+        const field = jest.fn()
+        const schema = {a: 'foo', b: 'bar'}
+
+        render(
+            <Liform
+                theme={Theme}
+                schema={schema}
+                render={{
+                    field,
+                }}
+                sections={{
+                    form: Theme.sections.form,
+                }}
+            />
+        )
+
+        expect(field).toBeCalled()
+        expect(field.mock.calls[0][0]).toBeTruthy()
+        expect(field.mock.calls[0][0]['schema']).toEqual(schema)
+    })
+
     it('Render errors for unregistered field', () => {
         const rendered = render(
             <Liform
