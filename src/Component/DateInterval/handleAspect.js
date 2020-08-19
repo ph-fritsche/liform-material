@@ -20,7 +20,7 @@ export function validateAspect (aspects, aspectValue, aspectIndex) {
 export function commitAspect (aspects, changeCallback, aspectValue, aspectIndex) {
     const interval = {}
     for (const i in aspects) {
-        if (aspects[i].type !== 'value') {
+        if (!Object.keys(aspects[i]).includes('value')) {
             continue
         }
         interval[aspects[i].key] = aspectIndex == i ? aspectValue : aspects[i].value ?? 0
