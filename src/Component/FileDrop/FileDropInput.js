@@ -4,7 +4,7 @@ import { Chip, Avatar } from '@material-ui/core'
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import { useDropzone } from 'react-dropzone'
 import { useForkedRef } from '../../util/ref'
-import { indexOfChild } from '../../util/dom'
+import { indicesOfDescendant } from '../../util/dom'
 
 const fileNameInfo = (filename) => {
     const basename = filename.replace(/.*[\\/]/, '')
@@ -52,7 +52,7 @@ FileChip.propTypes = {
     avatar: PropTypes.func,
 }
 
-const renderValue = ({baseElement, avatar, onBlur, onChange, setValueFocus}, value) => {
+const renderValue = ({baseElementRef, avatar, onBlur, onChange, valueFocus, setValueFocus}, value) => {
     if (!value) {
         return undefined
     }
@@ -68,11 +68,12 @@ const renderValue = ({baseElement, avatar, onBlur, onChange, setValueFocus}, val
         // trigger MUI's blur and refocus
         // otherwise activeElement will be set to body - rendering MUI's focus out of sync
         onBlur()
-        const newActive = deletedIndex < (baseElement.current.children.length-2)
-            ? baseElement.current.children[deletedIndex+1]
-            : baseElement.current.children.length > 2
-                ? baseElement.current.children[deletedIndex-1]
-                : baseElement.current
+        const chips = baseElementRef.current.querySelectorAll('[role=button]')
+        const newActive = deletedIndex < (chips.length-1)
+            ? chips[deletedIndex+1]
+            : chips.length > 1
+                ? chips[deletedIndex-1]
+                : baseElementRef.current
         newActive.focus()
 
         onChange(newValue)
@@ -82,31 +83,42 @@ const renderValue = ({baseElement, avatar, onBlur, onChange, setValueFocus}, val
         file.url = file.url || URL.createObjectURL(file)
 
         return (
-            <FileChip
+            <span
                 key={file.url}
-                file={file}
-                avatar={avatar}
-                tabIndex="-1"
-                onDelete={handleDelete.bind(null, file)}
-                onClick={event => event.stopPropagation()}
-                onFocus={() => setValueFocus(file)}
-                // onKeyDown={handleKeyDown}
-            />
+                role="gridcell"
+            >
+                <FileChip
+                    file={file}
+                    avatar={avatar}
+                    aria-label={file.name}
+                    tabIndex={valueFocus === file ? 0 : -1}
+                    onDelete={handleDelete.bind(null, file)}
+                    onClick={event => event.stopPropagation()}
+                    onFocus={() => setValueFocus(file)}
+                    // onKeyDown={handleKeyDown}
+                />
+            </span>
         )
     })
 }
 
-const focusValueChild = (baseElement, value, valueFocus) => {
+function getChips (baseElementRef) {
+    return baseElementRef.current.querySelectorAll('[role=button]')
+}
+
+const focusValueChild = (baseElementRef, value, valueFocus) => {
+    const chips = getChips(baseElementRef)
     const i = (Array.isArray(value) ? value : [value]).indexOf(valueFocus)
-    if (i >= 0 && i < (baseElement.children.length-1) && baseElement.children[i]) {
-        baseElement.children[i].focus()
-    } else if (baseElement.children.length > 1) {
-        baseElement.children[0].focus()
+    if (i >= 0 && i < (chips.length-1) && chips[i]) {
+        chips[i].focus()
+    } else if (chips.length > 1) {
+        chips[0].focus()
     }
 }
 
 export const FileDropInput = React.forwardRef(function FileDropInput(props, ref) {
     const {
+        id,
         accept,
         avatar,
         className,
@@ -121,7 +133,7 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
         value,
     } = props
 
-    const baseElement = useRef()
+    const baseElementRef = useRef()
     const [valueFocus, setValueFocus] = useState()
     const [isFocusLocked, lockFocus] = useState(false)
 
@@ -129,16 +141,16 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
     const onDragLeave = useCallback(() => setDropActive(false), [setDropActive])
     const onDialogClose = useCallback(() => {
         lockFocus(false)
-        focusValueChild(baseElement.current, value, valueFocus)
-    }, [baseElement, value, valueFocus])
+        focusValueChild(baseElementRef, value, valueFocus)
+    }, [baseElementRef, value, valueFocus])
     const onDrop = useCallback(files => {
         lockFocus(false)
         setDropActive(false)
         onChange && onChange(
             multiple? (value || []).concat(files) : files[0]
         )
-        baseElement.current.children[(value || []).length].focus()
-    }, [setDropActive, onChange, multiple, value])
+        focusValueChild(baseElementRef, value, files[0])
+    }, [setDropActive, onChange, multiple, baseElementRef, value])
     const {
         getRootProps,
         getInputProps,
@@ -186,27 +198,30 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
             'ArrowLeft': -1,
         }
         if (stepKeys[event.key] !== undefined) {
+            event.preventDefault()
+
             const s = stepKeys[event.key]
 
             // length contains the native element which is skipped
-            const l = baseElement.current.children.length - 1
-            if (l === 0) {
-                baseElement.current.focus()
-            } else if (l === 1) {
-                baseElement.current.children[0].focus()
+            const chips = getChips(baseElementRef)
+            if (chips.length === 0) {
+                baseElementRef.current.focus()
+            } else if (chips.length === 1) {
+                chips[0].focus()
             } else {
-                const i = event.target.parentElement === baseElement.current
-                    && indexOfChild(baseElement.current, event.target)
-
-                const next = typeof(i) === 'number'
-                    ? (i + s) % l
-                    : (s > 0 ? s - 1 : s) % l
-                baseElement.current.children[ next >= 0 ? next : l + next ].focus()
+                const i = indicesOfDescendant(baseElementRef.current, event.target)
+                
+                const next = i
+                    // first level is 'row', second level is 'gridcell'
+                    ? (i[1] + s) % chips.length
+                    : (s > 0 ? s - 1 : s) % chips.length
+                chips[ next >= 0 ? next : chips.length + next ].focus()
             }
         }
 
         if (event.key === 'Escape') {
-            baseElement.current.focus()
+            event.preventDefault()
+            baseElementRef.current.focus()
         }
 
         // open Dropzone directly - forwarding the event does not work if event.target is a child (e.g. Chip)
@@ -214,46 +229,62 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
             event.preventDefault()
             openDropzone()
         }
-    }, [baseElement, openDropzone])
+    }, [baseElementRef, openDropzone])
 
-    const updateRootRefs = useForkedRef(ref, dropRootProps.ref, baseElement)
+    const updateRootRefs = useForkedRef(ref, dropRootProps.ref, baseElementRef)
     const updateInputRefs = useForkedRef(inputRef, dropInputProps.ref)
 
     const renderedValue = value && value.length !== 0
         ? renderValue({
-            baseElement,
+            baseElementRef,
             avatar,
             onBlur: onBlurProp,
             onChange,
             valueFocus,
             setValueFocus,
         }, value)
-        : <span className="placeholder">{placeholder}</span>
+        : (
+            <div role="gridcell">
+                <span className="placeholder">{placeholder}</span>
+            </div>
+        )
 
     return (
         <div
             {...dropRootProps}
+
+            id={id}
+            aria-labelledby={id + '-label'}
+
+            ref={updateRootRefs}
+
             className={className}
-            role="button"
+
+            role="grid"
+            tabIndex={ (Array.isArray(value) ? value : [value]).includes(valueFocus) ? -1 : 0 }
+
             onBlur={onBlur}
             onFocus={onFocus}
             onKeyDown={handleKeyDown}
-            tabIndex={0}
-            ref={updateRootRefs}
         >
-            { renderedValue }
-            <input
-                {...dropInputProps}
-                accept={accept}
-                name={name}
-                onClick={onInputClick}
-                ref={updateInputRefs}
-            />
+            <div role="row">
+                { renderedValue }
+                <span role="gridcell">
+                    <input
+                        {...dropInputProps}
+                        accept={accept}
+                        name={name}
+                        onClick={onInputClick}
+                        ref={updateInputRefs}
+                    />
+                </span>
+            </div>
         </div>
     )
 })
 
 FileDropInput.propTypes = {
+    id: PropTypes.string,
     accept: PropTypes.string,
     avatar: FileChip.propTypes.avatar,
     className: PropTypes.string,

@@ -8,3 +8,14 @@ export const indexOfChild = (parent, child) => {
         }
     }
 }
+
+export function indicesOfDescendant (ancestor, descendant) {
+    let indices = []
+    while (descendant.parentElement) {
+        indices.unshift(Array.prototype.indexOf.call(descendant.parentElement.children, descendant))
+        if (descendant.parentElement === ancestor) {
+            return indices
+        }
+        descendant = descendant.parentElement
+    }
+}
