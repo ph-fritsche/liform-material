@@ -524,7 +524,7 @@ describe('DateInterval', () => {
 
         userEvent.type(rendered.result.getByLabelText('Minutes'), '56', {skipClick: true})
 
-        userEvent.tab()
+        fireEvent.blur(rendered.result.getByLabelText('Minutes'))
 
         expect(rendered.form.getAttribute('data-values')).toEqual(JSON.stringify("P12Y34DT56M"))
     })
