@@ -1,6 +1,4 @@
 import userEvent from '@testing-library/user-event'
-import { fireEvent } from '@testing-library/react'
-import { moveFocus } from '../_dom'
 import { testLifield } from './_field'
 
 describe('DateInterval', () => {
@@ -15,17 +13,13 @@ describe('DateInterval', () => {
 
         userEvent.click(result.getByLabelText('foo'))
 
-        userEvent.type(result.getByLabelText('Years'), '12', {skipClick: true})
+        userEvent.type(result.getByLabelText('Years'), '12')
 
-        moveFocus(result.getByLabelText('Days'))
+        userEvent.type(result.getByLabelText('Days'), '34')
 
-        userEvent.type(result.getByLabelText('Days'), '34', {skipClick: true})
+        userEvent.type(result.getByLabelText('Minutes'), '56')
 
-        moveFocus(result.getByLabelText('Minutes'))
-
-        userEvent.type(result.getByLabelText('Minutes'), '56', {skipClick: true})
-
-        fireEvent.blur(result.getByLabelText('Minutes'))
+        userEvent.click(result.container.ownerDocument.body)
 
         expect(form.getAttribute('data-values')).toEqual(JSON.stringify("P12Y34DT56M"))
     })
