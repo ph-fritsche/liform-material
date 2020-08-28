@@ -87,6 +87,6 @@ describe('DateTime', () => {
         fireEvent.keyDown(result.getByLabelText('8 hours'), {key: ' '})
         fireEvent.keyDown(result.getByLabelText('45 minutes'), {key: ' '})
 
-        expect(getLiformValue()).toEqual("08:45")
+        expect(getLiformValue()).toEqual('08:45')
     })
 })

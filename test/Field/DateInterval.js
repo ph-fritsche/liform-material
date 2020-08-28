@@ -21,6 +21,6 @@ describe('DateInterval', () => {
 
         userEvent.click(result.container.ownerDocument.body)
 
-        expect(getLiformValue()).toEqual("P12Y34DT56M")
+        expect(getLiformValue()).toEqual('P12Y34DT56M')
     })
 })

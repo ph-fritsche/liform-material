@@ -48,8 +48,8 @@ describe('AspectInput', () => {
 
         const result = render(
             <div>
-                <button data-testid='otherControl'/>
-                <label id='someId-label'>someLabelText</label>
+                <button data-testid="otherControl"/>
+                <label id="someId-label" htmlFor="someId">someLabelText</label>
                 <TestComponent
                     id={'someId'}
                     display="foo"

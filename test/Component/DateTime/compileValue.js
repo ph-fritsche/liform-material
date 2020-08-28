@@ -66,7 +66,7 @@ describe('Compile value', () => {
         expect(typeof(value.display)).toBe('string')
         expect(dateUtil.isEqual(value.parsed, dateUtil.date(valueProp))).toBe(true)
         expect(aspectsString(value.input, true)).toEqual('{yyyy}-{MM}-{dd}  {HH}:{mm}:{ss}')
-        expect(aspectsString(value.input, false)).toMatch(/^\d{4}-\d{2}-\d{2}  \d{2}:\d{2}:\d{2}$/)
+        expect(aspectsString(value.input, false)).toMatch(/^\d{4}-\d{2}-\d{2} {2}\d{2}:\d{2}:\d{2}$/)
         expect(Date.parse(aspectsString(value.input, false))).toEqual(Date.parse(valueProp))
         // default locale is en-US
         expect(value.display).toMatch(/^\w{3} \d{1,2}, \d{4}\t\d{1,2}:\d{2} [AP]M$/)

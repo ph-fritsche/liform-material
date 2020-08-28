@@ -4,7 +4,7 @@ import './_form'
 
 Object.defineProperties(URL, {
     createObjectURL: {
-        value: (object) => {
+        value: () => {
             return 'blob:https://127.0.0.1/' + [
                 Math.random().toString(16).substr(2,8),
                 Math.random().toString(16).substr(2,4),

@@ -7,7 +7,7 @@ export function normalizeFormValues (values) {
 
         const r = /\[(\d*)\]/g
         let m
-        while (m = r.exec(k)) {
+        while ((m = r.exec(k))) {
             const sub = k.substring(0, r.lastIndex - m[0].length)
 
             if (m[1] !== '') {
@@ -43,14 +43,14 @@ export function getInputValue (element) {
 }
 
 export function getFormValues (formElement) {
-    if (!formElement instanceof HTMLFormElement) {
+    if (!(formElement instanceof HTMLFormElement)) {
         throw new Error('Received element has to be a HTML form element')
     }
 
     let domain = formElement
 
     let parent = formElement
-    while(parent = parent.parentNode) {
+    while((parent = parent.parentNode)) {
         if (parent instanceof HTMLBodyElement || parent instanceof DocumentFragment) {
             domain = parent
         }
@@ -86,7 +86,7 @@ export function resemblesFormValue(expected, received) {
     } else if (typeof(expected) === 'number') {
         return expected === Number(received) && ['string','number','array'].includes(typeof(received)) && received.length !== 0
     } else if (typeof(expected) === 'boolean') {
-        return expected === (Boolean(received) && received !== '0' && received !== NaN && received !== 'false' && received.length !== 0)
+        return expected === (Boolean(received) && received !== '0' && received !== 'false' && received.length !== 0)
     } else if (Array.isArray(expected)) {
         const convertedReceived = Array.isArray(received) ? received : String(received ?? '').split(',')
         for (let i = 0; i < Math.max(expected.length, convertedReceived.length); i++) {
@@ -161,7 +161,7 @@ expect.extend({
             () => {
                 const filtered = {}
                 Object.keys(valueMap).forEach(k => {
-                    if (true || !Object.keys(formValues).includes(k) || !resemblesFormValue(valueMap[k], formValues[k])) {
+                    if (!Object.keys(formValues).includes(k) || !resemblesFormValue(valueMap[k], formValues[k])) {
                         filtered[k] = valueMap[k]
                     }
                 })
@@ -170,7 +170,7 @@ expect.extend({
             () => {
                 const filtered = {}
                 Object.keys(formValues).forEach(k => {
-                    if (true || !Object.keys(valueMap).includes(k) || !resemblesFormValue(valueMap[k], formValues[k])) {
+                    if (!Object.keys(valueMap).includes(k) || !resemblesFormValue(valueMap[k], formValues[k])) {
                         filtered[k] = formValues[k]
                     }
                 })

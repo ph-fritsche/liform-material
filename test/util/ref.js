@@ -16,7 +16,7 @@ describe('Fork refs', () => {
         const ref = React.createRef()
         const refHandler = (newValue) => { ref.current = newValue }
 
-        updateRef(ref, 'foo')
+        updateRef(refHandler, 'foo')
 
         expect(ref.current).toEqual('foo')
     })
@@ -97,7 +97,7 @@ describe('Fork refs', () => {
     })
 })
 
-describe("Id ref", () => {
+describe('Id ref', () => {
     const TestComponent = ({id}) => {
         const idRef = useId(id)
 
@@ -105,7 +105,7 @@ describe("Id ref", () => {
     }
 
     it('Use id hook with value', () => {
-        const component = Renderer.create(<TestComponent id='foo'/>)
+        const component = Renderer.create(<TestComponent id="foo"/>)
 
         expect(component.toJSON()).toBe('foo')
     })

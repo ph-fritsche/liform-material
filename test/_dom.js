@@ -7,7 +7,7 @@ expect.extend({
                 pass = true
                 break
             }
-        } while (el = el.parentElement)
+        } while ((el = el.parentElement))
 
         return {
             pass,

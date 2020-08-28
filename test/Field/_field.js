@@ -4,7 +4,7 @@ import { Liform, Lifield, htmlizeName } from 'liform-react-final'
 import MaterialTheme from '../../src'
 import { buildQueries, queryAllByLabelText, queryAllByText } from '@testing-library/react'
 
-const [queryByL, getAllByL, getbyL, findAllByL, findByL] = buildQueries(
+const [,, getbyL,,] = buildQueries(
     (container, text, options) => {
         const input = queryAllByLabelText(container, text, options)
         const legend = queryAllByText(container, text, {...options, selector: 'legend'})
