@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Choice } from './Choice'
 import { BaseRender } from './BaseRender'
-import { FieldRenderProps } from 'liform-react-final/dist/field'
+import { FieldRenderProps } from 'liform-react-final'
 
 export const StringRender = props => {
     const {

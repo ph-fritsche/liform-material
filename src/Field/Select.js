@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react'
 import { MenuItem, Chip } from '@material-ui/core'
 import { BaseRender } from './BaseRender'
-import { FieldRenderProps } from 'liform-react-final/dist/field'
+import { FieldRenderProps } from 'liform-react-final'
 
 function mapOptionsLabels (values, labels) {
     const o = {}

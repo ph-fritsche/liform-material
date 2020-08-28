@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormControl, FormLabel, FormControlLabel, Radio, RadioGroup as MaterialRadioGroup, FormHelperText } from '@material-ui/core'
-import { FieldRenderProps } from 'liform-react-final/dist/field'
+import { FieldRenderProps } from 'liform-react-final'
 
 export const RadioGroup = props => {
     const {

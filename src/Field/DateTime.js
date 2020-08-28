@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { DateTimeField } from '../Component/DateTime/DateTimeField'
 import { BaseRender } from './BaseRender'
-import { FieldRenderProps } from 'liform-react-final/dist/field'
+import { FieldRenderProps } from 'liform-react-final'
 
 const valueFormatFromSchema = (schema) => {
     if (schema.dateFormat) {

@@ -2,11 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Field } from 'react-final-form'
 import { FormLabel, FormHelperText, Grid } from '@material-ui/core'
-import { Lifield, finalizeName, mapProperties } from 'liform-react-final'
+import { Lifield, finalizeName, mapProperties, LiformContextProp, SchemaProp } from 'liform-react-final'
 
-import { getFieldError } from '../error'
-import { LiformContextProp } from 'liform-react-final/dist/form'
-import { SchemaProp } from 'liform-react-final/dist/schema'
+import { getFieldError } from './error'
 
 export const ObjectWidget = props => {
     const {
@@ -29,7 +27,7 @@ export const ObjectWidget = props => {
                 <Field
                     name={finalizeName(name)}
                     render={({meta}) => {
-                        const error = getFieldError(liform, finalizeName(name), meta)
+                        const error = getFieldError(liform, name, meta)
 
                         return (error || schema.title) && (
                             <Grid item xs={12}>

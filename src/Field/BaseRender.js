@@ -1,6 +1,6 @@
 import React from 'react'
 import { Field } from '../Component/Field/Field'
-import { FieldRenderProps } from 'liform-react-final/dist/field'
+import { FieldRenderProps } from 'liform-react-final'
 
 export const BaseRender = props => {
     const {

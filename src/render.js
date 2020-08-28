@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { LiformContextProp } from 'liform-react-final/dist/form'
+import { LiformContextProp } from 'liform-react-final'
 
 export const Container = (props) => (
     <form

@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormGroup, FormControl, FormLabel, FormControlLabel, Checkbox, FormHelperText } from '@material-ui/core'
-import { FieldRenderProps } from 'liform-react-final/dist/field'
+import { FieldRenderProps } from 'liform-react-final'
 
 export const CheckboxGroup = props => {
     const {

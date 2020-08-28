@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { FileDropField } from '../Component/FileDrop/FileDropField';
-import { FieldRenderProps } from 'liform-react-final/dist/field';
+import { FieldRenderProps } from 'liform-react-final';
 
 export const FileDrop = props => {
     const {

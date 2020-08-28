@@ -2,7 +2,7 @@ import React from 'react'
 import { CheckboxGroup } from './CheckboxGroup'
 import { RadioGroup } from './RadioGroup'
 import { Select } from './Select'
-import { FieldRenderProps } from 'liform-react-final/dist/field'
+import { FieldRenderProps } from 'liform-react-final'
 
 export const Choice = props => {
     const {

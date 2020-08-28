@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { InputAdornment } from '@material-ui/core'
 import { BaseRender } from './BaseRender'
-import { FieldRenderProps } from 'liform-react-final/dist/field'
+import { FieldRenderProps } from 'liform-react-final'
 
 export const NumberRender = props => {
     const {
