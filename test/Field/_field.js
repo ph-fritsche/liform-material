@@ -16,31 +16,35 @@ const [queryByL, getAllByL, getbyL, findAllByL, findByL] = buildQueries(
     (container, text) => `Unable to find an input for label or fieldset for legend "${text}"`,
 )
 
-const extendedQueries = {
-    ...queries,
-    getbyL,
-}
+export function renderLifield (props) {
+    let liformValue
+    const container = renderProps => {
+        liformValue = renderProps.form.getState().values._
+        return <form id="container">{renderProps.children}</form>
+    }
 
-function FieldTestLiform (props) {
-    return (
+    const result = render((
         <Liform
             theme={MaterialTheme}
             name="form"
-            render={{container: p => <form id="container" data-values={JSON.stringify(p.form.getState().values._)}>{p.children}</form>}}
+            render={{container}}
             {...props}
         >
             { ({liform}) => <Lifield schema={liform.schema}/> }
         </Liform>
-    )
-}
+    ), {
+        queries: {
+            ...queries,
+            getbyL
+        }
+    })
 
-export function renderLifield (props) {
-    const result = render(FieldTestLiform(props), {queries: extendedQueries})
     return {
         result,
         form: result.container.querySelector('form#container'),
         expectedFormValues: expectedFormValues(props.value, props.name || 'form'),
         getActiveElement: () => result.container.ownerDocument.activeElement,
+        getLiformValue: () => liformValue,
     }
 }
 
@@ -76,4 +80,3 @@ export function testLifield (props) {
 
     return rendered
 }
-

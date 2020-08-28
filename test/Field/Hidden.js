@@ -3,7 +3,7 @@ import { renderLifield } from './_field'
 
 describe('Hidden', () => {
     it('Render and change hidden input', () => {
-        const { form, expectedFormValues } = renderLifield({
+        const { form, expectedFormValues, getLiformValue } = renderLifield({
             schema: {
                 type: 'string',
                 widget: 'hidden',
@@ -21,7 +21,7 @@ describe('Hidden', () => {
 
         expect(form).toHaveFormValues({...expectedFormValues, 'form': 'baz'})
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify('baz'))
+        expect(getLiformValue()).toEqual('baz')
     })
 
     it('Render errors for hidden input', () => {

@@ -3,7 +3,7 @@ import { testLifield } from './_field'
 
 describe('Array', () => {
     it('Render and change an array', () => {
-        const { result, expectedFormValues, form } = testLifield({
+        const { result, expectedFormValues, form, getLiformValue } = testLifield({
             schema: {
                 type: 'array',
                 title: 'foo',
@@ -20,11 +20,11 @@ describe('Array', () => {
         userEvent.type(field0, 'baz')
 
         expect(form).toHaveFormValues({...expectedFormValues, [field0.name]: 'baz'})
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify(['baz']))
+        expect(getLiformValue()).toEqual(['baz'])
     })
 
     it('Add and remove extra elements of array', () => {
-        const { result, form } = testLifield({
+        const { result, getLiformValue } = testLifield({
             schema: {
                 type: 'array',
                 title: 'foo',
@@ -45,16 +45,16 @@ describe('Array', () => {
 
         userEvent.type(result.getAllByRole('textbox')[1], 'baz')
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify(['bar', 'baz']))
+        expect(getLiformValue()).toEqual(['bar', 'baz'])
 
         userEvent.click(result.getByLabelText('Remove entry'))
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify(['bar']))
+        expect(getLiformValue()).toEqual(['bar'])
         expect(result.queryAllByLabelText('Remove entry')).toHaveLength(0)
     })
 
     it('Remove and add existing elements of array', () => {
-        const { result, form } = testLifield({
+        const { result, getLiformValue } = testLifield({
             schema: {
                 type: 'array',
                 title: 'foo',
@@ -72,7 +72,7 @@ describe('Array', () => {
         userEvent.click(result.getByLabelText('Remove entry'))
         
         expect(result.queryAllByRole('textbox')).toHaveLength(0)
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify([]))
+        expect(getLiformValue()).toEqual([])
         
         userEvent.click(result.getByLabelText('Add entry'))
         

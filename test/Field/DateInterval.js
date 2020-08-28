@@ -3,7 +3,7 @@ import { testLifield } from './_field'
 
 describe('DateInterval', () => {
     it('Render and change DateInterval', () => {
-        const { result, form } = testLifield({
+        const { result, getLiformValue } = testLifield({
             schema: {
                 type: 'string',
                 widget: 'dateinterval',
@@ -21,6 +21,6 @@ describe('DateInterval', () => {
 
         userEvent.click(result.container.ownerDocument.body)
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify("P12Y34DT56M"))
+        expect(getLiformValue()).toEqual("P12Y34DT56M")
     })
 })

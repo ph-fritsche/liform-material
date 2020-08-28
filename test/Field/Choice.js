@@ -3,7 +3,7 @@ import { testLifield } from './_field'
 
 describe('Choice', () => {
     it('Render and change small select', () => {
-        const { result, form } = testLifield({
+        const { result, getLiformValue } = testLifield({
             schema: {
                 type: 'string',
                 title: 'foo',
@@ -18,11 +18,11 @@ describe('Choice', () => {
         userEvent.click(result.getByText('Bcd'))
         userEvent.click(result.getByText('Cde'))
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify('c'))
+        expect(getLiformValue()).toEqual('c')
     })
 
     it('Render and change big select', () => {
-        const { field, result, form } = testLifield({
+        const { field, result, getLiformValue } = testLifield({
             schema: {
                 type: 'string',
                 title: 'foo',
@@ -36,11 +36,11 @@ describe('Choice', () => {
 
         userEvent.selectOptions(field, result.getByText('Cde'))
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify('c'))
+        expect(getLiformValue()).toEqual('c')
     })
 
     it('Render and change expanded choice', () => {
-        const { result, form } = testLifield({
+        const { result, getLiformValue } = testLifield({
             schema: {
                 type: 'string',
                 title: 'foo',
@@ -53,11 +53,11 @@ describe('Choice', () => {
 
         userEvent.click(result.getByLabelText('Cde'))
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify('c'))
+        expect(getLiformValue()).toEqual('c')
     })
 
     it('Render and change small multiple select', () => {
-        const { result, field, form } = testLifield({
+        const { result, field, getLiformValue } = testLifield({
             schema: {
                 type: 'array',
                 title: 'foo',
@@ -72,11 +72,11 @@ describe('Choice', () => {
         userEvent.click(field)
         userEvent.click(result.getByText('Cde'))
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify(['b', 'c']))
+        expect(getLiformValue()).toEqual(['b', 'c'])
     })
 
     it('Render and change big multiple select', () => {
-        const { field, result, form } = testLifield({
+        const { field, result, getLiformValue } = testLifield({
             schema: {
                 type: 'array',
                 title: 'foo',
@@ -90,11 +90,11 @@ describe('Choice', () => {
 
         userEvent.selectOptions(field, result.getByText('Cde'))
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify(['b', 'c']))
+        expect(getLiformValue()).toEqual(['b', 'c'])
     })
 
     it('Render and change expanded multiple choice', () => {
-        const { result, form } = testLifield({
+        const { result, getLiformValue } = testLifield({
             schema: {
                 type: 'array',
                 title: 'foo',
@@ -107,10 +107,10 @@ describe('Choice', () => {
 
         userEvent.click(result.getByLabelText('Cde'))
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify(['b', 'c']))
+        expect(getLiformValue()).toEqual(['b', 'c'])
 
         userEvent.click(result.getByLabelText('Bcd'))
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify(['c']))
+        expect(getLiformValue()).toEqual(['c'])
     })
 })

@@ -7,7 +7,7 @@ describe('DateTime', () => {
     const dateUtil = new DateFnsUtils()
 
     it('Render and change date input per picker', () => {
-        const { field, result, form } = testLifield({
+        const { field, result, getLiformValue } = testLifield({
             schema: {
                 type: 'string',
                 widget: 'date',
@@ -21,11 +21,11 @@ describe('DateTime', () => {
         const d = new Date()
         userEvent.click(result.getByLabelText(dateUtil.format(d, 'fullDate')))
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
+        expect(getLiformValue()).toEqual(dateUtil.formatByString(d, 'yyyy-MM-dd'))
     })
 
     it('Render and change date input per keyboard', () => {
-        const { result, form, getActiveElement } = testLifield({
+        const { result, getActiveElement, getLiformValue } = testLifield({
             schema: {
                 type: 'string',
                 widget: 'date',
@@ -47,7 +47,7 @@ describe('DateTime', () => {
         // next aspect
         fireEvent.keyDown(getActiveElement(), {key: 'ArrowRight'})
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
+        expect(getLiformValue()).toEqual(dateUtil.formatByString(d, 'yyyy-MM-dd'))
         expect(result.getByLabelText('Month')).toHaveFocus()
         expect(getActiveElement()).toHaveTextContent(new RegExp('^0*' + (d.getMonth()+1) + '$'))
 
@@ -55,23 +55,23 @@ describe('DateTime', () => {
         userEvent.type(getActiveElement(), '8')
         d.setMonth(7)
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
+        expect(getLiformValue()).toEqual(dateUtil.formatByString(d, 'yyyy-MM-dd'))
         expect(result.getByLabelText('Day of the month')).toHaveFocus()
         expect(getActiveElement()).toHaveTextContent(new RegExp('^0*' + (d.getDate()) + '$'))
 
         userEvent.type(getActiveElement(), '1')
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
+        expect(getLiformValue()).toEqual(dateUtil.formatByString(d, 'yyyy-MM-dd'))
         expect(getActiveElement()).toHaveTextContent('01')
 
         userEvent.type(getActiveElement(), '7')
         d.setDate(17)
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify(dateUtil.formatByString(d, 'yyyy-MM-dd')))
+        expect(getLiformValue()).toEqual(dateUtil.formatByString(d, 'yyyy-MM-dd'))
     })
 
     it('Render and change time input', () => {
-        const { result, form } = testLifield({
+        const { result, getLiformValue } = testLifield({
             schema: {
                 type: 'string',
                 widget: 'time',
@@ -87,6 +87,6 @@ describe('DateTime', () => {
         fireEvent.keyDown(result.getByLabelText('8 hours'), {key: ' '})
         fireEvent.keyDown(result.getByLabelText('45 minutes'), {key: ' '})
 
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify("08:45"))
+        expect(getLiformValue()).toEqual("08:45")
     })
 })

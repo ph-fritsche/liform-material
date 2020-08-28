@@ -3,7 +3,7 @@ import { testLifield } from './_field'
 
 describe('String', () => {
     it('Render and change string input', () => {
-        const { field, form, expectedFormValues } = testLifield({
+        const { field, form, expectedFormValues, getLiformValue } = testLifield({
             schema: {
                 type: 'string',
                 title: 'foo',
@@ -15,7 +15,6 @@ describe('String', () => {
         userEvent.type(field, 'baz')
 
         expect(form).toHaveFormValues({...expectedFormValues, [field.name]: 'baz'})
-
-        expect(form.getAttribute('data-values')).toEqual(JSON.stringify('baz'))
+        expect(getLiformValue()).toEqual('baz')
     })
 })
