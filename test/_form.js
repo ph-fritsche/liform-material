@@ -102,7 +102,7 @@ export function resemblesFormValue(expected, received) {
 
 function createExpectResult(expectObject, pass, expectationName, expected, received, expectedDiff, receivedDiff) {
     return {
-        pass: Boolean(Number(expectObject.isNot) ^ Number(pass)),
+        pass,
         message: () => {
             const hint = expectObject.utils.matcherHint(expectationName, received, JSON.stringify(expected, null, 2), expectObject)
             const e = expectedDiff ? expectedDiff() : expected
