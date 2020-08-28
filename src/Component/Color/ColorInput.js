@@ -22,15 +22,22 @@ const useStyle = makeStyles(() => ({
 
 export const ColorInput = React.forwardRef(function ColorInput(props, ref) {
     const {
+        id,
         className,
         name,
         value,
+        onChange,
     } = props
 
     const style = useStyle(props)
 
     return (<>
         <div
+            id={id}
+            aria-labelledby={id + '-label'}
+
+            role="button"
+
             className={className}
         >
             <div
@@ -47,9 +54,9 @@ export const ColorInput = React.forwardRef(function ColorInput(props, ref) {
             type="color"
             name={name}
             value={value}
-            onChange={() => {}}
+            onChange={onChange}
             onClick={event => { event.preventDefault() }}
-            style={{minWidth: '5em', display: 'none'}}
+            style={{display: 'none'}}
         />
     </>)
 })
