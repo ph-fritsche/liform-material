@@ -62,7 +62,9 @@ export const ColorInput = React.forwardRef(function ColorInput(props, ref) {
 })
 
 ColorInput.propTypes = {
+    id: PropTypes.string,
     className: PropTypes.string,
     name: PropTypes.string,
     value: PropTypes.string,
+    onChange: PropTypes.func,
 }
