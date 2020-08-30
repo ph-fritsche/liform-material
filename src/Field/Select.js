@@ -1,5 +1,6 @@
 import React, { useMemo, useCallback } from 'react'
-import { MenuItem, Chip } from '@material-ui/core'
+import clsx from 'clsx'
+import { MenuItem, Chip, makeStyles, fade } from '@material-ui/core'
 import { BaseRender } from './BaseRender'
 import { FieldRenderProps } from 'liform-react-final'
 
@@ -10,6 +11,27 @@ function mapOptionsLabels (values, labels) {
     }
     return o
 }
+
+const useStyle = makeStyles(theme => ({
+    'placeholderContainer': {
+        '& $placeholderText': {
+            opacity: 0,
+        },
+        '&:focus $placeholderText': {
+            opacity: theme.palette.type === 'light' ? 0.42 : 0.5,
+        },
+    },
+    'placeholderText': {},
+    'placeholderSelect': {
+        opacity: 0,
+        '&:focus': {
+            opacity: theme.palette.type === 'light' ? 0.42 : 0.5,
+        },
+    },
+    'placeholderOption': {
+        color: fade(theme.palette.text.primary, theme.palette.type === 'light' ? 0.42 : 0.5),
+    },
+}))
 
 export const Select = props => {
     const {
@@ -23,6 +45,8 @@ export const Select = props => {
 
         SelectProps = {},
     } = props
+
+    const style = useStyle()
 
     const options = useMemo(() => (
         schema.enum && mapOptionsLabels(schema.enum, schema.enumTitles)
@@ -38,21 +62,27 @@ export const Select = props => {
         }
         return selected => {
             if (selected.length === 0) {
-                return <em>{placeholder}</em>
+                return <em className={style.placeholderText}>{placeholder}</em>
             }
             return selected.map(v =>
                 <Chip key={v} label={options[v]}/>
             )
         }
-    }, [schema, selectNative, placeholder, options])
+    }, [schema, selectNative, style.placeholderText, placeholder, options])
 
-    const children = useMemo(() => (
-        Object.keys(options).map(v =>
+    const children = useMemo(() => {
+        const el = Object.keys(options).map(v =>
             selectNative ?
                 <option key={v} value={v}>{options[v]}</option> :
                 <MenuItem key={v} value={v}>{options[v]}</MenuItem>
         )
-    ), [options, selectNative])
+
+        if (selectNative) {
+            el.unshift(<option key="" value="" className={style.placeholderOption}>{placeholder}</option>)
+        }
+
+        return el
+    }, [options, selectNative, style.placeholderOption, placeholder])
 
     const onChange = useCallback(event => onChangeProp(extractNativeSelectValue(event)), [onChangeProp])
 
@@ -69,8 +99,20 @@ export const Select = props => {
             SelectProps={{
                 multiple: schema.type === 'array',
                 native: selectNative,
+                displayEmpty: true,
                 renderValue,
                 ...SelectProps,
+                className: clsx(
+                    SelectProps.className,
+                    !selectNative && input.value.length === 0 && style.placeholderContainer,
+                )
+            }}
+
+            inputProps={{
+                className: clsx(
+                    selectNative && input.value.length === 0 && style.placeholderSelect,
+                    !selectNative && style.placeholderContainer,
+                ),
             }}
         >
             { children }

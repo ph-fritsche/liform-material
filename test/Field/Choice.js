@@ -63,6 +63,7 @@ describe('Choice', () => {
                 title: 'foo',
                 enum: ['a', 'b', 'c'],
                 enumTitles: ['Abc', 'Bcd', 'Cde'],
+                placeholder: 'myPlaceholderText'
             },
             value: ['b'],
         })
@@ -70,9 +71,16 @@ describe('Choice', () => {
         expect(result.queryAllByText('Cde')).toHaveLength(0)
 
         userEvent.click(field)
-        userEvent.click(result.getByText('Cde'))
+        userEvent.click(result.getByText('Cde', {selector: '[role=option]'}))
 
         expect(getLiformValue()).toEqual(['b', 'c'])
+
+        userEvent.click(result.getByText('Bcd', {selector: '[role=option]'}))
+        userEvent.click(result.getByText('Cde', {selector: '[role=option]'}))
+
+        expect(getLiformValue()).toEqual([])
+
+        expect(field).toHaveTextContent('myPlaceholderText')
     })
 
     it('Render and change big multiple select', () => {
