@@ -36,7 +36,7 @@ export const NumberRender = props => {
     }, [schema, onChangeProp])
 
     const onBlur = useCallback(event => {
-        let v
+        let v = undefined
         if (event.target.value !== '') {
             v = Number(event.target.value)
             const step = schema.step || schema.type === 'integer' && 1 || undefined
@@ -47,8 +47,6 @@ export const NumberRender = props => {
                     v = Number(v.toFixed(String(step).length - dotPos - 1))
                 }
             }
-        } else {
-            v = undefined
         }
 
         const oldVal = valueProp !== '' ? valueProp : undefined

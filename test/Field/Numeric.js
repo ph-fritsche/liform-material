@@ -4,7 +4,7 @@ import { testLifield } from './_field'
 
 describe('Numeric input', () => {
     it('Render and change number input', () => {
-        const { field, form, expectedFormValues } = testLifield({
+        const { field, form, expectedFormValues, getLiformValue } = testLifield({
             schema: {
                 type: 'number',
                 title: 'foo',
@@ -15,7 +15,7 @@ describe('Numeric input', () => {
 
         userEvent.type(field, '{backspace}{backspace}{backspace}')
 
-        expect(form.getAttribute('data-values')).toBe(null)
+        expect(getLiformValue()).toBe(undefined)
         expect(form).toHaveFormValues({...expectedFormValues, [field.name]: null})
 
         userEvent.type(field, '456')
@@ -32,7 +32,7 @@ describe('Numeric input', () => {
     })
 
     it('Render and change integer input', () => {
-        const { field, form, expectedFormValues } = testLifield({
+        const { field, form, expectedFormValues, getLiformValue } = testLifield({
             schema: {
                 type: 'integer',
                 title: 'foo',
@@ -42,7 +42,7 @@ describe('Numeric input', () => {
 
         userEvent.type(field, '{backspace}{backspace}{backspace}')
 
-        expect(form.getAttribute('data-values')).toBe(null)
+        expect(getLiformValue()).toBe(undefined)
         expect(form).toHaveFormValues({...expectedFormValues, [field.name]: null})
 
         userEvent.type(field, '456')
