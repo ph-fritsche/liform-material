@@ -1,25 +1,26 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Button } from '@material-ui/core'
 import { SchemaProp } from 'liform-react-final'
 
 export const ButtonWidget = props => {
     const {
         schema = true,
+        type = schema.widget && ['submit','reset'].find(t =>
+            Array.isArray(schema.widget)
+                ? schema.widget.includes(t)
+                : schema.widget === t
+        ) || 'button',
+        ...others
     } = props
-
-    const types = ['submit', 'reset']
-    let type = undefined
-    if (typeof(schema.widget) === 'string') {
-        type = types[types.indexOf(schema.widget)]
-    } else if (Array.isArray(schema.widget)) {
-        type = types.filter(t => schema.widget.indexOf(t) >= 0)[0]
-    }
 
     return (
         <Button
-            variant={ types.indexOf(type) >= 0 && 'contained' || 'text' }
+            variant={ type && 'contained' || 'text' }
             color={ type === 'submit' && 'primary' || 'inherit' }
             type={type}
+            aria-label={schema.title}
+            {...others}
         >
             {schema.title}
         </Button>
@@ -28,4 +29,5 @@ export const ButtonWidget = props => {
 
 ButtonWidget.propTypes = {
     schema: SchemaProp,
+    type: PropTypes.string,
 }
