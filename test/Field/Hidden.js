@@ -1,9 +1,8 @@
-import { fireEvent } from '@testing-library/react'
-import { renderLifield } from './_field'
+import { renderLifield, testLifield } from './_field'
 
 describe('Hidden', () => {
-    it('Render and change hidden input', () => {
-        const { form, expectedFormValues, getLiformValue } = renderLifield({
+    it('Render hidden input', () => {
+        const { form } = renderLifield({
             schema: {
                 type: 'string',
                 widget: 'hidden',
@@ -13,19 +12,10 @@ describe('Hidden', () => {
         })
 
         expect(form).toEqualFormValues({'form': 'bar'})
-
-        const input = form.querySelector('input[name=form]')
-
-        fireEvent.change(input, {target: {value: 'baz'}})
-        fireEvent.blur(input)
-
-        expect(form).toHaveFormValues({...expectedFormValues, 'form': 'baz'})
-
-        expect(getLiformValue()).toEqual('baz')
     })
 
     it('Render errors for hidden input', () => {
-        const { form } = renderLifield({
+        const { field } = testLifield({
             schema: {
                 type: 'string',
                 widget: 'hidden',
@@ -39,8 +29,6 @@ describe('Hidden', () => {
             }
         })
 
-        expect(form).toEqualFormValues({'form': 'bar'})
-
-        expect(form).toHaveTextContent('This is invalid.')
+        expect(field).toHaveTextContent('This is invalid.')
     })
 })

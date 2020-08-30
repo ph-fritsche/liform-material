@@ -10,13 +10,14 @@ export const Hidden = props => {
             name,
             onBlur,
             onFocus,
-            onChange,
             value,
         },
     } = props
 
+    const inputElement = <input type="hidden" name={name} value={value}/>
+
     if (!meta.error) {
-        return <input type="hidden" name={name} value={value} onChange={e => onChange(e.target.value)} onBlur={e => onChange(e.target.value)}/>
+        return inputElement
     }
 
     return (
@@ -27,7 +28,7 @@ export const Hidden = props => {
             onFocus={onFocus}
         >
             <FormLabel component="legend">{schema.title}</FormLabel>
-            <input type="hidden" name={name} value={value} onChange={e => onChange(e.target.value)} onBlur={e => onChange(e.target.value)}/>
+            { inputElement }
             <FormHelperText>{meta.error || schema.description}</FormHelperText>
         </FormControl>
     )
