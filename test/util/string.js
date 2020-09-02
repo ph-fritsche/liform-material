@@ -1,4 +1,4 @@
-import { indexOfUnescaped, isEscaped, countUnescaped } from '../../src/util/string'
+import { indexOfUnescaped, isEscaped, countUnescaped, hasUnescaped } from '../../src/util/string'
 
 describe('Escaped characters', () => {
     it('Check if character is escaped', () => {
@@ -33,18 +33,24 @@ describe('Escaped characters', () => {
         ).toEqual(8)
     })
 
-    it('Return -1 if unescaped character cannot be found', () => {
+    it('Return undefined if unescaped character cannot be found', () => {
         expect(
             indexOfUnescaped('abca\\bc', 'd')
-        ).toEqual(-1)
+        ).toEqual(undefined)
 
         expect(
             indexOfUnescaped('abca\\bc', 'b', 3)
-        ).toEqual(-1)
+        ).toEqual(undefined)
 
         expect(
             indexOfUnescaped('a\\bcabc', 'b', 0, 3)
-        ).toEqual(-1)
+        ).toEqual(undefined)
+    })
+
+    it('Test for unescaped characters', () => {
+        expect(hasUnescaped('abca\\bc', 'd')).toBe(false)
+        expect(hasUnescaped('abca\\bc', 'b')).toBe(true)
+        expect(hasUnescaped('a\\bcabc', 'b', 0, 3)).toBe(false)
     })
 
     it('Count unescaped characters', () => {

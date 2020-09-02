@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { intervalFromString } from '../../util/date'
-import { indexOfUnescaped } from '../../util/string'
+import { indexOfUnescaped, hasUnescaped } from '../../util/string'
 
 export function aspectsFromValue (parsedValue, valuePattern) {
     if (!parsedValue) {
@@ -10,36 +10,56 @@ export function aspectsFromValue (parsedValue, valuePattern) {
         valuePattern = 'P(-?\\d+[YMDW])*(T(-?\\d+[HMS])*)?'
     }
 
-    const posP = indexOfUnescaped(valuePattern, 'P')
-    const posT = indexOfUnescaped(valuePattern, 'T', posP)
+    const posP = indexOfUnescaped(valuePattern, 'P') ?? valuePattern.length
+    const posT = indexOfUnescaped(valuePattern, 'T', posP) ?? valuePattern.length
 
     const aspects = []
     
-    if (indexOfUnescaped(valuePattern, '-', 0, posP) >= 0) {
-        aspects.push({type: 'value', key: 'sign', value: parsedValue.sign || '+', placeholder: '+', isNumeric: false})
+    if (hasUnescaped(valuePattern, '-', 0, posP)) {
+        aspects.push({key: 'sign', value: parsedValue.sign || '+', placeholder: '+', isNumeric: false})
     }
 
-    for (const o of [
-        [indexOfUnescaped(valuePattern, 'Y', posP, posT), 'Y', 'years'],
-        [indexOfUnescaped(valuePattern, 'M', posP, posT), 'M', 'months'],
-        [indexOfUnescaped(valuePattern, 'D', posP, posT), 'D', 'days'],
-        [indexOfUnescaped(valuePattern, 'H', posT), 'h', 'hours'],
-        [indexOfUnescaped(valuePattern, 'M', posT), 'm', 'minutes'],
-        [indexOfUnescaped(valuePattern, 'S', posT), 's', 'seconds'],
+    const has = {
+        years: parsedValue.years || hasUnescaped(valuePattern, 'Y', posP, posT),
+        months: parsedValue.months || hasUnescaped(valuePattern, 'M', posP, posT),
+        weeks: parsedValue.weeks || hasUnescaped(valuePattern, 'W', posP, posT),
+        days: parsedValue.days || hasUnescaped(valuePattern, 'D', posP, posT),
+        hours: parsedValue.hours || posT >= 0 && hasUnescaped(valuePattern, 'H', posT),
+        minutes: parsedValue.minutes || posT >= 0 && hasUnescaped(valuePattern, 'M', posT),
+        seconds: parsedValue.seconds || posT >= 0 && hasUnescaped(valuePattern, 'S', posT),
+    }
+
+    for (const [key, unit] of [
+        ['years', 'Y'],
+        ['months', 'M'],
+        ['weeks', 'W'],
+        ['days', 'D'],
+        ['hours', 'h'],
+        ['minutes', 'm'],
+        ['seconds', 's'],
     ]) {
-        if (o[0] >= 0) {
-            if (aspects.length > 0) {
-                aspects.push({text: ' '})
-            }
-            let v = parsedValue[ o[2] ] ?? 0
-            if (o[1] === 'D') {
-                v += (parsedValue.weeks ?? 0) * 7
-            }
-            aspects.push(
-                {key: o[2], value: v, label: o[2].substr(0,1).toUpperCase() + o[2].substr(1)},
-                {text: o[1]},
-            )
+        if (!has[key]) {
+            continue
         }
+
+        let v = parsedValue[ key ] ?? 0
+
+        // days and weeks should not both be present - but they might be
+        if (key === 'days') {
+            v += (parsedValue.weeks ?? 0) * 7
+        } else if (key === 'weeks' && has.days) {
+            continue
+        }
+
+        // put a space between aspects for readability
+        if (aspects.length > 0) {
+            aspects.push({text: ' '})
+        }
+
+        aspects.push(
+            {key, value: v, label: key.substr(0,1).toUpperCase() + key.substr(1)},
+            {text: unit},
+        )
     }
 
     return aspects
@@ -51,11 +71,16 @@ export function compileValue (valueProp, valuePattern) {
     const input = aspectsFromValue(parsed, valuePattern)
 
     let display = []
-    for (const k in parsed) {
-        if (k === 'sign') {
-            display.push(parsed.sign)
-        } else if (parsed[k] != 0) {
-            display.push(parsed[k] + ' ' + k.substring(0,1).toUpperCase() + k.substring(1, parsed[k] === 1 || parsed[k] === -1 ? k.length - 1 : undefined))
+    for (const a of input) {
+        if (a.key === 'sign') {
+            display.push(a.value)
+        } else if (Object.keys(a).includes('value') && a.value !== 0) {
+            // display weeks if possible
+            if (a.key === 'days' && (a.value % 7) === 0) {
+                display.push(a.value / 7, 'Weeks')
+            } else {
+                display.push(a.value, a.label)
+            }
         }
     }
     display = display.join(' ')
