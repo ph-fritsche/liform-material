@@ -53,27 +53,27 @@ export function commitAspect (dateUtil, value, onChange, aspectValue, aspectInde
         }
     }
 
-    const newDate = dateUtil.parse(
-        value.input.map((p,i) => {
-            if (p.type === 'formatter') {
-                return p.placeholder
-            }
-            if (i === aspectIndex) {
-                return aspectValue
-            }
+    const valueString = value.input.map((p,i) => {
+        if (!Object.keys(p).includes('value')) {
+            return p.text
+        }
+        if (i === aspectIndex) {
+            return aspectValue
+        }
 
-            // when switching to a month with less days, date might need correction
-            if (p.placeholder === 'dd'
-                && value.input[aspectIndex].placeholder === 'MM'
-            ) {
-                const y = value.input.find(p => p.placeholder[0] === 'y')
-                return Math.min(daysInMonth(dateUtil, y && y.value, aspectValue), p.value)
-            }
+        // when switching to a month with less days, date might need correction
+        if (p.placeholder === 'dd'
+            && value.input[aspectIndex].placeholder === 'MM'
+        ) {
+            const y = value.input.find(p => p.placeholder[0] === 'y')
+            return Math.min(daysInMonth(dateUtil, y && y.value, aspectValue), p.value)
+        }
 
-            return p.value
-        }).join(''),
-        value.input.map(p => p.placeholder).join(''),
-    )
+        return p.value
+    }).join('')
+    const valueFormat = value.input.map(p => Object.keys(p).includes('value') ? p.placeholder : "'" + p.text + "'").join('')
+
+    const newDate = dateUtil.parse(valueString, valueFormat)
 
     if (String(newDate) !== 'Invalid Date') {
         onChange(newDate)
