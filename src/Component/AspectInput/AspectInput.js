@@ -280,7 +280,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             </span>
         )
 
-    return <>
+    return (
         <div
             ref={gridRef}
 
@@ -299,8 +299,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                 { renderedValue }
             </div>
         </div>
-        <input type="hidden" name={name} value={aspects.map(a => Object.keys(a).includes('value') ? a.value : a.text).join('')}/>
-    </>
+    )
 })
 
 AspectInput.propTypes = {

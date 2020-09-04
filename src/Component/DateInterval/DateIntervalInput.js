@@ -7,6 +7,9 @@ import { CompiledValueProp } from './compileValue'
 
 export const DateIntervalInput = React.forwardRef(function DateIntervalInput(props, ref) {
     const {
+        name,
+        value,
+
         onChange,
         valueObject,
         placeholder,
@@ -18,7 +21,7 @@ export const DateIntervalInput = React.forwardRef(function DateIntervalInput(pro
 
     const commit = useBoundFunction(commitAspect, valueObject.input, onChange)
 
-    return (
+    return <>
         <AspectInput
             ref={ref}
             {...others}
@@ -28,10 +31,13 @@ export const DateIntervalInput = React.forwardRef(function DateIntervalInput(pro
             display={valueObject.display}
             placeholder={placeholder}
         />
-    )
+        <input type="hidden" name={name} value={value}/>
+    </>
 })
 
 DateIntervalInput.propTypes = {
+    name: PropTypes.string,
+    value: PropTypes.string,
     onChange: PropTypes.func,
     valueObject: CompiledValueProp,
     placeholder: PropTypes.string,

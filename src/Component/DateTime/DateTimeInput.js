@@ -7,6 +7,9 @@ import { CompiledValueProp } from './compileValue'
 
 export const DateTimeInput = React.forwardRef(function DateTimeInput(props, ref) {
     const {
+        name,
+        value,
+
         dateUtil,
         onChange,
         valueObject,
@@ -19,7 +22,7 @@ export const DateTimeInput = React.forwardRef(function DateTimeInput(props, ref)
 
     const commit = useBoundFunction(commitAspect, dateUtil, valueObject, onChange)
 
-    return (
+    return <>
         <AspectInput
             ref={ref}
             {...others}
@@ -29,10 +32,13 @@ export const DateTimeInput = React.forwardRef(function DateTimeInput(props, ref)
             display={valueObject.display}
             placeholder={placeholder}
         />
-    )
+        <input type="hidden" name={name} value={value}/>
+    </>
 })
 
 DateTimeInput.propTypes = {
+    name: PropTypes.string,
+    value: PropTypes.string,
     dateUtil: PropTypes.shape(AspectsDateUtilProps),
     onChange: PropTypes.func,
     valueObject: CompiledValueProp,
