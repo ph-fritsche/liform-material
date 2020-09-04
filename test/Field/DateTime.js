@@ -24,7 +24,7 @@ describe('DateTime', () => {
         expect(getLiformValue()).toEqual(dateUtil.formatByString(d, 'yyyy-MM-dd'))
     })
 
-    it('Render and change date input per keyboard', () => {
+    it('Render and change date input per arrow keys', () => {
         const { result, getActiveElement, getLiformValue } = testLifield({
             schema: {
                 type: 'string',
@@ -50,21 +50,42 @@ describe('DateTime', () => {
         expect(getLiformValue()).toEqual(dateUtil.formatByString(d, 'yyyy-MM-dd'))
         expect(result.getByLabelText('Month')).toHaveFocus()
         expect(getActiveElement()).toHaveTextContent(new RegExp('^0*' + (d.getMonth()+1) + '$'))
+    })
+
+    it('Render and change date input per typing', () => {
+        const { result, getActiveElement, getLiformValue } = testLifield({
+            schema: {
+                type: 'string',
+                widget: 'date',
+                title: 'foo',
+            },
+        })
+
+        const d = new Date()
+
+        userEvent.tab()
+        userEvent.click(result.getByLabelText('Month'))
+
+        expect(result.getByLabelText('Month')).toHaveFocus()
 
         // this should jump to the next aspect
-        userEvent.type(getActiveElement(), '8')
+        // can not use userEvent.type due to https://github.com/testing-library/user-event/issues/442
+        // userEvent.type(getActiveElement(), '8')
+        fireEvent.input(getActiveElement(), {target: {textContent: '8'}})
         d.setMonth(7)
 
         expect(getLiformValue()).toEqual(dateUtil.formatByString(d, 'yyyy-MM-dd'))
         expect(result.getByLabelText('Day of the month')).toHaveFocus()
         expect(getActiveElement()).toHaveTextContent(new RegExp('^0*' + (d.getDate()) + '$'))
 
-        userEvent.type(getActiveElement(), '1')
+        // userEvent.type(getActiveElement(), '1')
+        fireEvent.input(getActiveElement(), {target: {textContent: '1'}})
 
         expect(getLiformValue()).toEqual(dateUtil.formatByString(d, 'yyyy-MM-dd'))
         expect(getActiveElement()).toHaveTextContent('01')
 
-        userEvent.type(getActiveElement(), '7')
+        // userEvent.type(getActiveElement(), '7')
+        fireEvent.input(getActiveElement(), {target: {textContent: '17'}})
         d.setDate(17)
 
         expect(getLiformValue()).toEqual(dateUtil.formatByString(d, 'yyyy-MM-dd'))
