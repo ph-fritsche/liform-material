@@ -147,8 +147,8 @@ function formatDate(dateUtil, date, format) {
 export function compileValue (dateUtil, valueProp, valueFormat) {
     const parsed = valueProp && valueFormat ? dateUtil.parse(valueProp, valueFormat) : dateUtil.date(valueProp || new Date())
 
-    if (parsed === 'Invalid date') {
-        throw new Error('Invalid date supplied')
+    if (String(parsed) === 'Invalid Date') {
+        throw new Error('Invalid date/time supplied')
     }
 
     const format = String(valueFormat || "yyyy-MM-dd'T'HH:mm:ssxxx")
@@ -177,7 +177,7 @@ export function compileValue (dateUtil, valueProp, valueFormat) {
 
 export const CompiledValueProp = PropTypes.exact({
     format: PropTypes.string,
-    parsed: PropTypes.object,
+    parsed: PropTypes.object.isRequired,
     views: PropTypes.arrayOf(PropTypes.string),
     input: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.exact({
@@ -188,6 +188,6 @@ export const CompiledValueProp = PropTypes.exact({
         PropTypes.exact({
             text: PropTypes.string,
         }),
-    ])),
+    ])).isRequired,
     display: PropTypes.string,
 })

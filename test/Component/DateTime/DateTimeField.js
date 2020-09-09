@@ -17,6 +17,10 @@ describe('DateTimeField', () => {
         const onChange = jest.fn()
         const rendered = render(<DateTimeField onChange={onChange} valueFormat={format} label="foo"/>)
 
+        fireEvent.paste(rendered.getByLabelText('foo'), {clipboardData: mockDataTransfer('')})
+
+        expect(onChange).not.toBeCalled()
+
         fireEvent.paste(rendered.getByLabelText('foo'), {clipboardData: mockDataTransfer('foo')})
 
         expect(onChange).not.toBeCalled()

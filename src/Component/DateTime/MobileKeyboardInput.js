@@ -26,7 +26,7 @@ export function MobileKeyboardInput (props) {
         onFocus={event => event.target !== mobileKeyboardInputRef.current && mobileKeyboardInputRef.current.focus() }
         value={valueObject.display}
 
-        helperText={valueObject.input.map(p => p.placeholder).join('')}
+        helperText={valueObject.input.map(p => Object.keys(p).includes('value')? p.placeholder : p.text).join('')}
 
         inputComponent={DateTimeInput}
         inputRef={inputRef}

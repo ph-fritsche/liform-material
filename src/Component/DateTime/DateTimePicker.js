@@ -6,9 +6,9 @@ import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker, PickersDay } 
 import { MobileKeyboardInput } from './MobileKeyboardInput'
 import { CompiledValueProp } from './compileValue'
 
-const guessPickerComponent = (views) => {
-    const hasDate = views.indexOf('year') >= 0 || views.indexOf('month') >= 0 || views.indexOf('date') >= 0
-    const hasTime = views.indexOf('hours') >= 0 || views.indexOf('minutes') >= 0 || views.indexOf('seconds') >= 0
+const guessPickerComponent = (views = []) => {
+    const hasDate = views.includes('year') || views.includes('month') || views.includes('date')
+    const hasTime = views.includes('hours') || views.includes('minutes') || views.includes('seconds')
     return hasDate && hasTime ? StaticDateTimePicker : hasTime ? StaticTimePicker : StaticDatePicker
 }
 
@@ -17,7 +17,7 @@ const useStyle = makeStyles(theme => ({
         borderRadius: 0,
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.common.white,
-        '&:hover, &:focus': {
+        '&:hover,&:focus': {
             backgroundColor: theme.palette.primary.dark,
         },
     },
@@ -55,8 +55,8 @@ export const DateTimePicker = (props) => {
     }
 
     const renderDay = useMemo(() => {
-        const hasWeek = valueObject.input.find(v => v.placeholder && ['w','I'].indexOf(v.placeholder[0]) >= 0)
-        const hasDay = valueObject.input.find(v => v.placeholder && ['d','D','e','i'].indexOf(v.placeholder[0]) >= 0)
+        const hasWeek = valueObject.input.find(v => v.placeholder && ['w','I'].includes(v.placeholder[0]))
+        const hasDay = valueObject.input.find(v => v.placeholder && ['d','D','e','i'].includes(v.placeholder[0]))
         if (hasWeek && !hasDay) {
             const weekStart = dateUtil.startOfWeek(valueObject.parsed)
             const weekEnd = dateUtil.endOfWeek(valueObject.parsed)
@@ -103,7 +103,7 @@ DateTimePicker.propTypes = {
         isWithinRange: PropTypes.func.isRequired,
         isSameDay: PropTypes.func.isRequired,
     }).isRequired,
-    valueObject: CompiledValueProp,
+    valueObject: CompiledValueProp.isRequired,
     onChange: PropTypes.func.isRequired,
     mediaQueryDesktop: PropTypes.string,
     onClose: PropTypes.func,

@@ -42,8 +42,10 @@ describe('Compile value', () => {
 
     it('Build input aspects', () => {
         expect(aspectsString(buildInputAspects({date: ['yyyy', 'MM'], time: []}), true)).toBe('{yyyy}-{MM}')
+        expect(aspectsString(buildInputAspects({date: ['yyyy', 'Q'], time: []}), true)).toBe('{yyyy}-Q{Q}')
         expect(aspectsString(buildInputAspects({date: ['YYYY', 'ww'], time: []}), true)).toBe('{YYYY}-W{ww}')
         expect(aspectsString(buildInputAspects({date: ['yyyy'], time: ['HH']}), true)).toBe('{yyyy}  {HH}')
+        expect(aspectsString(buildInputAspects({date: [], time: ['HH','mm','ss','S']}), true)).toBe('{HH}:{mm}:{ss}.{S}')
     })
 
     it('Build display formats', () => {
@@ -80,5 +82,8 @@ describe('Compile value', () => {
         expect(aspectsString(value.input, true)).toEqual('{YYYY}-W{ww}')
         expect(aspectsString(value.input, false)).toMatch(/^\d{4}-W\d{2}$/)
         */
-    })
+
+       expect(() => compileValue(dateUtil, '2000-02-32')).toThrowError('Invalid date/time')
+       expect(() => compileValue(dateUtil, 'foo')).toThrowError('Invalid date/time')
+   })
 })
