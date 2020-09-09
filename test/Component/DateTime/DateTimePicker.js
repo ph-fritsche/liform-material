@@ -24,7 +24,7 @@ describe('DateTimePicker', () => {
         const aspectA = rendered.getByTitle('aspect A')
         expect(aspectA).toHaveFocus()
 
-        expect(aspectA.closest("div.MuiFormControl-root")).toHaveTextContent('a;b')
+        expect(aspectA.closest('div.MuiFormControl-root')).toHaveTextContent('a;b')
     })
 
     it('Highlight calendar week if the value contains week but no day', () => {

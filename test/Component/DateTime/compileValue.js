@@ -83,7 +83,7 @@ describe('Compile value', () => {
         expect(aspectsString(value.input, false)).toMatch(/^\d{4}-W\d{2}$/)
         */
 
-       expect(() => compileValue(dateUtil, '2000-02-32')).toThrowError('Invalid date/time')
-       expect(() => compileValue(dateUtil, 'foo')).toThrowError('Invalid date/time')
-   })
+        expect(() => compileValue(dateUtil, '2000-02-32')).toThrowError('Invalid date/time')
+        expect(() => compileValue(dateUtil, 'foo')).toThrowError('Invalid date/time')
+    })
 })
