@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { render, fireEvent, getByLabelText } from '@testing-library/react'
+import { render, fireEvent, getByLabelText, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AspectInput } from '../../../src'
 import { useForkedCallback } from '../../../src/util/func'
@@ -12,11 +12,17 @@ describe('AspectInput', () => {
             {value: '    b', label: 'secondAspect', placeholder: 'tttt', isNumeric: false},
             {text: '-'},
             {value: '0024', label: 'thirdAspect', placeholder: 'xxxx'},
+            {text: '/'},
+            {value: '0', label: 'fourthAspect', isNumeric: true},
         ]
     }
 
-    function TestComponent (props) {
+    function TestComponent ({callbacks, ...props}) {
         const [testAspects, setAspects] = useState(getTestAspects())
+
+        if(callbacks) {
+            callbacks.setAspects = setAspects
+        }
 
         function validateAspects (value, index) {
             if (index === 0) {
@@ -25,6 +31,8 @@ describe('AspectInput', () => {
                 return ['a','b','c'].includes(String(value).trim()) ? value : undefined
             } else if (index === 4) {
                 return (value >= 1 && value <= 1000) ? value : undefined
+            } else if (index === 6) {
+                return Number(value)
             }
         }
     
@@ -43,7 +51,7 @@ describe('AspectInput', () => {
         )
     }
 
-    function renderAspects () {
+    function renderAspects (props) {
         const commit = jest.fn()
 
         const result = render(
@@ -51,6 +59,7 @@ describe('AspectInput', () => {
                 <button data-testid="otherControl"/>
                 <label id="someId-label" htmlFor="someId">someLabelText</label>
                 <TestComponent
+                    {...props}
                     id={'someId'}
                     display="foo"
                     commit={commit}
@@ -123,11 +132,15 @@ describe('AspectInput', () => {
         
         fireEvent.keyDown(result.getByLabelText('thirdAspect'), {key: 'ArrowRight'})
 
+        expect(result.getByLabelText('fourthAspect')).toHaveFocus()
+
+        fireEvent.keyDown(result.getByLabelText('fourthAspect'), {key: 'ArrowRight'})
+
+        expect(result.getByLabelText('fourthAspect')).toHaveFocus()
+
+        fireEvent.keyDown(result.getByLabelText('fourthAspect'), {key: 'ArrowLeft'})
+
         expect(result.getByLabelText('thirdAspect')).toHaveFocus()
-
-        fireEvent.keyDown(result.getByLabelText('thirdAspect'), {key: 'ArrowLeft'})
-
-        expect(result.getByLabelText('secondAspect')).toHaveFocus()
     })
 
     it('Manipulate aspect value with arrow keys', () => {
@@ -191,5 +204,61 @@ describe('AspectInput', () => {
         expect(result.getByLabelText('firstAspect')).toHaveTextContent('3')
         expect(result.commit).toHaveBeenNthCalledWith(2, '3', 0)
         expect(result.getByLabelText('secondAspect')).toHaveFocus()
+    })
+
+    it('Prevent invalid input', () => {
+        const result = renderAspects()
+
+        userEvent.tab()
+
+        userEvent.click(result.getByLabelText('secondAspect'))
+        fireEvent.input(result.getByLabelText('secondAspect'), {target: {textContent: 'd'}})
+
+        expect(result.getByLabelText('secondAspect')).toHaveTextContent('b')
+
+        fireEvent.keyDown(result.getByLabelText('secondAspect'), {key: 'ArrowUp'})
+        expect(result.getByLabelText('secondAspect')).toHaveTextContent('c')
+        fireEvent.keyDown(result.getByLabelText('secondAspect'), {key: 'ArrowUp'})
+
+        expect(result.getByLabelText('secondAspect')).toHaveTextContent('c')
+
+        userEvent.click(result.getByLabelText('fourthAspect'))
+        fireEvent.input(result.getByLabelText('fourthAspect'), {target: {textContent: 'a'}})
+
+        expect(result.getByLabelText('fourthAspect')).toHaveTextContent('0')
+    })
+
+    it('Update active aspect when value changes', () => {
+        const callbacks = {}
+        const result = renderAspects({callbacks})
+
+        userEvent.tab()
+
+        userEvent.click(result.getByLabelText('secondAspect'))
+        expect(result.getByLabelText('secondAspect')).toHaveFocus()
+        expect(result.getByLabelText('secondAspect')).toHaveTextContent('b')
+
+        const newAspects = getTestAspects()
+        newAspects[2].value = 'c'
+        act(() => callbacks.setAspects(newAspects))
+
+        expect(result.getByLabelText('secondAspect')).toHaveFocus()
+        expect(result.getByLabelText('secondAspect')).toHaveTextContent('c')
+    })
+
+    it('Call onblur prop when component loses focus', () => {
+        const onBlur = jest.fn()
+        const result = renderAspects({onBlur})
+
+        userEvent.tab()
+        expect(result.getByLabelText('firstAspect')).toHaveFocus()
+
+        userEvent.click(result.getByLabelText('secondAspect'))
+
+        expect(onBlur).not.toBeCalled()
+
+        userEvent.click(document.body)
+
+        expect(onBlur).toBeCalled()
     })
 })

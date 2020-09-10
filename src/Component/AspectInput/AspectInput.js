@@ -74,9 +74,6 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         if (action.type === 'setFocus' && action.index !== undefined) {
             return {index: action.index, value: aspects[action.index].value}
         }
-        if (action.type === 'reset') {
-            return resetInput(aspects)
-        }
         if (action.type === 'change') {
             return {index: state.index, value: action.value}
         }
@@ -96,12 +93,20 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             return
         }
 
-        const newValue = validateProp(committedValue, activeAspect.index)
-        if (newValue === undefined) {
-            return
-        }
-
         commitProp(committedValue, activeAspect.index)
+    }
+
+    const changeAspect = newValue => {
+        const isNumericInput = Boolean(aspects[activeAspect.index].isNumeric ?? true)
+        const paddedValue = !aspects[activeAspect.index].placeholder
+            ? String(newValue)
+            : isNumericInput
+                ? String(Number(newValue)).padStart(aspects[activeAspect.index].placeholder.length, '0')
+                : String(newValue).padStart(aspects[activeAspect.index].placeholder.length, ' ')
+
+        updateAspect({type: 'change', value: paddedValue})
+
+        return paddedValue
     }
 
     const onInput = event => {
@@ -111,21 +116,12 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             ? inputValue
             : validateProp(inputValue.substr(-1), activeAspect.index) && inputValue.substr(-1)
 
-        if (newValue === undefined) {
+        if (newValue === undefined || isNaN(newValue)) {
+            event.target.textContent = activeAspect.value
             return
         }
 
         const isNumericInput = Boolean(aspects[activeAspect.index].isNumeric ?? true)
-
-        if (isNumericInput && isNaN(newValue)) {
-            return
-        }
-
-        const paddedValue = !aspects[activeAspect.index].placeholder
-            ? newValue
-            : isNumericInput
-                ? String(Number(newValue)).padStart(aspects[activeAspect.index].placeholder.length, '0')
-                : String(newValue).padStart(aspects[activeAspect.index].placeholder.length, ' ')
 
         const isEmpty = isNumericInput ? newValue == 0 : String(newValue).trim() == ''
 
@@ -136,7 +132,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                 : aspects[activeAspect.index].placeholder && String(newValue).trim().length >= aspects[activeAspect.index].placeholder.length
         )
 
-        updateAspect({type: 'change', value: paddedValue})
+        const paddedValue = changeAspect(newValue)
 
         event.target.textContent = paddedValue
         setSelection(event.target, true)
@@ -180,13 +176,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                 return
             }
 
-            const paddedValue = !aspects[activeAspect.index].placeholder
-                ? String(newValue)
-                : isNumericInput
-                    ? String(Number(newValue)).padStart(aspects[activeAspect.index].placeholder.length, '0')
-                    : String(newValue).padStart(aspects[activeAspect.index].placeholder.length, ' ')
-
-            updateAspect({type: 'change', value: paddedValue})
+            changeAspect(newValue)
         }
     }
 
