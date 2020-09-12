@@ -50,7 +50,6 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/pickers": "4.0.0-alpha.12",
     "date-fns": "^2.15.0",
-    "react-color": "^2.18.1",
     "react-dropzone": "^11.0.3"
   },
   "peerDependencies": {

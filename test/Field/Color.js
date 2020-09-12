@@ -11,6 +11,6 @@ describe('Color', () => {
             value: '#123456',
         })
 
-        expect(field.firstChild).toHaveStyle({backgroundColor: '#123456'})
+        expect(field).toHaveAttribute('type', 'color')
     })
 })
