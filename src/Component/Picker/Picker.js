@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Field } from '../Field/Field'
 import { useForkedCallback } from '../../util/func'
-import { useForkedRef, updateRef } from '../../util/ref'
+import { useForkedRef } from '../../util/ref'
 import { PickerModal } from './PickerModal'
 
 export const Picker = React.forwardRef(function Picker(props, ref) {
     const {
-        open: openProp,
-        toggle: toggleProp,
+        initialOpen = false,
+        onToggle,
 
         onClick: onClickProp,
-        onClose: onCloseProp,
 
         value,
         onChange,
@@ -24,28 +23,20 @@ export const Picker = React.forwardRef(function Picker(props, ref) {
         ...others
     } = props
 
-    const rootRef = useRef()
-    const forkedRootRef = useForkedRef(ref, rootRef)
+    // Using state as ref allows to pass a ref before it is set and render the component with initialOpen=true Popover
+    const [rootRef, setRootRef] = useState()
+    const forkedRootRef = useForkedRef(ref, setRootRef)
 
-    const [openState, setOpenState] = useState(false)
+    const [isOpen, setOpen] = useState(initialOpen)
     const togglePicker = useCallback(open => {
-        if (typeof(openProp) === 'boolean' || open === openState) {
-            return
+        const newState = open === undefined ? !isOpen : Boolean(open)
+        if (open !== isOpen) {
+            setOpen(newState)
+            onToggle && onToggle(newState)
         }
-        setOpenState(open === undefined ? !openState : open)
-    }, [openProp, openState, setOpenState])
-
-    useEffect(() => {
-        if (typeof(openProp) !== 'boolean') {
-            updateRef(openProp, openState)
-            updateRef(toggleProp, togglePicker)
-        }
-    }, [openProp, openState, toggleProp, togglePicker])
-
-    const isOpen = typeof(openProp) === 'boolean' ? openProp : openState
+    }, [isOpen, setOpen, onToggle])
 
     const onClick = useForkedCallback(onClickProp, () => togglePicker(true), [togglePicker])
-    const onClose = useForkedCallback(onCloseProp, () => togglePicker(false), [togglePicker])
 
     return (<>
         <Field
@@ -70,21 +61,20 @@ export const Picker = React.forwardRef(function Picker(props, ref) {
                 ...PickerProps
             }}
 
-            anchorEl={rootRef.current}
+            anchorEl={rootRef}
             open={isOpen}
-            onClose={onClose}
+            onClose={() => togglePicker(false)}
         />
     </>)
 })
 
 Picker.propTypes = {
-    open: PropTypes.bool,
-    toggle: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    initialOpen: PropTypes.bool,
+    onToggle: PropTypes.func,
     onClick: PropTypes.func,
-    onClose: PropTypes.func,
     value: PropTypes.any,
     onChange: PropTypes.func,
     ModalProps: PropTypes.object,
-    PickerComponent: PropTypes.elementType,
+    PickerComponent: PropTypes.elementType.isRequired,
     PickerProps: PropTypes.object,
 }

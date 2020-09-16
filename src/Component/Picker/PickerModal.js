@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useMediaQuery, Popover, Modal, Dialog } from '@material-ui/core'
+import { useMediaQuery, Popover, Dialog } from '@material-ui/core'
 
 export const PickerModal = (props) => {
     const {
@@ -18,7 +18,8 @@ export const PickerModal = (props) => {
 
     const isDesktop = useMediaQuery(mediaQueryDesktop)
 
-    const ModalComponent = isDesktop ? Popover : Dialog
+    // Popover requires anchorEl
+    const ModalComponent = (isDesktop && anchorEl) ? Popover : Dialog
 
     const sharedProps = {
         open,
@@ -37,14 +38,14 @@ export const PickerModal = (props) => {
         },
     }
 
-    const modalProps = {
+    const dialogProps = {
     }
 
     return (
         <ModalComponent
             {...sharedProps}
             {...(ModalComponent === Popover && popoverProps)}
-            {...(ModalComponent === Modal && modalProps)}
+            {...(ModalComponent === Dialog && dialogProps)}
             {...others}
         >
             <PickerComponent onClose={onClose} {...PickerProps}/>

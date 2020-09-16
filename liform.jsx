@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import ReactDOM from 'react-dom'
 import Liform from 'liform-react-final'
 
@@ -20,20 +20,38 @@ Liform.theme = MaterialTheme
 //   document.getElementById('liform')
 // )
 
-import { DateTimePicker } from './src/Component/DateTime/DateTimePicker'
-import DateFnsUtil from '@date-io/date-fns'
+import { TextField } from '@material-ui/core'
+import { Picker } from './src/Component/Picker/Picker'
+import { PickerModal } from './src/Component/Picker/PickerModal'
+import { useState } from 'react'
 
-const dateUtil = new DateFnsUtil()
+function TestComponent() {
+  const anchor = useRef()
+  const [render, rerender] = useState(0)
 
-const valueObject = {
-  input: [
-      {value: '1', placeholder: 'w', label: 'Week'},
-  ],
-  parsed: new Date(2000, 0, 12),
-  display: '',
+  return <>
+    <button onClick={() => rerender(render + 1)}>Rerender</button>
+    <div ref={anchor} style={{ border: '1px solid blue' }}>bar</div>
+    <PickerModal anchorEl={anchor} open={true} PickerComponent={() => <div style={{ border: '1px solid red' }}>foo</div>} />
+  </>
+}
+
+function PickerComponent() {
+  return (
+    <div style={{ border: '1px solid red' }}>
+      foo
+    </div>
+  )
+}
+
+function TestComponent2() {
+  return <Picker PickerComponent={PickerComponent} initialOpen={true} />
 }
 
 ReactDOM.render(
-  <DateTimePicker dateUtil={dateUtil} onChange={() => {}} valueObject={valueObject}/>,
+  <>
+    <TestComponent2 />
+    <TextField label="bar" variant="filled" />
+  </>,
   document.getElementById('liform')
 )
