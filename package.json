@@ -21,19 +21,19 @@
   "author": "Philipp Fritsche",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.11.4",
-    "@babel/preset-env": "^7.11.0",
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
-    "@symfony/webpack-encore": "^0.30.2",
+    "@symfony/webpack-encore": "^0.31.0",
     "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^10.4.9",
-    "@testing-library/user-event": "^12.1.2",
-    "eslint": "^7.7.0",
-    "eslint-plugin-jest": "^23.20.0",
+    "@testing-library/react": "^11.0.4",
+    "@testing-library/user-event": "^12.1.5",
+    "eslint": "^7.9.0",
+    "eslint-plugin-jest": "^24.0.1",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-react-hooks": "^4.1.0",
+    "eslint-plugin-react-hooks": "^4.1.2",
     "final-form": "^4.20.1",
     "final-form-arrays": "^3.0.2",
     "jest": "^26.4.2",
@@ -45,12 +45,12 @@
     "react-test-renderer": "^16.13.1"
   },
   "dependencies": {
-    "@date-io/date-fns": "2.8.0",
-    "@material-ui/core": "5.0.0-alpha.7",
+    "@date-io/date-fns": "2.10.6",
+    "@material-ui/core": "5.0.0-alpha.10",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/pickers": "4.0.0-alpha.12",
-    "date-fns": "^2.15.0",
-    "react-dropzone": "^11.0.3"
+    "date-fns": "^2.16.1",
+    "react-dropzone": "^11.1.0"
   },
   "peerDependencies": {
     "liform-react-final": "^1"
