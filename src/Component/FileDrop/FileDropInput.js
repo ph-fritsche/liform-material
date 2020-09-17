@@ -52,11 +52,7 @@ FileChip.propTypes = {
     avatar: PropTypes.func,
 }
 
-const renderValue = ({baseElementRef, avatar, onBlur, onChange, valueFocus, setValueFocus}, value) => {
-    if (!value) {
-        return undefined
-    }
-
+const renderValue = ({ baseElementRef, avatar, onBlur, onChange, valueFocus, setValueFocus }, value) => {
     const valueArray = (Array.isArray(value) ? value : [value])
 
     const handleDelete = (file) => {
@@ -95,7 +91,6 @@ const renderValue = ({baseElementRef, avatar, onBlur, onChange, valueFocus, setV
                     onDelete={handleDelete.bind(null, file)}
                     onClick={event => event.stopPropagation()}
                     onFocus={() => setValueFocus(file)}
-                    // onKeyDown={handleKeyDown}
                 />
             </span>
         )
@@ -109,12 +104,14 @@ function getChips (baseElementRef) {
 const focusValueChild = (baseElementRef, value, valueFocus) => {
     const chips = getChips(baseElementRef)
     const i = (Array.isArray(value) ? value : [value]).indexOf(valueFocus)
-    if (i >= 0 && i < (chips.length-1) && chips[i]) {
+    if (i >= 0 && i < chips.length) {
         chips[i].focus()
-    } else if (chips.length > 1) {
+    } else if (chips.length) {
         chips[0].focus()
     }
 }
+
+const noop = () => { }
 
 export const FileDropInput = React.forwardRef(function FileDropInput(props, ref) {
     const {
@@ -125,11 +122,11 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
         inputRef,
         name,
         multiple = true,
-        onBlur: onBlurProp,
-        onChange,
-        onFocus: onFocusProp,
+        onBlur: onBlurProp = noop,
+        onChange = noop,
+        onFocus: onFocusProp = noop,
         placeholder,
-        setDropActive,
+        setDropActive = noop,
         value,
     } = props
 
@@ -137,7 +134,7 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
     const [valueFocus, setValueFocus] = useState()
     const [isFocusLocked, lockFocus] = useState(false)
 
-    const onDragEnter = useCallback(() => setDropActive(true), [setDropActive])
+    const onDragEnter = useCallback(() => console.log('DRAGENTER') || setDropActive(true), [setDropActive])
     const onDragLeave = useCallback(() => setDropActive(false), [setDropActive])
     const onDialogClose = useCallback(() => {
         lockFocus(false)
@@ -146,9 +143,7 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
     const onDrop = useCallback(files => {
         lockFocus(false)
         setDropActive(false)
-        onChange && onChange(
-            multiple? (value || []).concat(files) : files[0]
-        )
+        onChange(multiple ? (value || []).concat(files) : files[0])
         focusValueChild(baseElementRef, value, files[0])
     }, [setDropActive, onChange, multiple, baseElementRef, value])
     const {
@@ -175,13 +170,13 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
     const onBlur = useCallback(event => {
         if (!isFocusLocked) {
             dropBlur(event)
-            onBlurProp && onBlurProp(event)
+            onBlurProp(event)
         }
     }, [isFocusLocked, onBlurProp, dropBlur])
     const onFocus = useCallback(event => {
         if (!isFocusLocked) {
             dropFocus(event)
-            onFocusProp && onFocusProp(event)
+            onFocusProp(event)
         }
     }, [isFocusLocked, onFocusProp, dropFocus])
 
@@ -206,8 +201,6 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
             const chips = getChips(baseElementRef)
             if (chips.length === 0) {
                 baseElementRef.current.focus()
-            } else if (chips.length === 1) {
-                chips[0].focus()
             } else {
                 const i = indicesOfDescendant(baseElementRef.current, event.target)
                 
