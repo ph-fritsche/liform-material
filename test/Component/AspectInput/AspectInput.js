@@ -105,14 +105,12 @@ describe('AspectInput', () => {
         const aspectCells = field.children[0].children
         expect(aspectCells).toHaveLength(testAspects.length)
 
-        for (let i = 0; i < testAspects.length; i++) {
-            const a = testAspects[i]
-            if (Object.keys(a).includes('value')) {
-                expect(getByLabelText(aspectCells[i], a.label)).toHaveTextContent(a.value, {normalizeWhitespace: false})
-            } else {
-                expect(aspectCells[i]).toHaveTextContent(a.text)
-            }
-        }
+        testAspects.forEach((a, i) => {
+            const isValueAspect = Object.keys(a).includes('value')
+            const cellOrTextbox = isValueAspect ? getByLabelText(aspectCells[i], a.label) : aspectCells[i]
+            const expectedContent = isValueAspect ? a.value : a.text
+            expect(cellOrTextbox).toHaveTextContent(expectedContent, { normalizeWhitespace: false })
+        })
 
         expect(result.getByLabelText('firstAspect')).toHaveFocus()
     })
