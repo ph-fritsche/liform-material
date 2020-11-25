@@ -23,4 +23,19 @@ describe('Object', () => {
         expect(form).toHaveFormValues({...expectedFormValues, [fieldA.name]: 'bar'})
         expect(getLiformValue()).toEqual({a: 'bar'})
     })
+
+    it('Render without title', () => {
+        const { form } = testLifield({
+            schema: {
+                type: 'object',
+                properties: {
+                    a: {
+                        type: 'string',
+                    }
+                }
+            }
+        })
+
+        expect(form).toHaveFormValues({'form[a]': ''})
+    })
 })

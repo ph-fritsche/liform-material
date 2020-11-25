@@ -29,16 +29,18 @@ export const ObjectWidget = props => {
                     render={({meta}) => {
                         const error = getFieldError(liform, name, meta)
 
-                        return (error || schema.title) && (
-                            <Grid item xs={12}>
-                                <div
-                                    style={{marginTop: gridSpacing * .5 - .5 + 'em' }}
-                                >
-                                    <FormLabel error={!!error} aria-hidden="true">{schema.title}</FormLabel>
-                                    <FormHelperText error={!!error}>{error || schema.description}</FormHelperText>
-                                </div>
-                            </Grid>
-                        )
+                        return (error || schema.title)
+                            ? (
+                                <Grid item xs={12}>
+                                    <div
+                                        style={{marginTop: gridSpacing * .5 - .5 + 'em' }}
+                                    >
+                                        <FormLabel error={!!error} aria-hidden="true">{schema.title}</FormLabel>
+                                        <FormHelperText error={!!error}>{error || schema.description}</FormHelperText>
+                                    </div>
+                                </Grid>
+                            )
+                            : null
                     }}
                 />
                 { mapProperties(schema.properties || {}, (propSchema, key) => {
