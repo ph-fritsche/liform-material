@@ -13,7 +13,7 @@ const TestField = (name, render) => {
 
 describe('Sections', () => {
     it('Call render.field', () => {
-        const field = jest.fn()
+        const field = jest.fn(() => null)
         const schema = {a: 'foo', b: 'bar'}
 
         render(

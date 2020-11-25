@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { TextField, TextareaAutosize } from '@material-ui/core';
-import { makeStyles, fade } from '@material-ui/core'
+import { TextField, TextareaAutosize, makeStyles, alpha } from '@material-ui/core';
 import clsx from 'clsx'
 import { FieldInput } from './FieldInput'
 import { useId } from '../../util/ref';
@@ -14,7 +13,7 @@ const useStyle = makeStyles(theme => ({
     },
     'targetActive.standard': undefined,
     'targetActive.filled': {
-        background: (theme.palette.type === 'light' ? fade(theme.palette.secondary.light, 0.09) : fade(theme.palette.secondary.dark, 0.09)) + ' !important',
+        background: (theme.palette.type === 'light' ? alpha(theme.palette.secondary.light, 0.09) : alpha(theme.palette.secondary.dark, 0.09)) + ' !important',
     },
     'targetActive.outline': undefined,
     'placeholderContainer': {

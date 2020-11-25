@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { useMediaQuery, makeStyles } from '@material-ui/core'
-import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker, PickersDay } from '@material-ui/pickers'
+import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker, PickersDay } from '@material-ui/lab'
 import { MobileKeyboardInput } from './MobileKeyboardInput'
 import { CompiledValueProp } from './compileValue'
 
@@ -60,15 +60,18 @@ export const DateTimePicker = (props) => {
         if (hasWeek && !hasDay) {
             const weekStart = dateUtil.startOfWeek(valueObject.parsed)
             const weekEnd = dateUtil.endOfWeek(valueObject.parsed)
+
+            const getDayClassName = (date) => clsx({
+                [style.highlight]: dateUtil.isWithinRange(date, [weekStart, weekEnd]),
+                [style.firstHighlight]: dateUtil.isSameDay(date, weekStart),
+                [style.endHighlight]: dateUtil.isSameDay(date, weekEnd),
+            })
+
             return function Day(date, selectedDates, DayComponentProps) {
                 return (
                     <PickersDay
                         {...DayComponentProps}
-                        className={clsx({
-                            [style.highlight]: dateUtil.isWithinRange(date, [weekStart, weekEnd]),
-                            [style.firstHighlight]: dateUtil.isSameDay(date, weekStart),
-                            [style.endHighlight]: dateUtil.isSameDay(date, weekEnd),
-                        })}
+                        className={getDayClassName(date)}
                     />
                 )
             }
@@ -87,6 +90,9 @@ export const DateTimePicker = (props) => {
             showDaysOutsideCurrentMonth={!!renderDay}
             allowSameDateSelection={true}
             views={valueObject.views}
+
+            // prop is required - listen to changes per onDateChange
+            onChange={() => {}}
 
             {...PickerProps}
 

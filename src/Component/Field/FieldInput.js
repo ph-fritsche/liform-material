@@ -2,10 +2,9 @@ import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { updateRef } from '../../util/ref'
 
-export const FieldInput = function FieldInput(props) {
+export const FieldInput = React.forwardRef(function FieldInput(props, ref) {
     const {
         inputComponent: InputComponent = 'input',
-        inputRef,
 
         isFocusLocked,
         focusRef,
@@ -27,13 +26,13 @@ export const FieldInput = function FieldInput(props) {
     updateRef(focusRef, {blur: onBlur, focus: onFocus})
 
     return <InputComponent
-        ref={inputRef}
+        ref={ref}
         {...others}
         onBlur={onBlur}
         onFocus={onFocus}
         value={value}
     />
-}
+})
 
 FieldInput.propTypes = {
     inputComponent: PropTypes.elementType,

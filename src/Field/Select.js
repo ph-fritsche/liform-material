@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from 'react'
 import clsx from 'clsx'
-import { MenuItem, Chip, makeStyles, fade } from '@material-ui/core'
+import { MenuItem, Chip, makeStyles, alpha } from '@material-ui/core'
 import { BaseRender } from './BaseRender'
 import { FieldRenderProps } from 'liform-react-final'
 
@@ -29,7 +29,7 @@ const useStyle = makeStyles(theme => ({
         },
     },
     'placeholderOption': {
-        color: fade(theme.palette.text.primary, theme.palette.type === 'light' ? 0.42 : 0.5),
+        color: alpha(theme.palette.text.primary, theme.palette.type === 'light' ? 0.42 : 0.5),
     },
 }))
 
