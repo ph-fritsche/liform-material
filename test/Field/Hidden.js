@@ -26,7 +26,7 @@ describe('Hidden', () => {
                 errors: {
                     '': ['This is invalid.'],
                 },
-            }
+            },
         })
 
         expect(field).toHaveTextContent('This is invalid.')

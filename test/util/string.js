@@ -3,47 +3,47 @@ import { indexOfUnescaped, isEscaped, countUnescaped, hasUnescaped } from '../..
 describe('Escaped characters', () => {
     it('Check if character is escaped', () => {
         expect(
-            isEscaped('abc', 1)
+            isEscaped('abc', 1),
         ).toEqual(false)
 
         expect(
-            isEscaped('a\\bc', 2)
+            isEscaped('a\\bc', 2),
         ).toEqual(true)
 
         expect(
-            isEscaped('a\\\\bc', 3)
+            isEscaped('a\\\\bc', 3),
         ).toEqual(false)
 
         expect(
-            isEscaped('a\\\\\\bc', 4)
+            isEscaped('a\\\\\\bc', 4),
         ).toEqual(true)
     })
 
     it('Find unescaped character', () => {
         expect(
-            indexOfUnescaped('abc', 'b')
+            indexOfUnescaped('abc', 'b'),
         ).toEqual(1)
 
         expect(
-            indexOfUnescaped('a\\bcabc', 'b')
+            indexOfUnescaped('a\\bcabc', 'b'),
         ).toEqual(5)
 
         expect(
-            indexOfUnescaped('abca\\bcabc', 'b', 3)
+            indexOfUnescaped('abca\\bcabc', 'b', 3),
         ).toEqual(8)
     })
 
     it('Return undefined if unescaped character cannot be found', () => {
         expect(
-            indexOfUnescaped('abca\\bc', 'd')
+            indexOfUnescaped('abca\\bc', 'd'),
         ).toEqual(undefined)
 
         expect(
-            indexOfUnescaped('abca\\bc', 'b', 3)
+            indexOfUnescaped('abca\\bc', 'b', 3),
         ).toEqual(undefined)
 
         expect(
-            indexOfUnescaped('a\\bcabc', 'b', 0, 3)
+            indexOfUnescaped('a\\bcabc', 'b', 0, 3),
         ).toEqual(undefined)
     })
 
@@ -55,19 +55,19 @@ describe('Escaped characters', () => {
 
     it('Count unescaped characters', () => {
         expect(
-            countUnescaped('abcabcabc', 'b')
+            countUnescaped('abcabcabc', 'b'),
         ).toEqual(3)
 
         expect(
-            countUnescaped('abcabcabc', 'b', 2)
+            countUnescaped('abcabcabc', 'b', 2),
         ).toEqual(2)
 
         expect(
-            countUnescaped('abcabcabc', 'b', 2, 5)
+            countUnescaped('abcabcabc', 'b', 2, 5),
         ).toEqual(1)
 
         expect(
-            countUnescaped('abca\\bcabc', 'b')
+            countUnescaped('abca\\bcabc', 'b'),
         ).toEqual(2)
     })
 })

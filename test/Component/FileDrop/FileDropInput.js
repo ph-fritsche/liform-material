@@ -2,9 +2,10 @@ import React from 'react'
 import { act, fireEvent, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FileDropInput } from '../../../src/Component/FileDrop/FileDropInput'
+import { wrapInTheme } from '../../_theme'
 
 function renderFileDropInput(props) {
-    const rendered = render(<FileDropInput {...props} />)
+    const rendered = render(wrapInTheme(<FileDropInput {...props} />))
 
     return {
         ...rendered,
@@ -28,7 +29,7 @@ jest.mock('react-dropzone', () => {
             }
 
             return hookReturn
-        }
+        },
     }
 })
 

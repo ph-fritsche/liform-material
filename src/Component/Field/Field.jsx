@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { TextField, TextareaAutosize, makeStyles, alpha } from '@material-ui/core';
+import { TextField, TextareaAutosize, alpha } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 import clsx from 'clsx'
 import { FieldInput } from './FieldInput'
 import { useId } from '../../util/ref';
@@ -81,9 +82,9 @@ export const Field = React.forwardRef(function Field(props, ref) {
 
         ...others
     } = props
-   
+
     const id = useId()
-    
+
     const style = useStyle(props)
 
     const InputProps = {
@@ -125,7 +126,7 @@ export const Field = React.forwardRef(function Field(props, ref) {
                 SelectProps: {
                     ...InputProps,
                     inputProps,
-                    ...SelectPropsProp
+                    ...SelectPropsProp,
                 },
             }
             : {

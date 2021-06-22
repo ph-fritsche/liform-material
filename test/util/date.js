@@ -10,7 +10,7 @@ describe('Date interval objects from string', () => {
         expect(intervalFromString('PT12M')).toEqual({minutes: 12})
         expect(intervalFromString('PT12S')).toEqual({seconds: 12})
 
-        expect(intervalFromString('P1Y3M5D7WT2H4M6S')).toEqual({years: 1, months: 3, days: 5, weeks: 7, hours: 2, minutes: 4, seconds: 6, })
+        expect(intervalFromString('P1Y3M5D7WT2H4M6S')).toEqual({years: 1, months: 3, days: 5, weeks: 7, hours: 2, minutes: 4, seconds: 6 })
     })
 
     it('Signed intervals', () => {
@@ -22,8 +22,8 @@ describe('Date interval objects from string', () => {
         expect(intervalFromString('PT-12M')).toEqual({minutes: -12})
         expect(intervalFromString('PT-12S')).toEqual({seconds: -12})
 
-        expect(intervalFromString('+P1Y3M5D7WT2H4M6S')).toEqual({sign: '+', years: 1, months: 3, days: 5, weeks: 7, hours: 2, minutes: 4, seconds: 6, })
-        expect(intervalFromString('-P1Y3M5D7WT2H4M6S')).toEqual({sign: '-', years: 1, months: 3, days: 5, weeks: 7, hours: 2, minutes: 4, seconds: 6, })
+        expect(intervalFromString('+P1Y3M5D7WT2H4M6S')).toEqual({sign: '+', years: 1, months: 3, days: 5, weeks: 7, hours: 2, minutes: 4, seconds: 6 })
+        expect(intervalFromString('-P1Y3M5D7WT2H4M6S')).toEqual({sign: '-', years: 1, months: 3, days: 5, weeks: 7, hours: 2, minutes: 4, seconds: 6 })
     })
 
     it('Return undefined for invalid strings', () => {
@@ -41,7 +41,7 @@ describe('Date interval objects to string', () => {
         expect(intervalToString({minutes: 12})).toEqual('PT12M')
         expect(intervalToString({seconds: 12})).toEqual('PT12S')
 
-        expect(intervalToString({years: 1, months: 3, days: 5, weeks: 7, hours: 2, minutes: 4, seconds: 6, })).toEqual('P1Y3M5D7WT2H4M6S')
+        expect(intervalToString({years: 1, months: 3, days: 5, weeks: 7, hours: 2, minutes: 4, seconds: 6 })).toEqual('P1Y3M5D7WT2H4M6S')
     })
 
     it('Signed intervals', () => {
@@ -53,8 +53,8 @@ describe('Date interval objects to string', () => {
         expect(intervalToString({minutes: -12})).toEqual('PT-12M')
         expect(intervalToString({seconds: -12})).toEqual('PT-12S')
 
-        expect(intervalToString({sign: '+', years: 1, months: 3, days: 5, weeks: 7, hours: 2, minutes: 4, seconds: 6, })).toEqual('+P1Y3M5D7WT2H4M6S')
-        expect(intervalToString({sign: '-', years: 1, months: 3, days: 5, weeks: 7, hours: 2, minutes: 4, seconds: 6, })).toEqual('-P1Y3M5D7WT2H4M6S')
+        expect(intervalToString({sign: '+', years: 1, months: 3, days: 5, weeks: 7, hours: 2, minutes: 4, seconds: 6 })).toEqual('+P1Y3M5D7WT2H4M6S')
+        expect(intervalToString({sign: '-', years: 1, months: 3, days: 5, weeks: 7, hours: 2, minutes: 4, seconds: 6 })).toEqual('-P1Y3M5D7WT2H4M6S')
     })
 
     it('Return empty string for 0 values', () => {

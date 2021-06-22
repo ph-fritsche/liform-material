@@ -1,23 +1,16 @@
-import React, { useCallback, useContext, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { InputAdornment, Typography } from '@material-ui/core'
 import { CalendarTodayOutlined, ScheduleOutlined } from '@material-ui/icons';
-import { MuiPickersAdapterContext } from '@material-ui/lab'
-import DateFns from '@material-ui/lab/AdapterDateFns'
 import { compileValue } from './compileValue'
 import { DateTimeInput } from './DateTimeInput'
 import { DateTimePicker } from './DateTimePicker'
 import { Picker } from '../Picker/Picker';
+import { useAdapter } from './adapter';
 
 const adornmentIcon = {
     date: CalendarTodayOutlined,
     time: ScheduleOutlined,
-}
-
-const useDateAdapter = () => {
-    const pickersContext = useContext(MuiPickersAdapterContext)
-
-    return pickersContext || new DateFns()
 }
 
 export const DateTimeField = React.forwardRef(function DateTimeField(props, ref) {
@@ -37,7 +30,7 @@ export const DateTimeField = React.forwardRef(function DateTimeField(props, ref)
         ...others
     } = props
 
-    const dateUtil = useDateAdapter()
+    const dateUtil = useAdapter()
 
     const valueObject = useMemo(() => compileValue(dateUtil, value, valueFormat), [dateUtil, value, valueFormat])
 

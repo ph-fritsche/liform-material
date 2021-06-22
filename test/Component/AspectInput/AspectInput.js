@@ -3,6 +3,7 @@ import { render, fireEvent, getByLabelText, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AspectInput } from '../../../src'
 import { useForkedCallback } from '../../../src/util/func'
+import { wrapInTheme } from '../../_theme'
 
 describe('AspectInput', () => {
     function getTestAspects () {
@@ -28,14 +29,14 @@ describe('AspectInput', () => {
             if (index === 0) {
                 return (value >= 1 && value < 20) ? value : undefined
             } else if (index === 2) {
-                return ['a','b','c'].includes(String(value).trim()) ? value : undefined
+                return ['a', 'b', 'c'].includes(String(value).trim()) ? value : undefined
             } else if (index === 4) {
                 return (value >= 1 && value <= 1000) ? value : undefined
             } else if (index === 6) {
                 return Number(value)
             }
         }
-    
+
         const commitAspects = useForkedCallback(props.commit, (value, index) => {
             testAspects[index].value = value
             setAspects(testAspects)
@@ -54,7 +55,7 @@ describe('AspectInput', () => {
     function renderAspects (props) {
         const commit = jest.fn()
 
-        const result = render(
+        const result = render(wrapInTheme(
             <div>
                 <button data-testid="otherControl"/>
                 <label id="someId-label" htmlFor="someId">someLabelText</label>
@@ -64,8 +65,8 @@ describe('AspectInput', () => {
                     display="foo"
                     commit={commit}
                 />
-            </div>
-        )
+            </div>,
+        ))
 
         result.commit = commit
 
@@ -123,11 +124,11 @@ describe('AspectInput', () => {
         fireEvent.keyDown(result.getByLabelText('firstAspect'), {key: 'ArrowRight'})
 
         expect(result.getByLabelText('secondAspect')).toHaveFocus()
-        
+
         fireEvent.keyDown(result.getByLabelText('secondAspect'), {key: 'ArrowRight'})
-        
+
         expect(result.getByLabelText('thirdAspect')).toHaveFocus()
-        
+
         fireEvent.keyDown(result.getByLabelText('thirdAspect'), {key: 'ArrowRight'})
 
         expect(result.getByLabelText('fourthAspect')).toHaveFocus()
@@ -158,7 +159,7 @@ describe('AspectInput', () => {
         fireEvent.keyDown(result.getByLabelText('secondAspect'), {key: 'ArrowUp'})
 
         expect(result.getByLabelText('secondAspect')).toHaveTextContent('   c', {normalizeWhitespace: false})
-        
+
         fireEvent.blur(result.getByLabelText('secondAspect'), {relatedTarget: result.getByLabelText('thirdAspect')})
         fireEvent.focus(result.getByLabelText('thirdAspect'))
 
@@ -186,7 +187,7 @@ describe('AspectInput', () => {
         expect(result.commit).not.toBeCalled()
 
         fireEvent.input(result.getByLabelText('firstAspect'), {target: {textContent: '17'}})
-        
+
         expect(result.getByLabelText('firstAspect')).toHaveTextContent('17')
         expect(result.commit).toHaveBeenNthCalledWith(1, '17', 0)
         expect(result.getByLabelText('secondAspect')).toHaveFocus()
@@ -198,7 +199,7 @@ describe('AspectInput', () => {
         expect(selection.toString()).toBe('17')
 
         fireEvent.input(result.getByLabelText('firstAspect'), {target: {textContent: '3'}})
-        
+
         expect(result.getByLabelText('firstAspect')).toHaveTextContent('3')
         expect(result.commit).toHaveBeenNthCalledWith(2, '3', 0)
         expect(result.getByLabelText('secondAspect')).toHaveFocus()

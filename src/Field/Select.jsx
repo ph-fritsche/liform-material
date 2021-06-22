@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback } from 'react'
 import clsx from 'clsx'
-import { MenuItem, Chip, makeStyles, alpha } from '@material-ui/core'
+import { MenuItem, Chip, alpha } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 import { BaseRender } from './BaseRender'
 import { FieldRenderProps } from 'liform-react-final'
 
@@ -65,16 +66,16 @@ export const Select = props => {
                 return <em className={style.placeholderText}>{placeholder}</em>
             }
             return selected.map(v =>
-                <Chip key={v} label={options[v]}/>
+                <Chip key={v} label={options[v]}/>,
             )
         }
     }, [schema, selectNative, style.placeholderText, placeholder, options])
 
     const children = useMemo(() => {
         const el = Object.keys(options).map(v =>
-            selectNative ?
-                <option key={v} value={v}>{options[v]}</option> :
-                <MenuItem key={v} value={v}>{options[v]}</MenuItem>
+            selectNative
+                ? <option key={v} value={v}>{options[v]}</option>
+                : <MenuItem key={v} value={v}>{options[v]}</MenuItem>,
         )
 
         if (selectNative) {
@@ -105,7 +106,7 @@ export const Select = props => {
                 className: clsx(
                     SelectProps.className,
                     !selectNative && input.value.length === 0 && style.placeholderContainer,
-                )
+                ),
             }}
 
             inputProps={{

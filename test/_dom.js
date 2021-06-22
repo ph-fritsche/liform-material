@@ -19,5 +19,5 @@ expect.extend({
                 return `${hint}\n\n${expected}\n${received}`
             },
         }
-    }
+    },
 })

@@ -15,7 +15,7 @@ export const FileDropField = React.forwardRef(function FileDropField(props, ref)
 
         ...others
     } = props
-   
+
     const [dropActive, setDropActive] = useState(false)
 
     return (

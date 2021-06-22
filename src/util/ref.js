@@ -22,7 +22,7 @@ export const useForkedRef = (...ref) => {
 }
 
 export const useId = (value) => {
-    const random = useRef(Math.random().toString(36).substring(2,10)).current
+    const random = useRef(Math.random().toString(36).substring(2, 10)).current
 
     return value !== undefined ? value : random
 }

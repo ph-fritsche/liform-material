@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useRef, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 import clsx from 'clsx'
 import { useForkedRef } from '../../util/ref'
 import { useForkedCallback } from '../../util/func'
@@ -204,7 +204,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     }, [aspects, isInputFocused, activeAspect.index])
 
     const renderedValue = isInputFocused
-        ? aspects.map((a,i) => {
+        ? aspects.map((a, i) => {
             if (Object.keys(a).includes('value')) {
                 const isActive = i === activeAspect.index
                 const isNumeric = a.isNumeric ?? true
@@ -220,7 +220,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
 
                             role="textbox"
                             className={style.input}
-                            
+
                             aria-label={a.label}
                             title={a.label}
 
@@ -234,7 +234,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                             }}
 
                             inputMode={ a.inputMode || (isNumeric ? 'decimal' : 'text') }
-                            pattern={ a.pattern || (isNumeric ? '\\d*\\' + String(1.5).substr(1,1) + '\\d*' : undefined) }
+                            pattern={ a.pattern || (isNumeric ? '\\d*\\' + String(1.5).substr(1, 1) + '\\d*' : undefined) }
 
                             contentEditable={isActive}
                             suppressContentEditableWarning="true"
@@ -320,7 +320,7 @@ AspectInput.propTypes = {
         PropTypes.string,
         PropTypes.element,
         PropTypes.arrayOf([PropTypes.string, PropTypes.element]),
-        PropTypes.oneOf([null])
+        PropTypes.oneOf([null]),
     ]),
 }
 

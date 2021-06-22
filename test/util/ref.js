@@ -70,8 +70,8 @@ describe('Fork refs', () => {
                     if (element.type === 'p') {
                         return 'baz' + (i++)
                     }
-                }
-            }
+                },
+            },
         )
 
         expect(refA.current).toEqual('baz0')

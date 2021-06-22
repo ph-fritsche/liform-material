@@ -33,7 +33,7 @@ const FileChip = ({file, avatar, ...others}) => {
                         verticalAlign: 'middle',
                         maxInlineSize: '10em',
                         overflow: 'hidden',
-                        textOverflow: 'ellipsis'
+                        textOverflow: 'ellipsis',
                     }}>
                         {fileName.name}
                     </span>
@@ -203,7 +203,7 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
                 baseElementRef.current.focus()
             } else {
                 const i = indicesOfDescendant(baseElementRef.current, event.target)
-                
+
                 const next = i
                     // first level is 'row', second level is 'gridcell'
                     ? (i[1] + s) % chips.length

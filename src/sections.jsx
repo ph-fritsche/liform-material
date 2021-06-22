@@ -29,16 +29,16 @@ export const Action = props => {
         >
             <Grid item>
                 <Lifield
-                    schema={{        
-                        widget: ['reset','button'],
+                    schema={{
+                        widget: ['reset', 'button'],
                         title: 'Reset',
                     }}
                 />
             </Grid>
             <Grid item>
                 <Lifield
-                    schema={{        
-                        widget: ['submit','button'],
+                    schema={{
+                        widget: ['submit', 'button'],
                         title: 'Submit',
                     }}
                 />
@@ -53,7 +53,7 @@ const Errors = ({errors, title}) => (
     <Grid item xs={12}>
         <FormControl error={true}>
             <FormLabel error={true}>{title}</FormLabel>
-            { errors.map((e,i) => <FormHelperText key={i} error={true}>{e}</FormHelperText>) }
+            { errors.map((e, i) => <FormHelperText key={i} error={true}>{e}</FormHelperText>) }
         </FormControl>
     </Grid>
 )

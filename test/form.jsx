@@ -26,7 +26,7 @@ describe('Sections', () => {
                 sections={{
                     form: Theme.sections.form,
                 }}
-            />
+            />,
         )
 
         expect(field).toBeCalled()
@@ -42,18 +42,18 @@ describe('Sections', () => {
                     errors: {
                         'bar': ['There is something wrong with bar.'],
                         'baz': ['There is something wrong with baz.'],
-                    }
+                    },
                 }}
                 sections={{
                     field: TestField('bar', () => 'This is bar.'),
-                    errors: Theme.sections.errors
+                    errors: Theme.sections.errors,
                 }}
-            />
+            />,
         )
 
-        expect(rendered.getByText('This is bar.')).toBeTruthy()
-        expect(rendered.getByText('There is something wrong with baz.')).toBeTruthy()
-        expect(rendered.queryAllByText('There is something wrong with bar.')).toHaveLength(0)
+        expect(rendered.getByText('This is bar.')).toBeInTheDocument()
+        expect(rendered.getByText('There is something wrong with baz.')).toBeInTheDocument()
+        expect(rendered.queryByText('There is something wrong with bar.')).not.toBeInTheDocument()
     })
 
     it('Reset', () => {
@@ -67,7 +67,7 @@ describe('Sections', () => {
                 value={{
                     bar: 'someValue',
                 }}
-            />
+            />,
         )
 
         const field = rendered.getByLabelText('TestField')
@@ -96,7 +96,7 @@ describe('Sections', () => {
                     bar: 'someValue',
                 }}
                 buildSubmitHandler={({updateData}) => ((values) => { updateData({value: values._}) })}
-            />
+            />,
         )
 
         const field = rendered.getByLabelText('TestField')

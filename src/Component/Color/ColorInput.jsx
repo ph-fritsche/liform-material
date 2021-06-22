@@ -1,12 +1,13 @@
 import React, { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import { IconButton, makeStyles, useTheme } from '@material-ui/core'
+import { IconButton, useTheme } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 import { useForkedCallback } from '../../util/func'
 import { useForkedRef } from '../../util/ref'
 import { BackspaceOutlined } from '@material-ui/icons'
 
-const useStyle = makeStyles(() => ({
+const useStyle = makeStyles({
     color: {
         height: '1.4375em',
         minWidth: '10em',
@@ -31,7 +32,7 @@ const useStyle = makeStyles(() => ({
         opacity: 0,
         '&:focus': {
             outline: 0,
-        }
+        },
     },
     container: {
         overflow: 'hidden',
@@ -43,8 +44,8 @@ const useStyle = makeStyles(() => ({
     },
     deleteIcon: {
         fontSize: '1em',
-    }
-}))
+    },
+})
 
 export const ColorInput = React.forwardRef(function ColorInput(props, ref) {
     const {

@@ -2,13 +2,14 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Picker } from '../../../src/Component/Picker/Picker'
+import { wrapInTheme } from '../../_theme'
 
 function renderPicker({
     PickerComponent = () => null,
     onToggle = jest.fn(),
     ...others
 } = {}) {
-    const rendered = render(<Picker PickerComponent={PickerComponent} onToggle={onToggle} {...others} />)
+    const rendered = render(wrapInTheme(<Picker PickerComponent={PickerComponent} onToggle={onToggle} {...others} />))
 
     return {
         ...rendered,
@@ -19,21 +20,23 @@ function renderPicker({
 
 describe('Picker', () => {
     it('Clicking field opens modal', () => {
-        const { field, queryAllByRole, onToggle, getByRole } = renderPicker()
+        const { field, queryByRole, onToggle, getByRole } = renderPicker()
 
-        expect(queryAllByRole('presentation')).toHaveLength(0)
+        expect(queryByRole('dialog')).not.toBeInTheDocument()
 
         userEvent.click(field)
 
         expect(onToggle).toBeCalledWith(true)
-        expect(getByRole('presentation')).toBeInTheDocument()
+        expect(getByRole('dialog')).toBeInTheDocument()
     })
 
     it('Clicking backdrop closes modal', () => {
-        const { onToggle, getByRole } = renderPicker({ initialOpen: true })
+        const { onToggle, getAllByRole } = renderPicker({ initialOpen: true })
 
-        const modal = getByRole('presentation')
+        const modal = getAllByRole('presentation')[0]
         const backdrop = modal.querySelector('.MuiBackdrop-root')
+
+        expect(backdrop).toBeInTheDocument()
 
         userEvent.click(backdrop)
 

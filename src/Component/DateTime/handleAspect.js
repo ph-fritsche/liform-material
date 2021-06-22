@@ -9,21 +9,21 @@ function daysInMonth (dateUtil, ...args) {
 }
 
 const aspectLimits = {
-    yyyy: [0,2100],
-    YYYY: [0,2100],
-    RRRR: [0,2100],
-    Q: [1,4],
-    MM: [1,12],
-    ww: [1,53],
-    II: [1,53],
-    dd: [1,31],
-    DDD: [1,366],
-    e: [1,7],
-    i: [1,7],
-    HH: [0,23],
-    mm: [0,59],
-    ss: [0,59],
-    SSS: [0,999],
+    yyyy: [0, 2100],
+    YYYY: [0, 2100],
+    RRRR: [0, 2100],
+    Q: [1, 4],
+    MM: [1, 12],
+    ww: [1, 53],
+    II: [1, 53],
+    dd: [1, 31],
+    DDD: [1, 366],
+    e: [1, 7],
+    i: [1, 7],
+    HH: [0, 23],
+    mm: [0, 59],
+    ss: [0, 59],
+    SSS: [0, 999],
 }
 
 export function validateAspect (dateUtil, value, aspectValue, aspectIndex) {
@@ -46,14 +46,14 @@ export function validateAspect (dateUtil, value, aspectValue, aspectIndex) {
 }
 
 export function commitAspect (dateUtil, value, onChange, aspectValue, aspectIndex) {
-    if (['yyyy','YYYY','RRRR'].indexOf(value.input[aspectIndex].placeholder) >= 0) {
+    if (['yyyy', 'YYYY', 'RRRR'].indexOf(value.input[aspectIndex].placeholder) >= 0) {
         // might want to use min and max date for autocorrection of small aspectValues
         if(aspectValue < 100) {
             aspectValue = Number(aspectValue) + (aspectValue > 30 ? 1900 : 2000)
         }
     }
 
-    const valueString = value.input.map((p,i) => {
+    const valueString = value.input.map((p, i) => {
         if (!Object.keys(p).includes('value')) {
             return p.text
         }

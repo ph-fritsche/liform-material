@@ -2,9 +2,10 @@ import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ColorInput } from '../../../src/Component/Color/ColorInput'
+import { wrapInTheme } from '../../_theme'
 
 function renderColorInput(props) {
-    const rendered = render(<ColorInput id="foo" {...props} />)
+    const rendered = render(wrapInTheme(<ColorInput id="foo" {...props} />))
 
     const element = rendered.container.firstChild
     const colorInput = rendered.container.querySelector('input[type=color]')

@@ -6,10 +6,10 @@ import { SchemaProp } from 'liform-react-final'
 export const ButtonWidget = props => {
     const {
         schema = true,
-        type = schema.widget && ['submit','reset'].find(t =>
+        type = schema.widget && ['submit', 'reset'].find(t =>
             Array.isArray(schema.widget)
                 ? schema.widget.includes(t)
-                : schema.widget === t
+                : schema.widget === t,
         ) || 'button',
         ...others
     } = props

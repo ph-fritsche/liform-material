@@ -16,4 +16,5 @@ module.exports = {
     "setupFilesAfterEnv": [
         "<rootDir>/test/_setup.js",
     ],
+    "testEnvironment": "jsdom",
 }

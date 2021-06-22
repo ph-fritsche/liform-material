@@ -6,9 +6,9 @@ describe('Get index of child', () => {
         const childA = document.createElement('span')
         const childB = document.createElement('span')
         const childC = document.createElement('span')
-    
+
         parent.append(childA, childB, childC)
-    
+
         expect(indexOfChild(parent, childB)).toEqual(1)
     })
 

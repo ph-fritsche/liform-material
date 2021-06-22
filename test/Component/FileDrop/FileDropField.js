@@ -1,9 +1,10 @@
 import React from 'react'
 import { fireEvent, render, act } from '@testing-library/react'
 import { FileDropField } from '../../../src'
+import { wrapInTheme } from '../../_theme'
 
 function renderFileDropField(props) {
-    const rendered = render(<FileDropField {...props} />)
+    const rendered = render(wrapInTheme(<FileDropField {...props} />))
 
     return {
         ...rendered,
@@ -26,7 +27,7 @@ describe('FileDropField', () => {
             await fireEvent.dragEnter(input, { dataTransfer })
         })
 
-        expect(inputBase.getAttribute('class')).toContain('targetActive')
+        expect(inputBase).toHaveAttribute('class', expect.stringContaining('targetActive'))
 
         fireEvent.dragLeave(input, { dataTransfer })
 

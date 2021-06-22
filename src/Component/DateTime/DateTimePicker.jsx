@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import { useMediaQuery, makeStyles } from '@material-ui/core'
+import { useMediaQuery, useTheme } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker, PickersDay } from '@material-ui/lab'
 import { MobileKeyboardInput } from './MobileKeyboardInput'
 import { CompiledValueProp } from './compileValue'
@@ -55,8 +56,8 @@ export const DateTimePicker = (props) => {
     }
 
     const renderDay = useMemo(() => {
-        const hasWeek = valueObject.input.find(v => v.placeholder && ['w','I'].includes(v.placeholder[0]))
-        const hasDay = valueObject.input.find(v => v.placeholder && ['d','D','e','i'].includes(v.placeholder[0]))
+        const hasWeek = valueObject.input.find(v => v.placeholder && ['w', 'I'].includes(v.placeholder[0]))
+        const hasDay = valueObject.input.find(v => v.placeholder && ['d', 'D', 'e', 'i'].includes(v.placeholder[0]))
         if (hasWeek && !hasDay) {
             const weekStart = dateUtil.startOfWeek(valueObject.parsed)
             const weekEnd = dateUtil.endOfWeek(valueObject.parsed)
@@ -82,7 +83,6 @@ export const DateTimePicker = (props) => {
         <PickerComponent
             displayStaticWrapperAs={ isDesktop ? 'desktop' : 'mobile' }
             disableMaskedInput={true}
-            dateAdapter={dateUtil}
             renderInput={({inputRef}) => (
                 <MobileKeyboardInput inputRef={inputRef} dateUtil={dateUtil} valueObject={valueObject} onChange={onChange}/>
             )}

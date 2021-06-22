@@ -17,7 +17,7 @@ export function placeholdersFromFormat (format) {
 const pickerViewsForValueFormat = {
     year: ['P', 'R', 't', 'T', 'u', 'y', 'Y'],
     month: ['d', 'D', 'I', 'L', 'M', 'P', 'q', 'Q', 't', 'T', 'w'],
-    date: ['c', 'd', 'D', 'e', 'E', 'i', 'I', 'P', 't', 'T', 'w'],
+    day: ['c', 'd', 'D', 'e', 'E', 'i', 'I', 'P', 't', 'T', 'w'],
     hours: ['a', 'b', 'B', 'h', 'H', 'k', 'K', 'p', 't', 'T'],
     minutes: ['m', 'p', 't', 'T'],
     seconds: ['p', 's', 't', 'T'],
@@ -105,7 +105,7 @@ export function buildInputAspects (aspects) {
         } else if (k[0] === 'w' || k[0] === 'I') {
             dateAspects.push({text: 'W'})
         }
-        dateAspects.push({placeholder: k, label: aspectsLabel[k.substr(0,1)]})
+        dateAspects.push({placeholder: k, label: aspectsLabel[k.substr(0, 1)]})
     }
 
     const timeAspects = []
@@ -115,13 +115,13 @@ export function buildInputAspects (aspects) {
         } else if (timeAspects.length) {
             timeAspects.push({text: ':'})
         }
-        timeAspects.push({placeholder: k, label: aspectsLabel[k.substr(0,1)]})
+        timeAspects.push({placeholder: k, label: aspectsLabel[k.substr(0, 1)]})
     }
 
     return [].concat(
         dateAspects,
         dateAspects.length && timeAspects.length ? [{text: '  '}] : [],
-        timeAspects
+        timeAspects,
     )
 }
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import { PickerModal } from '../../../src/Component/Picker/PickerModal'
+import { wrapInTheme } from '../../_theme'
 
 function mockMatchMedia(options) {
     window.matchMedia = jest.fn((query) => {
@@ -20,8 +21,8 @@ function renderModal({
     open = true,
     ...others
 } = {}) {
-    const rendered = render(<PickerModal PickerComponent={PickerComponent} open={open} {...others} />)
-    const element = rendered.getByRole('presentation')
+    const rendered = render(wrapInTheme(<PickerModal PickerComponent={PickerComponent} open={open} {...others} />))
+    const element = rendered.getAllByRole('presentation')[0]
 
     return {
         ...rendered,

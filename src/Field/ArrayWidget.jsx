@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { FieldArray } from 'react-final-form-arrays'
 import { Lifield, liformizeName, finalizeName, LiformContextProp, SchemaProp } from 'liform-react-final'
-import { FormGroup, FormControl, FormLabel,FormHelperText, IconButton } from '@material-ui/core'
+import { FormGroup, FormControl, FormLabel, FormHelperText, IconButton } from '@material-ui/core'
 import { RemoveCircleOutline, AddCircleOutline } from '@material-ui/icons'
 
 import { getFieldError } from './error'
@@ -37,20 +37,20 @@ export const ArrayWidget = props => {
                                         name={liformizeName(`${name}`)}
                                         placeholder={schema.placeholder}
                                         schema={
-                                            Array.isArray(schema.items) ?
-                                                (index <= schema.items.length ? schema.items[index] : schema.additionalItems) : 
-                                                schema.items
+                                            Array.isArray(schema.items)
+                                                ? (index <= schema.items.length ? schema.items[index] : schema.additionalItems)
+                                                : schema.items
                                         }
                                     />
-                                    { (schema.allowDelete || Array.isArray(meta.initial) && index >= meta.initial.length) &&
-                                        <IconButton onClick={() => fields.remove(index)} style={{fontSize: '.75em'}} aria-label="Remove entry">
+                                    { (schema.allowDelete || Array.isArray(meta.initial) && index >= meta.initial.length)
+                                        && <IconButton onClick={() => fields.remove(index)} style={{fontSize: '.75em'}} aria-label="Remove entry">
                                             <RemoveCircleOutline/>
                                         </IconButton>
                                     }
                                 </div>
                             )) }
-                            { (schema.allowAdd || fields.length < (Array.isArray(meta.initial) ? meta.initial.length : 0)) &&
-                                <IconButton onClick={() => fields.push()} style={{width: '3em', fontSize: '.75em'}} aria-label="Add entry">
+                            { (schema.allowAdd || fields.length < (Array.isArray(meta.initial) ? meta.initial.length : 0))
+                                && <IconButton onClick={() => fields.push()} style={{width: '3em', fontSize: '.75em'}} aria-label="Add entry">
                                     <AddCircleOutline/>
                                 </IconButton>
                             }

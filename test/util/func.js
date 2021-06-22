@@ -38,7 +38,7 @@ describe('Fork callbacks', () => {
 
         let fork0
         const component0 = Renderer.create(
-            <TestComponent callback={funcA} valueOne="foo" setForked={v => {fork0 = v}}/>
+            <TestComponent callback={funcA} valueOne="foo" setForked={v => {fork0 = v}}/>,
         )
 
         expect(a).toEqual('foo')
@@ -46,7 +46,7 @@ describe('Fork callbacks', () => {
 
         let fork0a
         component0.update(
-            <TestComponent callback={funcA} valueOne="foobar" setForked={v => {fork0a = v}}/>
+            <TestComponent callback={funcA} valueOne="foobar" setForked={v => {fork0a = v}}/>,
         )
 
         expect(a).toEqual('foobar')
@@ -56,7 +56,7 @@ describe('Fork callbacks', () => {
 
         let fork0b
         component0.update(
-            <TestComponent callback={v => {a = v}} valueOne="foobaz" setForked={v => {fork0b = v}}/>
+            <TestComponent callback={v => {a = v}} valueOne="foobaz" setForked={v => {fork0b = v}}/>,
         )
 
         expect(a).toEqual('foobaz')
@@ -66,7 +66,7 @@ describe('Fork callbacks', () => {
 
         let fork1
         const component1 = Renderer.create(
-            <TestComponent callback={funcA} otherCallback={funcB} valueTwo="bar" setForked={v => {fork1 = v}}/>
+            <TestComponent callback={funcA} otherCallback={funcB} valueTwo="bar" setForked={v => {fork1 = v}}/>,
         )
 
         expect(a).toEqual('bar')
@@ -75,7 +75,7 @@ describe('Fork callbacks', () => {
 
         let fork1a
         component1.update(
-            <TestComponent callback={funcA} otherCallback={funcB} valueTwo="baz" setForked={v => {fork1a = v}}/>
+            <TestComponent callback={funcA} otherCallback={funcB} valueTwo="baz" setForked={v => {fork1a = v}}/>,
         )
 
         expect(a).toEqual('baz')
@@ -102,14 +102,14 @@ describe('Bind functions', () => {
 
         let func0
         const component = Renderer.create(
-            <TestComponent a="foo" setBound={v => {func0 = v}}/>
+            <TestComponent a="foo" setBound={v => {func0 = v}}/>,
         )
 
         expect(args).toEqual(['foo', 'bar0'])
 
         let func1
         component.update(
-            <TestComponent a="foo" setBound={v => {func1 = v}}/>
+            <TestComponent a="foo" setBound={v => {func1 = v}}/>,
         )
 
         expect(args).toEqual(['foo', 'bar1'])
@@ -117,7 +117,7 @@ describe('Bind functions', () => {
 
         let func2
         component.update(
-            <TestComponent a="baz" setBound={v => {func2 = v}}/>
+            <TestComponent a="baz" setBound={v => {func2 = v}}/>,
         )
 
         expect(args).toEqual(['baz', 'bar2'])

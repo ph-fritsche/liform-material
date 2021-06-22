@@ -16,7 +16,7 @@ export const Picker = React.forwardRef(function Picker(props, ref) {
         onChange,
 
         ModalProps = {},
-        
+
         PickerComponent,
         PickerProps = {},
 
@@ -58,7 +58,7 @@ export const Picker = React.forwardRef(function Picker(props, ref) {
             PickerProps={{
                 value,
                 onChange,
-                ...PickerProps
+                ...PickerProps,
             }}
 
             anchorEl={rootRef}

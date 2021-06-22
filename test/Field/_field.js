@@ -3,8 +3,10 @@ import { render, queries } from '@testing-library/react'
 import { Liform, Lifield, htmlizeName } from 'liform-react-final'
 import MaterialTheme from '../../src'
 import { buildQueries, queryAllByLabelText, queryAllByText } from '@testing-library/react'
+import { wrapInTheme } from '../_theme'
+import { wrapInLocalization } from '../_localization'
 
-const [,, getbyL,,] = buildQueries(
+const [,, getbyL,, ] = buildQueries(
     (container, text, options) => {
         const input = queryAllByLabelText(container, text, options)
         const legend = queryAllByText(container, text, {...options, selector: 'legend'})
@@ -23,7 +25,7 @@ export function renderLifield (props) {
         return <form id="container">{renderProps.children}</form>
     }
 
-    const result = render((
+    const result = render(wrapInTheme(wrapInLocalization(
         <Liform
             theme={MaterialTheme}
             name="form"
@@ -31,12 +33,12 @@ export function renderLifield (props) {
             {...props}
         >
             { ({liform}) => <Lifield schema={liform.schema}/> }
-        </Liform>
-    ), {
+        </Liform>,
+    )), {
         queries: {
             ...queries,
-            getbyL
-        }
+            getbyL,
+        },
     })
 
     return {
@@ -54,7 +56,7 @@ function expectedFormValues(value, rootName) {
     function traverseValue(value, path = ['_']) {
         if (typeof(value) === 'object') {
             if (Array.isArray(value)) {
-                value.forEach((v,i) => traverseValue(v, [].concat(path, [i])))
+                value.forEach((v, i) => traverseValue(v, [].concat(path, [i])))
             } else {
                 for (const k in value) {
                     traverseValue(value[k], [].concat(path, k))

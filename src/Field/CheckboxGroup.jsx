@@ -33,9 +33,9 @@ export const CheckboxGroup = props => {
                                 value={elValue}
                                 checked={value.indexOf(elValue) >= 0}
                                 onChange={(e) => { onChange(
-                                    e.target.checked ?
-                                        value.concat([elValue]) :
-                                        value.filter(v => v !== elValue)
+                                    e.target.checked
+                                        ? value.concat([elValue])
+                                        : value.filter(v => v !== elValue),
                                 )}}
                             />
                         }
@@ -44,7 +44,7 @@ export const CheckboxGroup = props => {
                             || schema.items && schema.items.enumTitles && schema.items.enumTitles[i]
                             || elValue
                         }
-                    />
+                    />,
                 )}
             </FormGroup>
             <FormHelperText>{meta.error || schema.description}</FormHelperText>

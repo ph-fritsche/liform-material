@@ -39,7 +39,7 @@ export const RadioGroup = props => {
                             || schema.items && schema.items.enumTitles && schema.items.enumTitles[i]
                             || elValue
                         }
-                    />
+                    />,
                 )}
             </MaterialRadioGroup>
             <FormHelperText>{meta.error || schema.description}</FormHelperText>

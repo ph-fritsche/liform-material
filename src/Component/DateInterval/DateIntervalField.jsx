@@ -10,10 +10,10 @@ import { DateIntervalInput } from './DateIntervalInput'
 export const DateIntervalField = React.forwardRef(function DateIntervalField(props, ref) {
     const {
         InputProps = {},
-        
+
         inputComponent = DateIntervalInput,
         inputProps = {},
-        
+
         value,
         valuePattern,
         onChange: onChangeProp,

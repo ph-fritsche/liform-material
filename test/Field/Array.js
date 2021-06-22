@@ -37,7 +37,7 @@ describe('Array', () => {
         })
 
         result.getByRole('textbox')
-        expect(result.queryAllByLabelText('Remove entry')).toHaveLength(0)
+        expect(result.queryByLabelText('Remove entry')).not.toBeInTheDocument()
 
         userEvent.click(result.getByLabelText('Add entry'))
 
@@ -50,7 +50,7 @@ describe('Array', () => {
         userEvent.click(result.getByLabelText('Remove entry'))
 
         expect(getLiformValue()).toEqual(['bar'])
-        expect(result.queryAllByLabelText('Remove entry')).toHaveLength(0)
+        expect(result.queryByLabelText('Remove entry')).not.toBeInTheDocument()
     })
 
     it('Remove and add existing elements of array', () => {
@@ -67,16 +67,16 @@ describe('Array', () => {
         })
 
         result.getByRole('textbox')
-        expect(result.queryAllByLabelText('Add entry')).toHaveLength(0)
+        expect(result.queryByLabelText('Add entry')).not.toBeInTheDocument()
 
         userEvent.click(result.getByLabelText('Remove entry'))
-        
-        expect(result.queryAllByRole('textbox')).toHaveLength(0)
+
+        expect(result.queryByRole('textbox')).not.toBeInTheDocument()
         expect(getLiformValue()).toEqual([])
-        
+
         userEvent.click(result.getByLabelText('Add entry'))
-        
-        expect(result.getAllByRole('textbox')).toHaveLength(1)
-        expect(result.queryAllByLabelText('Add entry')).toHaveLength(0)
+
+        expect(result.getByRole('textbox')).toBeInTheDocument()
+        expect(result.queryByLabelText('Add entry')).not.toBeInTheDocument()
     })
 })

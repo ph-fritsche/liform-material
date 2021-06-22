@@ -16,7 +16,7 @@ export function MobileKeyboardInput (props) {
     const mobileKeyboardInputRef = useRef()
     const inputRef = useForkedRef(inputRefProp, mobileKeyboardInputRef)
 
-    useEffect(() => 
+    useEffect(() =>
         mobileKeyboardInputRef.current.focus()
     , [])
 

@@ -84,7 +84,7 @@ export function resemblesFormValue(expected, received) {
     if (typeof(expected) === 'string') {
         return expected === String(received ?? '')
     } else if (typeof(expected) === 'number') {
-        return expected === Number(received) && ['string','number','array'].includes(typeof(received)) && received.length !== 0
+        return expected === Number(received) && ['string', 'number', 'array'].includes(typeof(received)) && received.length !== 0
     } else if (typeof(expected) === 'boolean') {
         return expected === (Boolean(received) && received !== '0' && received !== 'false' && received.length !== 0)
     } else if (Array.isArray(expected)) {
@@ -108,7 +108,7 @@ function createExpectResult(expectObject, pass, expectationName, expected, recei
             const e = expectedDiff ? expectedDiff() : expected
             const r = receivedDiff ? receivedDiff() : received
             return `${hint}\n\n${expectObject.utils.printDiffOrStringify(e, r, 'Expected', 'Received')}`
-        }
+        },
     }
 }
 
@@ -149,7 +149,7 @@ expect.extend({
         const formValues = normalizeFormValues(getFormValues(formElement))
 
         const pass = Object.keys(Object.assign({}, valueMap, formValues)).every(k =>
-            Object.keys(valueMap).includes(k) && Object.keys(formValues).includes(k) && resemblesFormValue(valueMap[k], formValues[k])
+            Object.keys(valueMap).includes(k) && Object.keys(formValues).includes(k) && resemblesFormValue(valueMap[k], formValues[k]),
         )
 
         return createExpectResult(

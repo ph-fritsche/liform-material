@@ -28,7 +28,7 @@ export const DateTime = props => {
             || widgetFormats[Object.keys(widgetFormats).find(k =>
                 Array.isArray(schema.widget)
                     ? schema.widget.includes(k)
-                    : schema.widget === k
+                    : schema.widget === k,
             )],
     } = props
 

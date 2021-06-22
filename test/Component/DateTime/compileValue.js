@@ -9,7 +9,7 @@ const aspectsString = (aspects, showPlaceholders) => {
             ? showPlaceholders
                 ? '{' + a.placeholder + '}'
                 : a.value
-            : a.text
+            : a.text,
         )
         .join('')
 }
@@ -34,10 +34,10 @@ describe('Compile value', () => {
 
     it('Build picker views', () => {
         expect(buildPickerViews(['y', 'M'])).toEqual(['year', 'month'])
-        expect(buildPickerViews(['Y', 'w'])).toEqual(['year', 'month', 'date'])
-        expect(buildPickerViews(['y', 'D'])).toEqual(['year', 'month', 'date'])
+        expect(buildPickerViews(['Y', 'w'])).toEqual(['year', 'month', 'day'])
+        expect(buildPickerViews(['y', 'D'])).toEqual(['year', 'month', 'day'])
         expect(buildPickerViews(['y', 'H'])).toEqual(['year', 'hours'])
-        expect(buildPickerViews(['t'])).toEqual(['year', 'month', 'date', 'hours', 'minutes', 'seconds'])
+        expect(buildPickerViews(['t'])).toEqual(['year', 'month', 'day', 'hours', 'minutes', 'seconds'])
     })
 
     it('Build input aspects', () => {
@@ -45,7 +45,7 @@ describe('Compile value', () => {
         expect(aspectsString(buildInputAspects({date: ['yyyy', 'Q'], time: []}), true)).toBe('{yyyy}-Q{Q}')
         expect(aspectsString(buildInputAspects({date: ['YYYY', 'ww'], time: []}), true)).toBe('{YYYY}-W{ww}')
         expect(aspectsString(buildInputAspects({date: ['yyyy'], time: ['HH']}), true)).toBe('{yyyy}  {HH}')
-        expect(aspectsString(buildInputAspects({date: [], time: ['HH','mm','ss','S']}), true)).toBe('{HH}:{mm}:{ss}.{S}')
+        expect(aspectsString(buildInputAspects({date: [], time: ['HH', 'mm', 'ss', 'S']}), true)).toBe('{HH}:{mm}:{ss}.{S}')
     })
 
     it('Build display formats', () => {

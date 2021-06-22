@@ -3,21 +3,28 @@ import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { DateTimePicker } from '../../../src/Component/DateTime/DateTimePicker'
 import DateFnsUtil from '@date-io/date-fns'
+import { wrapInTheme } from '../../_theme'
+import { wrapInLocalization } from '../../_localization'
 
 const dateUtil = new DateFnsUtil()
 
+function renderDateTimePicker(valueObject) {
+    return render(wrapInTheme(wrapInLocalization(
+        <DateTimePicker dateUtil={dateUtil} onChange={() => { }} valueObject={valueObject} />,
+    )))
+}
+
 describe('DateTimePicker', () => {
     it('Render mobile keyboard input', () => {
-        const valueObject = {
+        const rendered = renderDateTimePicker({
             input: [
                 {value: '1', placeholder: 'a', label: 'aspect A'},
                 {text: ';'},
-                {value: '2', placeholder: 'b', label: 'aspect B'}
+                {value: '2', placeholder: 'b', label: 'aspect B'},
             ],
             parsed: new Date(),
             display: '',
-        }
-        const rendered = render(<DateTimePicker dateUtil={dateUtil} onChange={() => {}} valueObject={valueObject}/>)
+        })
 
         userEvent.click(rendered.getByLabelText('calendar view is open, go to text input view'))
 
@@ -28,14 +35,13 @@ describe('DateTimePicker', () => {
     })
 
     it('Highlight calendar week if the value contains week but no day', () => {
-        const valueObject = {
+        const rendered = renderDateTimePicker({
             input: [
                 {value: '1', placeholder: 'w', label: 'Week'},
             ],
             parsed: new Date(2000, 0, 12),
             display: '',
-        }
-        const rendered = render(<DateTimePicker dateUtil={dateUtil} onChange={() => {}} valueObject={valueObject}/>)
+        })
 
         const parsedDay = rendered.getByLabelText(dateUtil.format(new Date(2000, 0, 12), 'fullDate'))
         const sameWeek = rendered.getByLabelText(dateUtil.format(new Date(2000, 0, 14), 'fullDate'))

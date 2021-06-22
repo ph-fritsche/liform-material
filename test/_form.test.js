@@ -271,8 +271,8 @@ describe('Resembling comparison', () => {
         [[], undefined, true],
         [[], true, false],
         [[], 0, false],
-        [['a','b'], 'a,b', true],
-        [['a','b'], true, false],
+        [['a', 'b'], 'a,b', true],
+        [['a', 'b'], true, false],
     ])('Compare to %p - %p should result in %p', (expectedValue, receivedValue, expectedComparison) => {
         expect(resemblesFormValue(expectedValue, receivedValue)).toBe(expectedComparison)
     })

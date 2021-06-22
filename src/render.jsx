@@ -22,6 +22,6 @@ Container.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.element,
         PropTypes.arrayOf(PropTypes.element),
-        PropTypes.oneOf([null])
+        PropTypes.oneOf([null]),
     ]),
 }
