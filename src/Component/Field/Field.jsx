@@ -12,11 +12,9 @@ const useStyle = makeStyles(theme => ({
     'fitcontent': {
         height: 'fit-content',
     },
-    'targetActive.standard': undefined,
-    'targetActive.filled': {
+    'targetActive': {
         background: (theme.palette.type === 'light' ? alpha(theme.palette.secondary.light, 0.09) : alpha(theme.palette.secondary.dark, 0.09)) + ' !important',
     },
-    'targetActive.outline': undefined,
     'placeholderContainer': {
         '& .placeholder': {
             color: 'currentColor',
@@ -55,9 +53,6 @@ export const Field = React.forwardRef(function Field(props, ref) {
         // Highlight the field as target of an action
         isTarget,
 
-        // Default to filled variant
-        variant = 'filled',
-
         select = false,
         multiline = false,
         rows,
@@ -91,7 +86,7 @@ export const Field = React.forwardRef(function Field(props, ref) {
         ...InputPropsProp,
         className: clsx(
             InputPropsProp.className,
-            isTarget && style['targetActive.' + variant],
+            isTarget && style.targetActive,
         ),
         inputComponent: FieldInput,
         ref: inputBaseRef,
@@ -118,7 +113,6 @@ export const Field = React.forwardRef(function Field(props, ref) {
             className,
             style.placeholderContainer,
         )}
-        variant={variant}
 
         {...(select
             ? {
