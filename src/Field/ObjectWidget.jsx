@@ -18,9 +18,11 @@ export const ObjectWidget = props => {
 
     return (
         <fieldset style={{margin: 0, padding: 0, border: 0}}>
-            <legend style={{width: 0, height: 0, overflow: 'hidden'}}>
-                {schema.title}
-            </legend>
+            {schema.title !== 'form' && (
+                <legend style={{width: 0, height: 0, overflow: 'hidden'}}>
+                    {schema.title}
+                </legend>
+            )}
             <Grid container
                 spacing={gridSpacing}
             >
@@ -35,7 +37,9 @@ export const ObjectWidget = props => {
                                     <div
                                         style={{marginTop: gridSpacing * .5 - .5 + 'em' }}
                                     >
-                                        <FormLabel error={!!error} aria-hidden="true">{schema.title}</FormLabel>
+                                        {schema.title !== 'form' && (
+                                            <FormLabel error={!!error} aria-hidden="true">{schema.title}</FormLabel>
+                                        )}
                                         <FormHelperText error={!!error}>{error || schema.description}</FormHelperText>
                                     </div>
                                 </Grid>
