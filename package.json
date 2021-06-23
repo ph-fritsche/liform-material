@@ -2,12 +2,13 @@
   "name": "liform-material",
   "version": "0.0.0",
   "description": "Material theme for liform-react-final",
-  "main": "dist/index.js",
+  "main": "dist/node/index.js",
+  "module": "dist/index.js",
   "files": [
     "/dist"
   ],
   "scripts": {
-    "build": "babel src --out-dir dist",
+    "build": "babel src --out-dir dist/node && BABEL_MODULES=false babel src --out-dir dist",
     "dev": "esbuild public/liform.jsx --servedir=public --outdir=public/build --bundle",
     "lint": "eslint src test",
     "test": "jest"
