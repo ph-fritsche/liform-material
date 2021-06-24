@@ -8,6 +8,7 @@ export const Container = (props) => (
         onReset={props.handleReset}
         method={props.method || props.liform.schema && props.liform.schema.method || 'POST'}
         action={props.action || props.liform.schema && props.liform.schema.action || ''}
+        noValidate
     >
         { props.children }
     </form>
