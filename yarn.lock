@@ -850,6 +850,13 @@
     eslint-plugin-react-hooks "^4"
     eslint-plugin-testing-library "^3"
 
+"@ph.fritsche/scripts-config@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@ph.fritsche/scripts-config/-/scripts-config-2.0.0.tgz#399efd41838064c4d49deb0db390812929220e7b"
+  integrity sha512-/VCeL7V60fz/uG92UIkEoPgM9v3HY6RIdTbNgPNxMCCf3ZvqZGDsCUBnrQ3TWnssWI0er3H4Ux273drgV/J7/A==
+  dependencies:
+    cross-spawn "^7.0.3"
+
 "@popperjs/core@^2.4.4":
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.2.tgz#adea7b6953cbb34651766b0548468e743c6a2353"
@@ -3922,6 +3929,11 @@ semver@^6.0.0, semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
+
+shared-scripts@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/shared-scripts/-/shared-scripts-1.4.1.tgz#f216dd32c5c0bd8b63d2817a156bf988368f79e1"
+  integrity sha512-ADyioHzKxsAmdksVRr6q2hNsu1Joi26FeaXCD9VZ2BpFrBpxobFCBlxpYjndOe3ChiVVwloIyjxLxmTDMHiBIw==
 
 shebang-command@^2.0.0:
   version "2.0.0"
