@@ -30,7 +30,7 @@ export const DateTimeField = React.forwardRef(function DateTimeField(props, ref)
         ...others
     } = props
 
-    const dateUtil = useAdapter()
+    const dateUtil = useAdapter().utils
 
     const valueObject = useMemo(() => compileValue(dateUtil, value, valueFormat), [dateUtil, value, valueFormat])
 

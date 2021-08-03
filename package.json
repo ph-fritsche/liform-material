@@ -25,9 +25,9 @@
   "devDependencies": {
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@material-ui/core": "^5.0.0-alpha.37",
-    "@material-ui/lab": "^5.0.0-alpha.37",
-    "@material-ui/styles": "^5.0.0-alpha.35",
+    "@material-ui/core": "^5.0.0-beta",
+    "@material-ui/lab": "^5.0.0-alpha.41",
+    "@material-ui/styles": "^5.0.0-beta",
     "@ph.fritsche/eslint-config": "^0.1.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -48,13 +48,13 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@material-ui/icons": "^4.11.2",
+    "@material-ui/icons": "^5.0.0-beta",
     "react-dropzone": "^11.3.2"
   },
   "peerDependencies": {
-    "@material-ui/core": "^5.0.0-alpha.37",
-    "@material-ui/lab": "^5.0.0-alpha.37",
-    "@material-ui/styles": "^5.0.0-alpha.35",
+    "@material-ui/core": "^5.0.0-beta",
+    "@material-ui/lab": "^5.0.0-alpha.41",
+    "@material-ui/styles": "^5.0.0-beta",
     "liform-react-final": "^1"
   }
 }
