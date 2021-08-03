@@ -32,9 +32,10 @@ describe('DateTime', () => {
                 widget: 'date',
                 title: 'foo',
             },
+            value: '2003-04-05',
         })
 
-        const d = new Date()
+        const d = new Date('2003-04-05')
 
         userEvent.tab()
 
@@ -60,9 +61,10 @@ describe('DateTime', () => {
                 widget: 'date',
                 title: 'foo',
             },
+            value: '2001-02-03',
         })
 
-        const d = new Date()
+        const d = new Date('2001-02-03')
 
         userEvent.tab()
         userEvent.click(result.getByLabelText('Month'))
@@ -99,6 +101,7 @@ describe('DateTime', () => {
                 widget: 'time',
                 title: 'foo',
             },
+            value: '13:14',
         })
 
         userEvent.click(result.getByLabelText('foo'))
