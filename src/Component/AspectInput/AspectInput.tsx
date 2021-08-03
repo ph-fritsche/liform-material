@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer, useRef, useState, useCallback } from 'react'
-import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/styles'
 import clsx from 'clsx'
 import { useForkedRef } from '../../util/ref'
@@ -12,7 +11,7 @@ const useStyle = makeStyles(theme => ({
         margin: '-2px -2px',
     },
     valueFocus: {
-        background: theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark,
+        background: theme.palette.mode === 'light' ? theme.palette.primary.light : theme.palette.primary.dark,
         '& $input': {
             outline: 0,
 
@@ -29,99 +28,147 @@ const useStyle = makeStyles(theme => ({
     input: {},
 }))
 
-const resetInput = aspects => {
-    const i = aspects.findIndex(p => Object.keys(p).includes('value'))
-    const v = aspects[i].value
-    return {index: i, value: v}
+type AspectValue = {
+    value: string
+    label?: string
+    isNumeric?: boolean
+    placeholder?: string
+    inputMode?: React.HTMLAttributes<HTMLSpanElement>['inputMode']
+    pattern?: string
 }
+type AspectText = {
+    text?: string
+    placeholder?: string
+}
+export type Aspect = AspectValue | AspectText
 
-export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
-    const {
+export const AspectInput = React.forwardRef(function AspectInput(
+    {
         id,
         className,
-
         onBlur: onBlurProp,
         onFocus: onFocusProp,
-
-        // callback receiving the partial value and the index of the aspect
-        // should return the (corrected) value or undefined for invalid inputs
         validate: validateProp,
-
-        // callback receiving the partial value and the index of the aspect
-        // should update the component value
         commit: commitProp,
-
         aspects,
         display,
         placeholder,
-    } = props
+    }: {
+        id: string,
+        className?: string,
 
+        onBlur?: (e: React.FocusEvent) => void,
+        onFocus?: (e: React.FocusEvent) => void,
+
+        /**
+         * Callback receiving the partial value and the index of the aspect.
+         * Should return the (corrected) value or undefined for invalid inputs.
+         */
+        validate: (value: string|number, index: number) => string|number|undefined,
+
+        /**
+         * Callback receiving the partial value and the index of the aspect.
+         * Should update the component value.
+         */
+        commit: (value: string, index: number) => void,
+
+        aspects: Aspect[],
+        display?: string,
+        placeholder?: string,
+    },
+    ref,
+) {
     const style = useStyle()
 
-    const inputRef = useRef()
+    const inputRef = useRef<HTMLSpanElement>()
     const forkedInputRef = useForkedRef(ref, inputRef)
 
     const [isInputFocused, setInputFocus] = useState(false)
 
-    const [activeAspect, updateAspect] = useReducer((state, action) => {
+    const [activeAspect, updateAspect] = useReducer((
+        state: {
+            index: number
+            value: string
+        },
+        action: {
+            type: 'moveFocus'
+            step: number
+        } | {
+            type: 'setFocus'
+            index: number
+        } | {
+            type: 'change'
+            value: string
+        },
+    ) => {
         if (action.type === 'moveFocus' && action.step) {
             for (let i = state.index + action.step; i >= 0 && i < aspects.length; i += action.step) {
-                if (Object.keys(aspects[i]).includes('value')) {
-                    return {index: i, value: aspects[i].value}
+                const a = aspects[i]
+                if ('value' in a) {
+                    return {index: i, value: a.value}
                 }
             }
         }
         if (action.type === 'setFocus' && action.index !== undefined) {
-            return {index: action.index, value: aspects[action.index].value}
+            const a = aspects[action.index]
+            if ('value' in a) {
+                return {index: action.index, value: a.value}
+            }
         }
         if (action.type === 'change') {
             return {index: state.index, value: action.value}
         }
         return state
-    }, aspects, resetInput)
+    }, aspects, (aspects) => {
+        const i = aspects.findIndex(p => 'value' in p)
+        return { index: i, value: (aspects[i] as AspectValue).value }
+    })
 
     useEffect(() => {
-        if (aspects[activeAspect.index].value != activeAspect.value) {
-            updateAspect({type: 'change', value: aspects[activeAspect.index].value})
+        const a = aspects[activeAspect.index] as AspectValue
+        if (a.value != activeAspect.value) {
+            updateAspect({type: 'change', value: a.value})
         }
     // should not run on changes of activeAspect
     /* eslint-disable react-hooks/exhaustive-deps */
     }, [isInputFocused, aspects])
 
-    const commitAspect = committedValue => {
-        if (committedValue === aspects[activeAspect.index].value) {
-            return
+    function commitAspect(committedValue: string) {
+        const a = aspects[activeAspect.index] as AspectValue
+        if (committedValue !== a.value) {
+            commitProp(committedValue, activeAspect.index)
         }
-
-        commitProp(committedValue, activeAspect.index)
     }
 
-    const changeAspect = newValue => {
-        const isNumericInput = Boolean(aspects[activeAspect.index].isNumeric ?? true)
-        const paddedValue = !aspects[activeAspect.index].placeholder
+    function changeAspect(newValue: string|number) {
+        const a = aspects[activeAspect.index] as AspectValue
+        const isNumericInput = Boolean(a.isNumeric ?? true)
+        const paddedValue = !a.placeholder
             ? String(newValue)
             : isNumericInput
-                ? String(Number(newValue)).padStart(aspects[activeAspect.index].placeholder.length, '0')
-                : String(newValue).padStart(aspects[activeAspect.index].placeholder.length, ' ')
+                ? String(Number(newValue)).padStart(a.placeholder.length, '0')
+                : String(newValue).padStart(a.placeholder.length, ' ')
 
         updateAspect({type: 'change', value: paddedValue})
 
         return paddedValue
     }
 
-    const onInput = event => {
-        const inputValue = event.target.textContent
+    function onInput(event: React.ChangeEvent<HTMLSpanElement>) {
+        const inputValue = event.target.textContent ?? ''
 
-        let newValue = inputValue === '' || validateProp(inputValue, activeAspect.index)
-            ? inputValue
-            : validateProp(inputValue.substr(-1), activeAspect.index) && inputValue.substr(-1)
+        const newValue = inputValue === ''
+            ? ''
+            : validateProp(inputValue, activeAspect.index)
+            ?? validateProp(inputValue.substr(-1), activeAspect.index)
 
-        if (newValue === undefined || isNaN(newValue)) {
+        if (newValue === undefined || typeof newValue === 'number' && isNaN(newValue)) {
             event.target.textContent = activeAspect.value
             return
         }
 
-        const isNumericInput = Boolean(aspects[activeAspect.index].isNumeric ?? true)
+        const a = aspects[activeAspect.index] as AspectValue
+        const isNumericInput = a.isNumeric ?? true
 
         const isEmpty = isNumericInput ? newValue == 0 : String(newValue).trim() == ''
 
@@ -129,7 +176,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         const nextCharOverflow = !isEmpty && (
             isNumericInput
                 ? validateProp(newValue + '0', activeAspect.index) === undefined
-                : aspects[activeAspect.index].placeholder && String(newValue).trim().length >= aspects[activeAspect.index].placeholder.length
+                : a.placeholder && String(newValue).trim().length >= (a.placeholder?.length ?? 0)
         )
 
         const paddedValue = changeAspect(newValue)
@@ -143,10 +190,11 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         }
     }
 
-    const onKeyDown = event => {
-        const inputValue = event.target.textContent
+    function onKeyDown(event: React.KeyboardEvent<HTMLSpanElement>) {
+        const a = aspects[activeAspect.index] as AspectValue
+        const inputValue = event.currentTarget.textContent ?? ''
 
-        const moveKeys = {
+        const moveKeys: Record<string, number> = {
             'ArrowLeft': -1,
             'ArrowRight': 1,
         }
@@ -157,39 +205,48 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             updateAspect({type: 'moveFocus', step: moveKeys[event.key]})
         }
 
-        const addKeys = {
+        const addKeys: Record<string, number> = {
             'ArrowDown': -1,
             'ArrowUp': 1,
         }
         if (addKeys[event.key]) {
             event.preventDefault()
 
-            const isNumericInput = Boolean(aspects[activeAspect.index].isNumeric ?? true)
+            const isNumericInput = Boolean(a.isNumeric ?? true)
 
-            let newValue = isNumericInput
+            const newValue = isNumericInput
                 ? Number(inputValue) + addKeys[event.key]
-                : inputValue.length > 0 && String.fromCharCode(inputValue.charCodeAt(inputValue.length - 1) + addKeys[event.key])
+                : inputValue.length === 0
+                    ? ''
+                    : String.fromCharCode(inputValue.charCodeAt(inputValue.length - 1) + addKeys[event.key])
 
-            newValue = validateProp(newValue, activeAspect.index)
+            const validatedValue = validateProp(newValue, activeAspect.index)
 
-            if (newValue === undefined) {
+            if (validatedValue === undefined) {
                 return
             }
 
-            changeAspect(newValue)
+            changeAspect(validatedValue)
         }
     }
 
-    const gridRef = useRef()
-    const onFocus = useForkedCallback(onFocusProp, (e) => e.target.getAttribute('tabindex') === '0' && setInputFocus(true), [setInputFocus])
-    const onBlur = useCallback(event => {
+    const gridRef = useRef<HTMLDivElement>(null)
+    const onFocus = useForkedCallback(
+        onFocusProp,
+        (e: React.FocusEvent) => e.target.getAttribute('tabindex') === '0'
+            && setInputFocus(true),
+        [setInputFocus],
+    )
+    const onBlur = useCallback((event: React.FocusEvent) => {
         if (event.relatedTarget) {
-            let el = event.relatedTarget
+            let el: EventTarget|null = event.relatedTarget
             do {
                 if (el === gridRef.current) {
                     return
                 }
-                el = el.parentElement
+                el = 'parentElement' in el
+                    ? (el as HTMLElement).parentElement
+                    : null
             } while (el)
         }
         setInputFocus(false)
@@ -197,7 +254,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     }, [onBlurProp, setInputFocus])
 
     useEffect(() => {
-        if (isInputFocused) {
+        if (isInputFocused && inputRef.current) {
             inputRef.current.focus()
             setSelection(inputRef.current)
         }
@@ -205,7 +262,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
 
     const renderedValue = isInputFocused
         ? aspects.map((a, i) => {
-            if (Object.keys(a).includes('value')) {
+            if ('value' in a) {
                 const isActive = i === activeAspect.index
                 const isNumeric = a.isNumeric ?? true
 
@@ -234,12 +291,12 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
                             }}
 
                             inputMode={ a.inputMode || (isNumeric ? 'decimal' : 'text') }
-                            pattern={ a.pattern || (isNumeric ? '\\d*\\' + String(1.5).substr(1, 1) + '\\d*' : undefined) }
+                            // pattern={ a.pattern || (isNumeric ? '\\d*\\' + String(1.5).substr(1, 1) + '\\d*' : undefined) }
 
                             contentEditable={isActive}
-                            suppressContentEditableWarning="true"
+                            suppressContentEditableWarning={true}
                             onBlur={event => {
-                                isActive && event.target.value !== aspects[activeAspect.index].value && commitAspect(activeAspect.value)
+                                isActive && event.target.textContent !== a.value && commitAspect(activeAspect.value)
                             }}
                             onKeyDown={isActive ? onKeyDown : undefined}
                             onInput={isActive ? onInput : undefined}
@@ -253,7 +310,6 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             return (
                 <span
                     key={i}
-                    className={style.formatter}
                     aria-hidden="true"
                 >
                     {a.text ?? a.placeholder}
@@ -262,7 +318,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
         })
         : (
             <span role="gridcell">
-                <span role="button" ref={forkedInputRef} tabIndex="0"/>
+                <span role="button" ref={forkedInputRef} tabIndex={0}/>
                 { display
                     ? <span>{display}</span>
                     : <span className="placeholder">{placeholder}</span>
@@ -278,7 +334,7 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
             aria-labelledby={id + '-label'}
 
             role="grid"
-            tabIndex="-1"
+            tabIndex={-1}
 
             onBlur={onBlur}
             onFocus={onFocus}
@@ -292,43 +348,14 @@ export const AspectInput = React.forwardRef(function AspectInput(props, ref) {
     )
 })
 
-AspectInput.propTypes = {
-    id: PropTypes.string,
-    className: PropTypes.string,
-    onBlur: PropTypes.func,
-    onFocus: PropTypes.func,
-    validate: PropTypes.func.isRequired,
-    commit: PropTypes.func.isRequired,
-    aspects: PropTypes.arrayOf(PropTypes.oneOfType([
-        PropTypes.shape({
-            value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-            label: PropTypes.string,
-            placeholder: PropTypes.string,
-            pattern: PropTypes.string,
-            isNumeric: PropTypes.bool,
-        }),
-        PropTypes.shape({
-            text: PropTypes.string.isRequired,
-        }),
-    ])).isRequired,
-    display: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.element,
-        PropTypes.arrayOf([PropTypes.string, PropTypes.element]),
-    ]).isRequired,
-    placeholder: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.element,
-        PropTypes.arrayOf([PropTypes.string, PropTypes.element]),
-        PropTypes.oneOf([null]),
-    ]),
-}
-
-function setSelection (element, collapse) {
+function setSelection (
+    element: Element,
+    collapse?: boolean,
+) {
     const sel = element.ownerDocument.getSelection()
-    sel.removeAllRanges()
-    sel.selectAllChildren(element)
+    sel?.removeAllRanges()
+    sel?.selectAllChildren(element)
     if (collapse) {
-        sel.collapseToEnd()
+        sel?.collapseToEnd()
     }
 }
