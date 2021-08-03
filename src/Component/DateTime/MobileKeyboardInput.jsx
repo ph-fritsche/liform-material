@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { DateTimeInput } from './DateTimeInput'
 import { Field } from '../Field/Field'
-import { useForkedRef } from '../../util/ref'
+import { useForkedRef } from 'liform-util'
 import { CompiledValueProp } from './compileValue'
 
 export function MobileKeyboardInput (props) {

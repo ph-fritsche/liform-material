@@ -3300,6 +3300,11 @@ liform-util@^0.2.1:
   resolved "https://registry.yarnpkg.com/liform-util/-/liform-util-0.2.1.tgz#0f84a111b1d5825ff72909dc0128b7454ae051e6"
   integrity sha512-rFI6zdJ1r5tmGiDdCeymE0JhmSgXkAb0vj4YHJd7mMyCXKfvwrlrMwnEdT8yXuo7kWpIIIM6sBhevhBs+0IvRA==
 
+liform-util@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/liform-util/-/liform-util-1.0.1.tgz#bfa1989d8b738e955744df118e5aebe02d9ec9d4"
+  integrity sha512-TP6LWiifz556aid+1fWxptAhiAw+6B5l2m0x7LEEmixdj+XrZOQ6BQz5LaffdBpca1AE6BcKRTPuxnaZ7CT6eA==
+
 lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"

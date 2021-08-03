@@ -4,7 +4,7 @@ import { TextField, TextareaAutosize, alpha } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import clsx from 'clsx'
 import { FieldInput } from './FieldInput'
-import { useId } from '../../util/ref';
+import { useId } from 'liform-util';
 import NativeSelectInput from '@material-ui/core/NativeSelect/NativeSelectInput';
 import SelectInput from '@material-ui/core/Select/SelectInput';
 

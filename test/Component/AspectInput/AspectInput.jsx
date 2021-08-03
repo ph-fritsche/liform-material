@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { render, fireEvent, getByLabelText, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AspectInput } from '../../../src'
-import { useForkedCallback } from '../../../src/util/func'
+import { useForkedCallback } from 'liform-util'
 import { wrapInTheme } from '../../_theme'
 
 describe('AspectInput', () => {

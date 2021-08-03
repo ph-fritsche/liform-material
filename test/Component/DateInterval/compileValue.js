@@ -4,7 +4,7 @@ describe('Compile value', () => {
     it('Compile from string value', () => {
         const compiled = compileValue('P2Y3WT456M')
 
-        expect(compiled.parsed).toEqual({years: 2, weeks: 3, minutes: 456})
+        expect(compiled.parsed).toEqual(expect.objectContaining({years: 2, weeks: 3, minutes: 456}))
 
         expect(compiled.input).toContainEqual({key: 'years', value: 2, label: 'Years'})
         expect(compiled.input).toContainEqual({key: 'months', value: 0, label: 'Months'})
@@ -19,7 +19,7 @@ describe('Compile value', () => {
     it('Compile from string value with pattern', () => {
         const compiled = compileValue('-P3M', '(+|-)P(\\d+M)?(\\d+D)?')
 
-        expect(compiled.parsed).toEqual({sign: '-', months: 3})
+        expect(compiled.parsed).toEqual(expect.objectContaining({sign: '-', months: 3}))
 
         expect(compiled.input).toContainEqual({key: 'sign', value: '-', placeholder: '+', isNumeric: false})
         expect(compiled.input).toContainEqual({key: 'months', value: 3, label: 'Months'})

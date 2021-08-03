@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { InputAdornment, Typography } from '@material-ui/core'
 import { CalendarTodayOutlined } from '@material-ui/icons'
 import { Field } from '../Field/Field'
-import { intervalToString } from '../../util/date'
+import { Interval } from 'liform-util'
 import { compileValue } from './compileValue'
 import { DateIntervalInput } from './DateIntervalInput'
 
@@ -23,7 +23,13 @@ export const DateIntervalField = React.forwardRef(function DateIntervalField(pro
 
     const valueObject = useMemo(() => compileValue(value, valuePattern), [value, valuePattern])
 
-    const onChange = useCallback(value => onChangeProp(intervalToString(value)), [onChangeProp])
+    const onChange = useCallback(value => {
+        const interval = new Interval()
+        for (const k in value) {
+            interval[k] = value[k]
+        }
+        onChangeProp(String(interval))
+    }, [onChangeProp])
 
     const inputRef = useRef()
 

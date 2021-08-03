@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types'
-import { intervalFromString } from '../../util/date'
-import { indexOfUnescaped, hasUnescaped } from '../../util/string'
+import { Interval, intervalFromString, indexOfUnescaped, hasUnescaped } from 'liform-util'
 
 export function aspectsFromValue (parsedValue, valuePattern) {
     if (!parsedValue) {
-        parsedValue = {}
+        parsedValue = new Interval()
     }
     if (!valuePattern) {
         valuePattern = 'P(-?\\d+[YMDW])*(T(-?\\d+[HMS])*)?'

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { updateRef } from '../../util/ref'
+import { updateRef } from 'liform-util'
 
 export const FieldInput = React.forwardRef(function FieldInput(props, ref) {
     const {

@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { IconButton, useTheme } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import { useForkedCallback } from '../../util/func'
-import { useForkedRef } from '../../util/ref'
+import { useForkedCallback, useForkedRef } from 'liform-util'
 import { BackspaceOutlined } from '@material-ui/icons'
 
 const useStyle = makeStyles({

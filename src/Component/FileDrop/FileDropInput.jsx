@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import { Chip, Avatar } from '@material-ui/core'
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import { useDropzone } from 'react-dropzone'
-import { useForkedRef } from '../../util/ref'
-import { indicesOfDescendant } from '../../util/dom'
+import { getIndicesOfDescendant, useForkedRef } from 'liform-util'
 
 const fileNameInfo = (filename) => {
     const basename = filename.replace(/.*[\\/]/, '')
@@ -202,7 +201,7 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
             if (chips.length === 0) {
                 baseElementRef.current.focus()
             } else {
-                const i = indicesOfDescendant(baseElementRef.current, event.target)
+                const i = getIndicesOfDescendant(baseElementRef.current, event.target)
 
                 const next = i
                     // first level is 'row', second level is 'gridcell'

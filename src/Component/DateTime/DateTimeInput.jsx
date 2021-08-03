@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { AspectInput } from '../AspectInput/AspectInput'
-import { useBoundFunction } from '../../util/func'
+import { useBoundFunction } from 'liform-util'
 import { validateAspect, commitAspect, AspectsDateUtilProps } from './handleAspect'
 import { CompiledValueProp } from './compileValue'
 

@@ -1,8 +1,7 @@
 import React, { useEffect, useReducer, useRef, useState, useCallback } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import clsx from 'clsx'
-import { useForkedRef } from '../../util/ref'
-import { useForkedCallback } from '../../util/func'
+import { useForkedRef, useForkedCallback } from 'liform-util'
 
 const useStyle = makeStyles(theme => ({
     value: {
@@ -76,12 +75,12 @@ export const AspectInput = React.forwardRef(function AspectInput(
         display?: string,
         placeholder?: string,
     },
-    ref,
+    ref: React.ForwardedRef<HTMLSpanElement>,
 ) {
     const style = useStyle()
 
-    const inputRef = useRef<HTMLSpanElement>()
-    const forkedInputRef = useForkedRef(ref, inputRef)
+    const inputRef = useRef<HTMLSpanElement>(null)
+    const forkedInputRef = useForkedRef<HTMLSpanElement>(ref, inputRef)
 
     const [isInputFocused, setInputFocus] = useState(false)
 
@@ -232,7 +231,7 @@ export const AspectInput = React.forwardRef(function AspectInput(
 
     const gridRef = useRef<HTMLDivElement>(null)
     const onFocus = useForkedCallback(
-        onFocusProp,
+        onFocusProp ?? [],
         (e: React.FocusEvent) => e.target.getAttribute('tabindex') === '0'
             && setInputFocus(true),
         [setInputFocus],
