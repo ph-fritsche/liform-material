@@ -3139,6 +3139,11 @@ json-schema-traverse@^1.0.0:
   resolved "https://registry.yarnpkg.com/json-schema-traverse/-/json-schema-traverse-1.0.0.tgz#ae7bcb3656ab77a73ba5c49bf654f38e6b6860e2"
   integrity sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==
 
+json-schema@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/json-schema/-/json-schema-0.3.0.tgz#90a9c5054bd065422c00241851ce8d59475b701b"
+  integrity sha512-TYfxx36xfl52Rf1LU9HyWSLGPdYLL+SQ8/E/0yVyKG8wCCDaSrhPap0vEdlsZWRaS6tnKKLPGiEJGiREVC8kxQ==
+
 json-stable-stringify-without-jsonify@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
@@ -3267,19 +3272,15 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-liform-react-final@^1.0.0-9:
-  version "1.0.0-9"
-  resolved "https://registry.yarnpkg.com/liform-react-final/-/liform-react-final-1.0.0-9.tgz#3cb0235a30e1df988e7ca1357def38073d1be1a2"
-  integrity sha512-Qbv3Wbh944k5WXqyOlKuTxBhMmO/OlixZnNxps5oNr/2V9+CIg9x5hjWBwLmKcQuJqAtihGF5btZaLW/bCi3Dg==
+liform-react-final@^1.0.0-alpha.4:
+  version "1.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/liform-react-final/-/liform-react-final-1.0.0-alpha.4.tgz#6e7bf17eaa7ee9dc3a22df7d822ad9d22bc119cf"
+  integrity sha512-jZyCswE3UALab+rDiptU/SCnAO0DaHpHp7R5N5yEJbff83KU3fVeJQRqqmRR5cLXvqnhNrLKsoTUCxSjs4fkNg==
   dependencies:
-    liform-util "^0.2.1"
+    json-schema "^0.3.0"
+    liform-util "^1"
 
-liform-util@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/liform-util/-/liform-util-0.2.1.tgz#0f84a111b1d5825ff72909dc0128b7454ae051e6"
-  integrity sha512-rFI6zdJ1r5tmGiDdCeymE0JhmSgXkAb0vj4YHJd7mMyCXKfvwrlrMwnEdT8yXuo7kWpIIIM6sBhevhBs+0IvRA==
-
-liform-util@^1.1.0:
+liform-util@^1, liform-util@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/liform-util/-/liform-util-1.1.0.tgz#7ad062c0152c20bc1a88e781b1903ec592fb8596"
   integrity sha512-yrTglI2fXMTRSZipC6KLidPPJSy6K3UWETfWixXBCSOCXzgLFPeDaSMUftxj3kn0ruJwnjxSHE4ieJwRx2xlTg==

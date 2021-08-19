@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Field } from 'react-final-form'
 import { FormLabel, FormHelperText, Grid } from '@material-ui/core'
-import { Lifield, finalizeName, mapProperties, LiformContextProp, SchemaProp } from 'liform-react-final'
+import { Lifield, finalizeName, mapProperties } from 'liform-react-final'
 
 import { getFieldError } from './error'
 
@@ -68,8 +68,8 @@ export const ObjectWidget = props => {
 }
 
 ObjectWidget.propTypes = {
-    liform: LiformContextProp,
-    schema: SchemaProp,
+    liform: PropTypes.object.isRequired,
+    schema: PropTypes.any,
     name: PropTypes.string,
 }
 

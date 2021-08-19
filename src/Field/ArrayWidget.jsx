@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FieldArray } from 'react-final-form-arrays'
-import { Lifield, liformizeName, finalizeName, LiformContextProp, SchemaProp } from 'liform-react-final'
+import { Lifield, liformizeName, finalizeName } from 'liform-react-final'
 import { FormGroup, FormControl, FormLabel, FormHelperText, IconButton } from '@material-ui/core'
 import { RemoveCircleOutline, AddCircleOutline } from '@material-ui/icons'
 
@@ -63,7 +63,7 @@ export const ArrayWidget = props => {
 }
 
 ArrayWidget.propTypes = {
-    liform: LiformContextProp,
-    schema: SchemaProp,
+    liform: PropTypes.object.isRequired,
+    schema: PropTypes.any,
     name: PropTypes.string,
 }

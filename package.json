@@ -69,7 +69,7 @@
     "final-form": "^4.20.2",
     "final-form-arrays": "^3.0.2",
     "jest": "^27.0.4",
-    "liform-react-final": "^1.0.0-9",
+    "liform-react-final": "^1.0.0-alpha.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-final-form": "^6.5.3",
@@ -88,6 +88,6 @@
     "@material-ui/core": "^5.0.0-beta",
     "@material-ui/lab": "^5.0.0-alpha.41",
     "@material-ui/styles": "^5.0.0-beta",
-    "liform-react-final": "^1"
+    "liform-react-final": "^1.0.0-alpha"
   }
 }
