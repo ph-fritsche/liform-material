@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormControl, FormControlLabel, FormHelperText, Switch as MaterialSwitch } from '@material-ui/core'
-import { FieldRenderProps } from 'liform-react-final'
+import { FieldRenderProps } from '../liform-props'
 
 export const Switch = props => {
     const {

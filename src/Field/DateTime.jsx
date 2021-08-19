@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { DateTimeField } from '../Component/DateTime/DateTimeField'
 import { BaseRender } from './BaseRender'
-import { FieldRenderProps } from 'liform-react-final'
+import { FieldRenderProps } from '../liform-props'
 
 const jsonFormats = {
     'datetime-local': "yyyy-MM-dd'T'HH:mm:sszzz",

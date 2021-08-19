@@ -1,7 +1,7 @@
 import React from 'react'
 import { Choice } from './Choice'
 import { BaseRender } from './BaseRender'
-import { FieldRenderProps } from 'liform-react-final'
+import { FieldRenderProps } from '../liform-props'
 
 export const StringRender = props => {
     const {

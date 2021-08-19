@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { MenuItem, Chip, alpha } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { BaseRender } from './BaseRender'
-import { FieldRenderProps } from 'liform-react-final'
+import { FieldRenderProps } from '../liform-props'
 
 function mapOptionsLabels (values, labels) {
     const o = {}
