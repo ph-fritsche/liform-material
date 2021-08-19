@@ -18,11 +18,14 @@ describe('Sections', () => {
 
         render(
             <Liform
-                theme={Theme}
-                schema={schema}
-                render={{
-                    field,
+                theme={{
+                    ...Theme,
+                    render: {
+                        ...Theme.render,
+                        field,
+                    },
                 }}
+                schema={schema}
                 sections={{
                     form: Theme.sections.form,
                 }}

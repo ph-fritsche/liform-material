@@ -27,9 +27,14 @@ export function renderLifield (props) {
 
     const result = render(wrapInTheme(wrapInLocalization(
         <Liform
-            theme={MaterialTheme}
+            theme={{
+                ...MaterialTheme,
+                render: {
+                    ...MaterialTheme.render,
+                    container,
+                },
+            }}
             name="form"
-            render={{container}}
             {...props}
         >
             { ({liform}) => <Lifield schema={liform.schema}/> }
