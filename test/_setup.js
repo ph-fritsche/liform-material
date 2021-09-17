@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom'
-import './_dom'
-import './_form'
+import 'liform-util/dist/cjs/testing'
 
 Object.defineProperties(URL, {
     createObjectURL: {
