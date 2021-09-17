@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { InputAdornment, Typography } from '@material-ui/core';
-import PublishOutlinedIcon from '@material-ui/icons/PublishOutlined';
+import { InputAdornment, Typography } from '@mui/material';
+import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
 import { Field } from '../Field/Field';
 import { FileDropInput } from './FileDropInput'
 

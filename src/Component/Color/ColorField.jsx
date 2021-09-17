@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { ColorInput } from './ColorInput'
-import { InputAdornment, Typography } from '@material-ui/core'
-import { PaletteOutlined } from '@material-ui/icons'
+import { InputAdornment, Typography } from '@mui/material'
+import { PaletteOutlined } from '@mui/icons-material'
 import { Field } from '../Field/Field'
 
 export const ColorField = React.forwardRef(function ColorField(props, ref) {

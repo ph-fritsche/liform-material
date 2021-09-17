@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react'
 import clsx from 'clsx'
-import { MenuItem, Chip, alpha } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
+import { MenuItem, Chip, alpha } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { BaseRender } from './BaseRender'
 import { FieldRenderProps } from '../liform-props'
 

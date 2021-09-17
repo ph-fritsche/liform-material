@@ -1,6 +1,6 @@
 import React from 'react'
-import { LocalizationProvider } from '@material-ui/lab'
-import Adapter from '@material-ui/lab/AdapterDateFns'
+import { LocalizationProvider } from '@mui/lab'
+import Adapter from '@mui/lab/AdapterDateFns'
 
 export function wrapInLocalization(el) {
     return (

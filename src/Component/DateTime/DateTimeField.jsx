@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { InputAdornment, Typography } from '@material-ui/core'
-import { CalendarTodayOutlined, ScheduleOutlined } from '@material-ui/icons';
+import { InputAdornment, Typography } from '@mui/material'
+import { CalendarTodayOutlined, ScheduleOutlined } from '@mui/icons-material';
 import { compileValue } from './compileValue'
 import { DateTimeInput } from './DateTimeInput'
 import { DateTimePicker } from './DateTimePicker'

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useMediaQuery, Popover, Dialog } from '@material-ui/core'
+import { useMediaQuery, Popover, Dialog } from '@mui/material'
 
 export const PickerModal = (props) => {
     const {

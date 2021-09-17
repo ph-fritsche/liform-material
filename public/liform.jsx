@@ -4,9 +4,9 @@ import Liform from 'liform-react-final'
 
 import props from './props.json'
 import MaterialTheme from '../src'
-import { createTheme, ThemeProvider } from '@material-ui/core'
-import { LocalizationProvider } from '@material-ui/lab'
-import Adapter from '@material-ui/lab/AdapterDateFns'
+import { createTheme, ThemeProvider } from '@mui/material'
+import { LocalizationProvider } from '@mui/lab'
+import Adapter from '@mui/lab/AdapterDateFns'
 
 Liform.theme = MaterialTheme
 

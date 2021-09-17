@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Lifield, finalizeName } from 'liform-react-final'
-import { Grid, FormControl, FormLabel, FormHelperText } from '@material-ui/core'
+import { Grid, FormControl, FormLabel, FormHelperText } from '@mui/material'
 import { FormRenderProps } from './liform-props'
 
 export const Form = props => {

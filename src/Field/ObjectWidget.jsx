@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Field } from 'react-final-form'
-import { FormLabel, FormHelperText, Grid } from '@material-ui/core'
+import { FormLabel, FormHelperText, Grid } from '@mui/material'
 import { Lifield, finalizeName, mapProperties } from 'liform-react-final'
 
 import { getFieldError } from './error'

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { InputAdornment } from '@material-ui/core'
+import { InputAdornment } from '@mui/material'
 import { BaseRender } from './BaseRender'
 import { FieldRenderProps } from '../liform-props'
 

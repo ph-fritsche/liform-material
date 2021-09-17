@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import { IconButton, useTheme } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
+import { IconButton, useTheme } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { useForkedCallback, useForkedRef } from 'liform-util'
-import { BackspaceOutlined } from '@material-ui/icons'
+import { BackspaceOutlined } from '@mui/icons-material'
 
 const useStyle = makeStyles({
     color: {

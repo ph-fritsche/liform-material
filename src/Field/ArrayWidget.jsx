@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { FieldArray } from 'react-final-form-arrays'
 import { Lifield, liformizeName, finalizeName } from 'liform-react-final'
-import { FormGroup, FormControl, FormLabel, FormHelperText, IconButton } from '@material-ui/core'
-import { RemoveCircleOutline, AddCircleOutline } from '@material-ui/icons'
+import { FormGroup, FormControl, FormLabel, FormHelperText, IconButton } from '@mui/material'
+import { RemoveCircleOutline, AddCircleOutline } from '@mui/icons-material'
 
 import { getFieldError } from './error'
 

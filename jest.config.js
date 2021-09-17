@@ -22,6 +22,6 @@ module.exports = {
     ],
     testEnvironment: 'jsdom',
     moduleNameMapper: {
-        '@material-ui/core/(.*)': '@material-ui/core/node/$1',
+        '@mui/material/(.*)': '@mui/material/node/$1',
     },
 }

@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { MuiPickersAdapterContext } from '@material-ui/lab'
+import { MuiPickersAdapterContext } from '@mui/lab'
 
 export const useAdapter = () => {
     return useContext(MuiPickersAdapterContext)

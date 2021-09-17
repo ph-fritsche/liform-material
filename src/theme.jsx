@@ -1,6 +1,6 @@
 import React from 'react'
-import { InputAdornment, Typography } from '@material-ui/core'
-import { VpnKeyOutlined, AlternateEmailOutlined, SearchOutlined, PhoneOutlined, EditOutlined, TextFieldsOutlined, SpeedOutlined } from '@material-ui/icons'
+import { InputAdornment, Typography } from '@mui/material'
+import { VpnKeyOutlined, AlternateEmailOutlined, SearchOutlined, PhoneOutlined, EditOutlined, TextFieldsOutlined, SpeedOutlined } from '@mui/icons-material'
 
 import { Container } from './render'
 import { Form, FormErrors, Action } from './sections'

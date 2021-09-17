@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Chip, Avatar } from '@material-ui/core'
-import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
+import { Chip, Avatar } from '@mui/material'
+import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import { useDropzone } from 'react-dropzone'
 import { getIndicesOfDescendant, useForkedRef } from 'liform-util'
 
