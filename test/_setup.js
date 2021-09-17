@@ -18,3 +18,29 @@ Object.defineProperties(URL, {
         value: () => {},
     },
 })
+
+let error = undefined
+const realErrorLog = console.error
+console.error = (message, ...args) => {
+    if (!error) {
+        if (message instanceof Error) {
+            error = message
+        } else {
+            if (typeof message === 'string') {
+                for (const a of args) {
+                    message = message.replace(/%(s|d|i|o|O)/, a)
+                }
+                error = new Error(String(message))
+            }
+        }
+    }
+    realErrorLog(message, ...args)
+}
+
+afterEach(() => {
+    if (error) {
+        const e = error
+        error = undefined
+        throw e
+    }
+})
