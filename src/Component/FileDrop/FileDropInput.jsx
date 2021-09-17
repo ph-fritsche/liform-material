@@ -133,7 +133,7 @@ export const FileDropInput = React.forwardRef(function FileDropInput(props, ref)
     const [valueFocus, setValueFocus] = useState()
     const [isFocusLocked, lockFocus] = useState(false)
 
-    const onDragEnter = useCallback(() => console.log('DRAGENTER') || setDropActive(true), [setDropActive])
+    const onDragEnter = useCallback(() => setDropActive(true), [setDropActive])
     const onDragLeave = useCallback(() => setDropActive(false), [setDropActive])
     const onDialogClose = useCallback(() => {
         lockFocus(false)
