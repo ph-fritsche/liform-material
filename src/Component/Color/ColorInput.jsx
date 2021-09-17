@@ -111,7 +111,7 @@ export const ColorInput = React.forwardRef(function ColorInput(props, ref) {
 
     return (
         <div
-            tabIndex="-1"
+            tabIndex={-1}
             role="button"
 
             {...others}
@@ -130,7 +130,7 @@ export const ColorInput = React.forwardRef(function ColorInput(props, ref) {
             >
                 <IconButton
                     ref={deleteButtonRef}
-                    tabIndex="-1"
+                    tabIndex={-1}
                     aria-label="Remove color value"
                     onMouseDown={e => {
                         // for unknown reason onChange('') does change the value

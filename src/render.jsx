@@ -19,9 +19,5 @@ Container.propTypes = {
     method: PropTypes.string,
     action: PropTypes.string,
     liform: PropTypes.object.isRequired,
-    children: PropTypes.oneOfType([
-        PropTypes.element,
-        PropTypes.arrayOf(PropTypes.element),
-        PropTypes.oneOf([null]),
-    ]),
+    children: PropTypes.node,
 }
