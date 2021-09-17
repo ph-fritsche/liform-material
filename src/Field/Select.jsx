@@ -61,7 +61,7 @@ export const Select = props => {
         if (schema.type !== 'array' || selectNative) {
             return undefined
         }
-        return selected => {
+        return function renderValue(selected) {
             if (selected.length === 0) {
                 return <em className={style.placeholderText}>{placeholder}</em>
             }
