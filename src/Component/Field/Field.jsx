@@ -4,9 +4,9 @@ import { TextField, TextareaAutosize, alpha } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import clsx from 'clsx'
 import { FieldInput } from './FieldInput'
-import { useId } from 'liform-util';
-import NativeSelectInput from '@mui/material/NativeSelect/NativeSelectInput';
-import SelectInput from '@mui/material/Select/SelectInput';
+import { useId } from 'liform-util'
+import NativeSelectInput from '@mui/material/NativeSelect/NativeSelectInput'
+import SelectInput from '@mui/material/Select/SelectInput'
 
 const useStyle = makeStyles(theme => ({
     'fitcontent': {
@@ -28,7 +28,7 @@ const useStyle = makeStyles(theme => ({
         '& .Mui-focused .placeholder': {
             opacity: theme.palette.type === 'light' ? 0.42 : 0.5,
         },
-    }
+    },
 }))
 
 /**

@@ -59,7 +59,7 @@
     "@mui/material": "^5.0.0",
     "@mui/lab": "^5.0.0-alpha.46",
     "@mui/styles": "^5.0.0",
-    "@ph.fritsche/eslint-config": "^0.1.1",
+    "@ph.fritsche/eslint-config": "^1.0.1",
     "@ph.fritsche/scripts-config": "^2.0.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",

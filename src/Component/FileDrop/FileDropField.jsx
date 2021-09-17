@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { InputAdornment, Typography } from '@mui/material';
-import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
-import { Field } from '../Field/Field';
+import { InputAdornment, Typography } from '@mui/material'
+import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined'
+import { Field } from '../Field/Field'
 import { FileDropInput } from './FileDropInput'
 
 export const FileDropField = React.forwardRef(function FileDropField(props, ref) {

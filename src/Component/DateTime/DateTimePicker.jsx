@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import { useMediaQuery, useTheme } from '@mui/material'
+import { useMediaQuery } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { StaticDateTimePicker, StaticTimePicker, StaticDatePicker, PickersDay } from '@mui/lab'
 import { MobileKeyboardInput } from './MobileKeyboardInput'

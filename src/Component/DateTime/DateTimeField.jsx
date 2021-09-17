@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { InputAdornment, Typography } from '@mui/material'
-import { CalendarTodayOutlined, ScheduleOutlined } from '@mui/icons-material';
+import { CalendarTodayOutlined, ScheduleOutlined } from '@mui/icons-material'
 import { compileValue } from './compileValue'
 import { DateTimeInput } from './DateTimeInput'
 import { DateTimePicker } from './DateTimePicker'
-import { Picker } from '../Picker/Picker';
-import { useAdapter } from './adapter';
+import { Picker } from '../Picker/Picker'
+import { useAdapter } from './adapter'
 
 const adornmentIcon = {
     date: CalendarTodayOutlined,

@@ -20,7 +20,7 @@ export class FakeMouseEvent extends MouseEvent {
             cancelable,
             composed,
             ...others,
-        });
+        })
 
         Object.assign(this, {
             offsetX,
@@ -29,6 +29,6 @@ export class FakeMouseEvent extends MouseEvent {
             pageY,
             x,
             y,
-        });
+        })
     }
 }
