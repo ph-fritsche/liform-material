@@ -20,16 +20,16 @@ describe('Validate aspect', () => {
         ],
         parsed: dateUtil.date('2015-02-18T19:20:21'),
     }
-    
+
     it('Accept only values in aspect limits', () => {
         expect(validateAspect(dateUtil, value, '0003', value.input.findIndex(p => p.placeholder === 'MM'))).toBe(3)
-        
+
         expect(validateAspect(dateUtil, value, '0013', value.input.findIndex(p => p.placeholder === 'MM'))).toBe(undefined)
     })
 
     it('Accept only valid days in the month', () => {
         expect(validateAspect(dateUtil, value, '0020', value.input.findIndex(p => p.placeholder === 'dd'))).toBe(20)
-        
+
         expect(validateAspect(dateUtil, value, '0031', value.input.findIndex(p => p.placeholder === 'dd'))).toBe(undefined)
     })
 })
@@ -48,9 +48,9 @@ describe('Commit aspect', () => {
             {value: '13', placeholder: 'mm'},
             {text: ':'},
             {value: '14', placeholder: 'ss'},
-        ]
+        ],
     }
-        
+
     it('Call onchange with parsed date', () => {
         const onChange = jest.fn()
 

@@ -13,7 +13,7 @@ describe('Choice', () => {
             value: 'b',
         })
 
-        expect(result.queryAllByText('Cde')).toHaveLength(0)
+        expect(result.queryByText('Cde')).not.toBeInTheDocument()
 
         userEvent.click(result.getByText('Bcd'))
         userEvent.click(result.getByText('Cde'))
@@ -63,12 +63,12 @@ describe('Choice', () => {
                 title: 'foo',
                 enum: ['a', 'b', 'c'],
                 enumTitles: ['Abc', 'Bcd', 'Cde'],
-                placeholder: 'myPlaceholderText'
+                placeholder: 'myPlaceholderText',
             },
             value: ['b'],
         })
 
-        expect(result.queryAllByText('Cde')).toHaveLength(0)
+        expect(result.queryByText('Cde')).not.toBeInTheDocument()
 
         userEvent.click(field)
         userEvent.click(result.getByText('Cde', {selector: '[role=option]'}))

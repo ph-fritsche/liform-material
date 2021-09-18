@@ -2,6 +2,7 @@ import userEvent from '@testing-library/user-event'
 import { fireEvent } from '@testing-library/react'
 import DateFnsUtils from '@date-io/date-fns'
 import { testLifield } from './_field'
+import { FakeMouseEvent } from '../_mouseevent'
 
 describe('DateTime', () => {
     const dateUtil = new DateFnsUtils()
@@ -31,9 +32,10 @@ describe('DateTime', () => {
                 widget: 'date',
                 title: 'foo',
             },
+            value: '2003-04-05',
         })
 
-        const d = new Date()
+        const d = new Date('2003-04-05')
 
         userEvent.tab()
 
@@ -59,9 +61,10 @@ describe('DateTime', () => {
                 widget: 'date',
                 title: 'foo',
             },
+            value: '2001-02-03',
         })
 
-        const d = new Date()
+        const d = new Date('2001-02-03')
 
         userEvent.tab()
         userEvent.click(result.getByLabelText('Month'))
@@ -91,22 +94,37 @@ describe('DateTime', () => {
         expect(getLiformValue()).toEqual(dateUtil.formatByString(d, 'yyyy-MM-dd'))
     })
 
-    it('Render and change time input', () => {
+    it('Render and change time input', async () => {
         const { result, getLiformValue } = testLifield({
             schema: {
                 type: 'string',
                 widget: 'time',
                 title: 'foo',
             },
+            value: '13:14',
         })
 
         userEvent.click(result.getByLabelText('foo'))
 
         userEvent.click(result.getByText('AM'))
 
-        // ClockNumbers do not handle click events
-        fireEvent.keyDown(result.getByLabelText('8 hours'), {key: ' '})
-        fireEvent.keyDown(result.getByLabelText('45 minutes'), {key: ' '})
+        // The material-ui clock determines the selected value only per mouse/touch position
+        // The event target is the first sibling of the accessible element
+        // https://github.com/mui-org/material-ui/blob/2748e3c37ccbe0d152f608f847090edd6228c76b/packages/material-ui-lab/src/ClockPicker/Clock.tsx#L248-L256
+        fireEvent(
+            result.getByLabelText(/Select hours/i).parentElement.firstElementChild,
+            new FakeMouseEvent('mouseup', {
+                offsetX: 31,
+                offsetY: 156,
+            },
+            ))
+        fireEvent(
+            result.getByLabelText(/Select minutes/i).parentElement.firstElementChild,
+            new FakeMouseEvent('mouseup', {
+                offsetX: 18,
+                offsetY: 110,
+            },
+            ))
 
         expect(getLiformValue()).toEqual('08:45')
     })

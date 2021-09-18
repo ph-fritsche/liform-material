@@ -12,11 +12,11 @@ describe('Boolean', () => {
         })
 
         userEvent.click(field)
-    
+
         expect(form).toHaveFormValues({...expectedFormValues, [field.name]: true})
 
         userEvent.click(field)
-    
+
         expect(form).toHaveFormValues({...expectedFormValues, [field.name]: false})
     })
 })

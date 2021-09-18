@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 describe('Button', () => {
     it.each([
         ['submit'],
-        ['reset']
+        ['reset'],
     ])('Render form control', (type) => {
         const { field, form } = testLifield({
             schema: {

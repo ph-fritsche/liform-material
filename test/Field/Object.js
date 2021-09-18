@@ -31,9 +31,9 @@ describe('Object', () => {
                 properties: {
                     a: {
                         type: 'string',
-                    }
-                }
-            }
+                    },
+                },
+            },
         })
 
         expect(form).toHaveFormValues({'form[a]': ''})

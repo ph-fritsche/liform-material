@@ -19,13 +19,13 @@ describe('Numeric input', () => {
         expect(form).toHaveFormValues({...expectedFormValues, [field.name]: null})
 
         userEvent.type(field, '456')
-        
+
         expect(form).toHaveFormValues({...expectedFormValues, [field.name]: 456})
 
         fireEvent.change(field, {target: {value: 456.75}})
 
         expect(form).toHaveFormValues({...expectedFormValues, [field.name]: 456.75})
-        
+
         userEvent.click(form)
 
         expect(form).toHaveFormValues({...expectedFormValues, [field.name]: 456.8})

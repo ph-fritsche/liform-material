@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types'
-import { intervalFromString } from '../../util/date'
-import { indexOfUnescaped, hasUnescaped } from '../../util/string'
+import { Interval, intervalFromString, indexOfUnescaped, hasUnescaped } from 'liform-util'
 
 export function aspectsFromValue (parsedValue, valuePattern) {
     if (!parsedValue) {
-        parsedValue = {}
+        parsedValue = new Interval()
     }
     if (!valuePattern) {
         valuePattern = 'P(-?\\d+[YMDW])*(T(-?\\d+[HMS])*)?'
@@ -14,7 +13,7 @@ export function aspectsFromValue (parsedValue, valuePattern) {
     const posT = indexOfUnescaped(valuePattern, 'T', posP) ?? valuePattern.length
 
     const aspects = []
-    
+
     if (hasUnescaped(valuePattern, '-', 0, posP)) {
         aspects.push({key: 'sign', value: parsedValue.sign || '+', placeholder: '+', isNumeric: false})
     }
@@ -57,7 +56,7 @@ export function aspectsFromValue (parsedValue, valuePattern) {
         }
 
         aspects.push(
-            {key, value: v, label: key.substr(0,1).toUpperCase() + key.substr(1)},
+            {key, value: v, label: key.substr(0, 1).toUpperCase() + key.substr(1)},
             {text: unit},
         )
     }
@@ -93,7 +92,7 @@ export const CompiledValueProp = PropTypes.exact({
     input: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.exact({
             key: PropTypes.string,
-            value: PropTypes.oneOfType([PropTypes.oneOf(['+','-']), PropTypes.number]),
+            value: PropTypes.oneOfType([PropTypes.oneOf(['+', '-']), PropTypes.number]),
             label: PropTypes.string,
             isNumeric: PropTypes.bool,
         }),
